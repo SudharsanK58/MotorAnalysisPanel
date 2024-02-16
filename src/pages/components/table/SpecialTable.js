@@ -7,7 +7,7 @@ import {
   BlockHeadContent,
   BlockTitle,
 } from "../../../components/Component";
-import { Card, CardBody, Spinner,Table, PaginationLink, PaginationItem, Pagination,UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import { Card, CardBody, Spinner,Table, Badge,PaginationLink, PaginationItem, Pagination,UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import axios from "axios";
 
 
@@ -130,7 +130,7 @@ const SpecialTablePage = () => {
           </BlockHead>
           <Card className="card-bordered card-preview">
             <CardBody>
-              
+            <div className="d-flex flex-column align-items-center mt-3">
               <Table className="text-center">
                 <thead>
                   <tr>
@@ -153,7 +153,15 @@ const SpecialTablePage = () => {
                 {/* Last seen - Leave empty for now */}
                 <td>{calculateLastSeen(formatTimestamp(rowData.timestamp))}</td>
                 <td>{formatTimestamp(rowData.timestamp)}</td>
-                <td>{rowData.networkName}</td>
+                <td>
+                  {rowData.networkConnection === 1 ? (
+                    <Badge color="primary">{rowData.networkName}</Badge>
+                  ) : rowData.networkConnection === 2 ? (
+                    <Badge color="secondary">{rowData.networkName}</Badge>
+                  ) : (
+                    rowData.networkName
+                  )}
+                </td>
                 <td>{rowData.bleMinor}</td>
                 <td>{rowData.bleTxpower}</td>
                 <td>{rowData["current temp"]}</td>
@@ -181,7 +189,7 @@ const SpecialTablePage = () => {
         </tbody>
               </Table>
               {/* Pagination */}
-              <div className="text-center mt-3">
+              
                 <Pagination aria-label="Page navigation example" className="text-center mt-3">
                   <PaginationItem>
                     <PaginationLink
