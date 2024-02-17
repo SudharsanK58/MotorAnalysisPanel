@@ -9,6 +9,8 @@ import {
 } from "../../../components/Component";
 import { Card, CardBody, Button,Spinner,Input,Table, Badge,PaginationLink, PaginationItem, Pagination,UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import axios from "axios";
+import DatePicker from "react-datepicker"
+
 
 
 const SpecialTablePage = () => {
@@ -17,8 +19,9 @@ const SpecialTablePage = () => {
   const [dropdownOpen, setDropdownOpen] = useState([]);
   const [loading, setLoading] = useState(true); // New state to track loading state
   const [searchQuery, setSearchQuery] = useState('');
-  // Assuming you have 10 rows per page
-  // Assuming you want 10 rows per page
+  const [clients, setClients] = useState([]);
+  const [selectedClient, setSelectedClient] = useState('All Client Devices');
+  const [startDate, setStartDate] = useState(null);
   const rowsPerPage = 10;
 
   // Calculate total pages
@@ -54,6 +57,10 @@ const SpecialTablePage = () => {
   const filteredTableData = tableData.filter((rowData) =>
   rowData.deviceId.includes(searchQuery) || String(rowData.bleMinor).includes(searchQuery)
 );
+
+const reloadTable = () => {
+  fetchDeviceLogData();
+};
 const dataToMap = searchQuery ? filteredTableData : currentPageData;
 
   const calculateLastSeen = (formattedTimestamp) => {
@@ -95,6 +102,7 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
   ];
 
   const fetchDeviceLogData = async () => {
+    setLoading(true);
     try {
       const response = await axios.get("http://3.144.9.52:8001/device_log_data");
       setTableData(response.data);
@@ -107,9 +115,38 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
     }
   };
 
+  const handleClientSelect = (client) => {
+    setSelectedClient(client);
+  };
+  const fetchClientData = async (client) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://3.144.9.52:8001/macaddresses?client_name=${encodeURIComponent(client)}`);
+      setTableData(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error(`Error fetching data for client ${client}:`, error);
+      setLoading(false);
+    }
+  };
+  const attDevicesCount = tableData.filter((device) => device.networkName === 'AT&T').length;
   useEffect(() => {
-    fetchDeviceLogData();
-  }, []);
+    const fetchClients = async () => {
+      try {
+        const response = await axios.get("http://3.144.9.52:8001/clients");
+        setClients(response.data);
+      } catch (error) {
+        console.error("Error fetching clients:", error);
+      }
+    };
+    fetchClients();
+    if (selectedClient === 'All Client Devices') {
+      fetchDeviceLogData();
+    } else {
+      // Fetch data based on selected client
+      fetchClientData(selectedClient);
+    }
+  }, [selectedClient]);
 
   const toggleDropdown = (rowIndex) => {
     // Toggle the dropdown state for the clicked row
@@ -119,23 +156,26 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
       return newDropdownOpen;
     });
   };
-
   return (
     <React.Fragment>
       <Head title="Special table" />
       <Content page="component">
         <Block size="lg">
-          <BlockHead>
-            <BlockHeadContent>
-              <BlockTitle tag="h4">Transaction List - With Action</BlockTitle>
-              <p>
-                The following table can be used for{" "}
-                <strong className="text-primary">invoice, payment history</strong> related transactions.
-              </p>
-            </BlockHeadContent>
-          </BlockHead>
+        <BlockHead>
+          <BlockHeadContent>
+            <BlockTitle tag="h4">All Client Device Status</BlockTitle>
+            <div style={{ width: '20px' }}></div>
+            <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>
+              <li>This table provides information about the status of all client devices.</li>
+              <li>Time represented in this table is in <strong style={{ color: 'blue' }}>India Standard Time (IST)</strong>.</li>
+              <li>This table is for <strong style={{ color: 'blue' }}>hardware team</strong> reference only.</li>
+              <li>No of devices installed and GPS data received is <strong style={{ color: 'blue' }}>{attDevicesCount} devices</strong></li>
+            </ul>
+          </BlockHeadContent>
+        </BlockHead>
           <div className="d-flex justify-content-end mb-3">
-              {/* Search Input */}
+              {/* Add space between elements */}
+              <div style={{ width: '20px' }}></div>
               <Input
                 type="text"
                 placeholder="Search by deviceId or Minor"
@@ -147,19 +187,21 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
               <div style={{ width: '20px' }}></div>
 
               {/* Reload Button */}
-              <Button color="primary" className="mr-2">
+              <Button color="primary" className="mr-2" onClick={reloadTable}>
                 Reload
               </Button>
               <div style={{ width: '20px' }}></div>
               {/* Dropdown List */}
               <UncontrolledDropdown>
                 <DropdownToggle className="btn btn-light">
-                  Dropdown
+                {selectedClient}
                 </DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem>Option 1</DropdownItem>
-                  <DropdownItem>Option 2</DropdownItem>
-                  <DropdownItem>Option 3</DropdownItem>
+                  {clients.map((client, index) => (
+                    <DropdownItem key={index} onClick={() => handleClientSelect(client)}>
+                      {client}
+                    </DropdownItem>
+                  ))}
                 </DropdownMenu>
               </UncontrolledDropdown>
             </div>
