@@ -7,7 +7,7 @@ import {
   BlockHeadContent,
   BlockTitle,
 } from "../../../components/Component";
-import { Card, CardBody, Spinner,Table, Badge,PaginationLink, PaginationItem, Pagination,UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import { Card, CardBody, Button,Spinner,Input,Table, Badge,PaginationLink, PaginationItem, Pagination,UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import axios from "axios";
 
 
@@ -16,6 +16,7 @@ const SpecialTablePage = () => {
   const [tableData, setTableData] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState([]);
   const [loading, setLoading] = useState(true); // New state to track loading state
+  const [searchQuery, setSearchQuery] = useState('');
   // Assuming you have 10 rows per page
   // Assuming you want 10 rows per page
   const rowsPerPage = 10;
@@ -49,6 +50,11 @@ const SpecialTablePage = () => {
 
     return formattedTimestamp;
   };
+
+  const filteredTableData = tableData.filter((rowData) =>
+  rowData.deviceId.includes(searchQuery) || String(rowData.bleMinor).includes(searchQuery)
+);
+const dataToMap = searchQuery ? filteredTableData : currentPageData;
 
   const calculateLastSeen = (formattedTimestamp) => {
     const currentIndianTime = new Date();
@@ -128,6 +134,35 @@ const SpecialTablePage = () => {
               </p>
             </BlockHeadContent>
           </BlockHead>
+          <div className="d-flex justify-content-end mb-3">
+              {/* Search Input */}
+              <Input
+                type="text"
+                placeholder="Search by deviceId or Minor"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="mr-2 input-sm" // Add input-sm class to reduce size
+                style={{ width: '200px' }} // Adjust width based on your preference
+              />
+              <div style={{ width: '20px' }}></div>
+
+              {/* Reload Button */}
+              <Button color="primary" className="mr-2">
+                Reload
+              </Button>
+              <div style={{ width: '20px' }}></div>
+              {/* Dropdown List */}
+              <UncontrolledDropdown>
+                <DropdownToggle className="btn btn-light">
+                  Dropdown
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem>Option 1</DropdownItem>
+                  <DropdownItem>Option 2</DropdownItem>
+                  <DropdownItem>Option 3</DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </div>
           <Card className="card-bordered card-preview">
             <CardBody>
             <div className="d-flex flex-column align-items-center mt-3">
@@ -147,7 +182,7 @@ const SpecialTablePage = () => {
               </td>
             </tr>
           ) : (
-            currentPageData.map((rowData, rowIndex) => (
+            dataToMap.map((rowData, rowIndex) => (
               <tr key={rowIndex}>
                 <td>{rowData.deviceId}</td>
                 {/* Last seen - Leave empty for now */}
