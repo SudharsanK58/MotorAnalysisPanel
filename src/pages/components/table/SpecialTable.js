@@ -10,6 +10,7 @@ import {
 import { Card, CardBody, Button,Spinner,Input,Table, Badge,PaginationLink, PaginationItem, Pagination,UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import axios from "axios";
 import DatePicker from "react-datepicker"
+import Example from "./Example";
 
 
 
@@ -23,6 +24,19 @@ const SpecialTablePage = () => {
   const [selectedClient, setSelectedClient] = useState('All Client Devices');
   const [startDate, setStartDate] = useState(null);
   const rowsPerPage = 10;
+  const [modalData, setModalData] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewAction = (rowData) => {
+    setModalData({
+      deviceId: rowData.deviceId,
+      lastSeen: calculateLastSeen(formatTimestamp(rowData.timestamp)),
+    });
+    toggleModal();
+  };
+
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
 
   // Calculate total pages
   const totalPages = Math.ceil(tableData.length / rowsPerPage);
@@ -39,8 +53,6 @@ const SpecialTablePage = () => {
 
   const formatTimestamp = (timestamp) => {
     const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    console.log('Browser Timezone:', browserTimeZone);
-
     // Convert timestamp to Date object
     const dateObj = new Date(timestamp);
 
@@ -248,7 +260,7 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
                       <span style={{ fontSize: "1.5rem" }}>&#8942;</span>
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem tag="a" href="#links" onClick={(ev) => ev.preventDefault()}>
+                      <DropdownItem tag="a" href="#links"  onClick={() => handleViewAction(rowData)}>
                         <span>View</span>
                       </DropdownItem>
                       <DropdownItem tag="a" href="#links" onClick={(ev) => ev.preventDefault()}>
@@ -310,6 +322,14 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
             </CardBody>
           </Card>
         </Block>
+        {modalData && (
+        <Example
+        isOpen={isModalOpen}
+        toggle={toggleModal}
+        deviceId={modalData.deviceId}
+        lastSeen={modalData.lastSeen}
+      />
+      )}
       </Content>
     </React.Fragment>
   );
