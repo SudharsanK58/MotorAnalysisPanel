@@ -32,7 +32,8 @@ const Header = ({ fixed, className, ...props }) => {
             <Toggle className="nk-nav-toggle nk-quick-nav-icon" icon="menu" click={themeUpdate.sidebarVisibility} />
           </div>
           <div className="nk-header-brand">
-            <Logo />
+            {/* <Logo /> */}
+            <span style={{ fontWeight: 'bold', color: 'blue' ,fontSize: '18px'}}>Hardware log panel</span>
           </div>
           <div
             className={`nk-header-menu ms-auto ${theme.sidebarMobile ? "mobile-menu" : ""}  ${
@@ -53,13 +54,13 @@ const Header = ({ fixed, className, ...props }) => {
           <div className="nk-header-tools">
             <ul className="nk-quick-nav">
               <li className="chats-dropdown">
-                <ChatDropdown />
+                {/* <ChatDropdown /> */}
               </li>
               <li className="language-dropdown d-none d-sm-block me-n1">
-                <LanguageHead />
+                {/* <LanguageHead /> */}
               </li>
               <li className="user-dropdown">
-                <User />
+                {/* <User /> */}
               </li>
             </ul>
           </div>
