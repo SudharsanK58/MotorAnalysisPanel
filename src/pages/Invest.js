@@ -27,14 +27,14 @@ const InvestHomePage = () => {
   const [sm, updateSm] = useState(false);
   return (
     <React.Fragment>
-      <Head title="Default Dashboard" />
+      <Head title="ZIG Dashboard" />
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
               <BlockTitle page>Dashboard</BlockTitle>
               <BlockDes className="text-soft">
-                <p>Welcome to DashLite Dashboard Template.</p>
+                <p>Welcome to ZIG Remote management system.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
@@ -83,9 +83,6 @@ const InvestHomePage = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="invest-data-ck">
-                    <DepositBarChart />
-                  </div>
                 </div>
               </PreviewAltCard>
             </Col>
@@ -129,9 +126,6 @@ const InvestHomePage = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="invest-data-ck">
-                    <WithdrawBarChart />
-                  </div>
                 </div>
               </PreviewAltCard>
             </Col>
@@ -171,9 +165,6 @@ const InvestHomePage = () => {
                         1,259.28 <span className="currency currency-usd">USD</span>
                       </div>
                     </div>
-                  </div>
-                  <div className="invest-data-ck">
-                    <BalanceBarChart />
                   </div>
                 </div>
               </PreviewAltCard>

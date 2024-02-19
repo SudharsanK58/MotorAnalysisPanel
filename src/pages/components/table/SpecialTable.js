@@ -21,7 +21,7 @@ const SpecialTablePage = () => {
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState('All Client Devices');
   const [startDate, setStartDate] = useState(null);
-  const rowsPerPage = 10;
+  const rowsPerPage = 20;
   const [modalData, setModalData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -168,7 +168,7 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
   };
   return (
     <React.Fragment>
-      <Head title="Special table" />
+      <Head title="All Devices" />
       <Content page="component">
         <Block size="lg">
         <BlockHead>
@@ -246,19 +246,19 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
                 <td>{rowData.bleTxpower}</td>
                 <td>{rowData["current temp"]}°C</td>
                 <td>
-                  <UncontrolledDropdown isOpen={dropdownOpen[rowIndex]} toggle={() => toggleDropdown(rowIndex)}>
+                  <UncontrolledDropdown isOpen={dropdownOpen[rowIndex]} toggle={() => toggleDropdown(rowIndex)} style={{ width: '10px' }}>
                     <DropdownToggle caret className="dropdown-toggle btn btn-light">
                       <span style={{ fontSize: "1.5rem" }}>&#8942;</span>
                     </DropdownToggle>
                     <DropdownMenu>
                       <DropdownItem tag="a" href="#links"  onClick={() => handleViewAction(rowData)}>
-                        <span>View</span>
+                        <span>Device info</span>
                       </DropdownItem>
                       <DropdownItem tag="a" href="#links" onClick={(ev) => ev.preventDefault()}>
-                        <span>Ping data</span>
+                        <span>Ping test</span>
                       </DropdownItem>
                       <DropdownItem tag="a" href="#links" onClick={(ev) => ev.preventDefault()}>
-                        <span>Get GPS</span>
+                        <span>Get GPS info</span>
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
