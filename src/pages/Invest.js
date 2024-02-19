@@ -7,6 +7,7 @@ import RecentInvest from "../components/partials/invest/recent-investment/Recent
 import RecentActivity from "../components/partials/default/recent-activity/Activity";
 import Notifications from "../components/partials/default/notification/Notification";
 import { DropdownToggle, Spinner,DropdownMenu, Card, UncontrolledDropdown, DropdownItem } from "reactstrap";
+import SessionDevice from "../components/partials/analytics/session-devices/SessionDevice";
 import {
   Block,
   BlockDes,
@@ -247,8 +248,8 @@ const InvestHomePage = () => {
             </Col>
 
             <Col md="6" xxl="4">
-              <PreviewAltCard className="card-full">
-                <InvestOverview />
+            <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
+                <SessionDevice />
               </PreviewAltCard>
             </Col>
 
