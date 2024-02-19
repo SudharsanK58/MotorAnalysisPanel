@@ -9,13 +9,11 @@ import {
 } from "../../../components/Component";
 import { Card, CardBody, Button,Spinner,Input,Table, Badge,PaginationLink, PaginationItem, Pagination,UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import axios from "axios";
-import DatePicker from "react-datepicker"
 import Example from "./Example";
 
 
 
 const SpecialTablePage = () => {
-  const itemsPerPage = 10;
   const [tableData, setTableData] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState([]);
   const [loading, setLoading] = useState(true); // New state to track loading state
@@ -108,7 +106,7 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
     "Last IN time",
     "Network Name",
     "BLE minor",
-    "BLE tx power",
+    "BLE TX power",
     "Temperature",
     "Actions",
   ];
@@ -175,14 +173,7 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
         <Block size="lg">
         <BlockHead>
           <BlockHeadContent>
-            <BlockTitle tag="h4">All Client Device Status</BlockTitle>
-            <div style={{ width: '20px' }}></div>
-            <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>
-              <li>This table provides information about the status of all client devices.</li>
-              <li>Time represented in this table is in <strong style={{ color: 'blue' }}>India Standard Time (IST)</strong>.</li>
-              <li>This table is for <strong style={{ color: 'blue' }}>hardware team</strong> reference only.</li>
-              <li>No of devices installed and GPS data received is <strong style={{ color: 'blue' }}>{attDevicesCount} devices</strong></li>
-            </ul>
+            <BlockTitle tag="h3">Devices</BlockTitle>
           </BlockHeadContent>
         </BlockHead>
           <div className="d-flex justify-content-end mb-3">
@@ -253,7 +244,7 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
                 </td>
                 <td>{rowData.bleMinor}</td>
                 <td>{rowData.bleTxpower}</td>
-                <td>{rowData["current temp"]}</td>
+                <td>{rowData["current temp"]}°C</td>
                 <td>
                   <UncontrolledDropdown isOpen={dropdownOpen[rowIndex]} toggle={() => toggleDropdown(rowIndex)}>
                     <DropdownToggle caret className="dropdown-toggle btn btn-light">
@@ -321,6 +312,13 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
                 </div>
             </CardBody>
           </Card>
+          <div style={{ width: '20px' }}></div>
+            <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>
+              <li>This table provides information about the status of all client devices.</li>
+              <li>Time represented in this table is in <strong style={{ color: 'blue' }}>India Standard Time (IST)</strong>.</li>
+              <li>This table is for <strong style={{ color: 'blue' }}>hardware team</strong> reference only.</li>
+              <li>No of devices installed and GPS data received is <strong style={{ color: 'blue' }}>{attDevicesCount} devices</strong></li>
+            </ul>
         </Block>
         {modalData && (
         <Example

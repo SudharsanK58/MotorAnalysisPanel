@@ -1,4 +1,25 @@
 const menu = [
+  {
+    text: "DASHBOARD",
+    subMenu: [
+      {
+        text: "OVERVIEW",
+        link: "/",
+      },
+      // {
+      //   text: "Sales Dashboard",
+      //   link: "/sales",
+      // },
+      // {
+      //   text: "Crypto Dashboard",
+      //   link: "/crypto",
+      // },
+      // {
+      //   text: "Analytics Dashboard",
+      //   link: "/analytics",
+      // },
+    ],
+  },
   // {
   //   text: "Applications",
   //   subMenu: [
@@ -220,7 +241,7 @@ const menu = [
   //   ],
   // },
   {
-    text: "Devices",
+    text: "DEVICES",
     subMenu: [
       // {
       //   text: "Ui Elements",
@@ -361,7 +382,7 @@ const menu = [
       //   ],
       // },
       {
-        text: "Validators",
+        text: "VALIDATORS",
         active: false,
         subMenu: [
           // {
@@ -369,8 +390,8 @@ const menu = [
           //   link: "/table-basic",
           // },
           {
-            text: "All device status",
-            link: "/table-special",
+            text: "ALL DEVICES",
+            link: "/All-device-status",
           },
           // {
           //   text: "DataTables",

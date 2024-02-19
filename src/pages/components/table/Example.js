@@ -40,8 +40,8 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
           ) : (
             apiData && (
               <div>
-                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'blue' }}>
-                  Assigned Clients:
+                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3' ,textAlign: 'left' }}>
+                  Assigned Clients
                 </p>
                 <Table bordered>
                   <thead>
@@ -64,8 +64,8 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                   </tbody>
                 </Table>
 
-                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'blue' }}>
-                  Device Config:
+                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3' ,textAlign: 'left'}}>
+                  Device Config
                 </p>
                 <Table bordered>
                   <thead>
@@ -87,8 +87,8 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                     </tr>
                   </tbody>
                 </Table>
-                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'blue' }}>
-                 GPS detail
+                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3',textAlign: 'left' }}>
+                 GPS & SIM info
                 </p>
                 <Table bordered>
                   <thead>
@@ -112,7 +112,9 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                 </Table>
                 {/* Tickets Data Table */}
                 <div className="mt-3">
-                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'blue' }}>Tickets Data</p>
+                {apiData.apiResponses.ticketsData.tickets.length > 0 && (
+                    <>
+                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3',textAlign: 'left' }}>Tickets Data</p>
                   <Table bordered>
                     <thead>
                       <tr>
@@ -133,6 +135,8 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                       ))}
                     </tbody>
                   </Table>
+                    </>
+                    )}
                 </div>
 
               </div>

@@ -13,9 +13,9 @@ const Footer = () => {
         <div className="nk-footer-wrap">
           <div className="nk-footer-copyright">
             {" "}
-            &copy; 2022 DashLite React Template by <a href="https://softnio.com">Softnio</a>
+            &copy; 2024 ZIG Remote management system by sudharsan@zed.digtal
           </div>
-          <div className="nk-footer-links">
+          {/* <div className="nk-footer-links">
             <ul className="nav nav-sm">
               <li className="nav-item">
                 <UncontrolledDropdown direction="up">
@@ -99,7 +99,7 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

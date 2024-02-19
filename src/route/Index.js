@@ -262,7 +262,7 @@ const Pages = () => {
           
           <Route path="table-basic" element={<BasicTable />}></Route>
           <Route path="table-datatable" element={<DataTablePage />}></Route>
-          <Route path="table-special" element={<SpecialTablePage />}></Route>
+          <Route path="All-device-status" element={<SpecialTablePage />}></Route>
           <Route path="email-template" element={<EmailTemplate />}></Route>
           <Route path="nioicon" element={<NioIconPage />}></Route>
           <Route path="svg-icons" element={<SVGIconPage />}></Route>

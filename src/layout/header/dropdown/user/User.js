@@ -30,20 +30,20 @@ const User = () => {
         <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
           <div className="user-card sm">
             <div className="user-avatar">
-              <span>AB</span>
+              <span>SUD</span>
             </div>
             <div className="user-info">
-              <span className="lead-text">Abu Bin Ishtiyak</span>
-              <span className="sub-text">info@softnio.com</span>
+              <span className="lead-text">Sudharsan K</span>
+              <span className="sub-text">Sudharsan@zed.digital</span>
             </div>
-            <div className="user-action" onClick={() => setOpen(false)}>
+            {/* <div className="user-action" onClick={() => setOpen(false)}>
               <Link to={`${process.env.PUBLIC_URL}/user-profile-setting`} className="btn btn-icon me-n2">
                 <Icon name="setting"></Icon>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
-        <div className="dropdown-inner user-account-info">
+        {/* <div className="dropdown-inner user-account-info">
           <h6 className="overline-title-alt">Account Balance</h6>
           <div className="user-balance">
             1,494.23 <small className="currency currency-usd">USD</small>
@@ -57,10 +57,10 @@ const User = () => {
           <a href="#checkout" onClick={(ev) => ev.preventDefault()} className="link">
             <span>Withdraw Balance</span> <Icon name="wallet-out"></Icon>
           </a>
-        </div>
+        </div> */}
         <div className="dropdown-inner">
           <LinkList>
-            <LinkItem link={"/user-profile-regular"} icon="user-alt" onClick={toggle}>
+            {/* <LinkItem link={"/user-profile-regular"} icon="user-alt" onClick={toggle}>
               View Profile
             </LinkItem>
             <LinkItem link={"/user-profile-setting"} icon="setting-alt" onClick={toggle}>
@@ -68,7 +68,7 @@ const User = () => {
             </LinkItem>
             <LinkItem link={"/user-profile-activity"} icon="activity-alt" onClick={toggle}>
               Login Activity
-            </LinkItem>
+            </LinkItem> */}
             <li>
               <a className={`dark-switch ${theme.skin === 'dark' ? 'active' : ''}`} href="#" 
               onClick={(ev) => {
@@ -80,17 +80,17 @@ const User = () => {
                   : 
                   <><em className="icon ni ni-moon"></em><span>Dark Mode</span></>
                 }
-              </a>
+              </a>  
             </li>
           </LinkList>
         </div>
         <div className="dropdown-inner">
-          <LinkList>
+          {/* <LinkList>
             <a href={`${process.env.PUBLIC_URL}/auth-login`}>
               <Icon name="signout"></Icon>
               <span>Sign Out</span>
             </a>
-          </LinkList>
+          </LinkList> */}
         </div>
       </DropdownMenu>
     </Dropdown>
