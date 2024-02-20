@@ -126,7 +126,6 @@ import Layout from "../layout/Index";
 import LayoutNoSidebar from "../layout/Index-nosidebar";
 
 const Pages = () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const location = useLocation();
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -135,30 +134,25 @@ const Pages = () => {
   return (
     <Routes>
           <Route path={`${process.env.PUBLIC_URL}`} element={<Layout />}>
-          {/* <Route index element={<Invest />}></Route> */}
-          {/* <Route path="overview" element={<Invest />}></Route> */}
-          {isLoggedIn ? (
-          <Route path="/overview" element={<Invest />} />
-          ) : (
-            <Route path="auth-login" element={<Login />}></Route>
-          )}
-          {/* <Route path="crypto" element={<Crypto />}></Route>
+          <Route index element={<Invest />}></Route>
+          <Route path="overview" element={<Invest />}></Route>
+          <Route path="crypto" element={<Crypto />}></Route>
           <Route path="analytics" element={<Analytics />}></Route>
           <Route path="sales" element={<Sales />}></Route>
           <Route path="_blank" element={<Blank />}></Route>
 
           <Route path="project-card" element={<ProjectCardPage />}></Route>
-          <Route path="project-list" element={<ProjectListPage />}></Route> */}
+          <Route path="project-list" element={<ProjectListPage />}></Route>
 
           
-          {/* <Route element={<UserContextProvider />} >
+          <Route element={<UserContextProvider />} >
             <Route path="user-list-regular" element={<UserListRegular />}></Route>
             <Route path="user-list-compact" element={<UserListCompact />}></Route>
             <Route path="user-contact-card" element={<UserContactCard />}></Route>
             <Route path="user-details-regular/:userId" element={<UserDetails />}></Route>
-          </Route> */}
+          </Route>
 
-          {/* <Route >
+          <Route >
             <Route path="user-profile-notification" element={<UserProfileNotification />} ></Route>
             <Route path="user-profile-regular" element={<UserProfileRegular />}></Route>
             <Route path="user-profile-activity" element={<UserProfileActivity />}></Route>
@@ -268,24 +262,19 @@ const Pages = () => {
           </Route>
           
           <Route path="table-basic" element={<BasicTable />}></Route>
-          <Route path="table-datatable" element={<DataTablePage />}></Route> */}
-          {isLoggedIn ? (
-            <Route path="All-device-status" element={<SpecialTablePage />}></Route>
-          ) : (
-            <Route path="auth-login" element={<Login />}></Route>
-          )}
-          {/* <Route path="email-template" element={<EmailTemplate />}></Route>
+          <Route path="table-datatable" element={<DataTablePage />}></Route>
+          <Route path="All-device-status" element={<SpecialTablePage />}></Route>
+          <Route path="email-template" element={<EmailTemplate />}></Route>
           <Route path="nioicon" element={<NioIconPage />}></Route>
-          <Route path="svg-icons" element={<SVGIconPage />}></Route> */}
+          <Route path="svg-icons" element={<SVGIconPage />}></Route>
 
         </Route>
         <Route path={`${process.env.PUBLIC_URL}`} element={<LayoutNoSidebar />}>
-          {/* <Route path="auth-success" element={<Success />}></Route> */}
-            {/* <Route path="auth-reset" element={<ForgotPassword />}></Route> */}
-            {/* <Route path="auth-register" element={<Register />}></Route> */}
-            {/* <Route path="auth-login" element={<Login />}></Route> */}
-            <Route index element={<Login />}></Route>
-
+          <Route path="auth-success" element={<Success />}></Route>
+            <Route path="auth-reset" element={<ForgotPassword />}></Route>
+            <Route path="auth-register" element={<Register />}></Route>
+            <Route path="auth-login" element={<Login />}></Route>
+    
             <Route path="errors">
               <Route path="404-modern" element={<Error404Modern />}></Route>
               <Route path="404-classic" element={<Error404Classic />}></Route>
@@ -294,7 +283,7 @@ const Pages = () => {
             </Route>
             <Route path="*" element={<Error404Modern />}></Route>
             
-            {/* <Route path="invoice-print/:invoiceId" element={<InvoicePrint />}></Route> */}
+            <Route path="invoice-print/:invoiceId" element={<InvoicePrint />}></Route>
         </Route>
     </Routes>
   );
