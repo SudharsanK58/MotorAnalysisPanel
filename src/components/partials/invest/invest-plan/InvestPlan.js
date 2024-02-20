@@ -25,55 +25,10 @@ const InvestPlan = () => {
     <PreviewAltCard className="card-full" bodyClass="d-flex flex-column h-100">
       <div className="card-title-group mb-3">
         <div className="card-title">
-          <h6 className="title">Top Invested Plan</h6>
-          <p>In last {planSet === "7" ? "7" : planSet === "15" ? "15" : "30"} days top invested schemes.</p>
+          <h6 className="title">Client devices </h6>
+          <p>Below progress shows the no of active devices in % for clients</p>
         </div>
         <div className="card-tools mt-n4 me-n1">
-          <UncontrolledDropdown>
-            <DropdownToggle tag="a" className="dropdown-toggle btn btn-icon btn-trigger">
-              <Icon name="more-h"></Icon>
-            </DropdownToggle>
-            <DropdownMenu end>
-              <ul className="link-list-opt no-bdr">
-                <li className={planSet === "7" ? "active" : ""}>
-                  <DropdownItem
-                    tag="a"
-                    href="#dropdownitem"
-                    onClick={(ev) => {
-                      ev.preventDefault();
-                      setPlanSet("7");
-                    }}
-                  >
-                    <span>7 Days</span>
-                  </DropdownItem>
-                </li>
-                <li className={planSet === "15" ? "active" : ""}>
-                  <DropdownItem
-                    tag="a"
-                    href="#dropdownitem"
-                    onClick={(ev) => {
-                      ev.preventDefault();
-                      setPlanSet("15");
-                    }}
-                  >
-                    <span>15 Days</span>
-                  </DropdownItem>
-                </li>
-                <li className={planSet === "30" ? "active" : ""}>
-                  <DropdownItem
-                    tag="a"
-                    href="#dropdownitem"
-                    onClick={(ev) => {
-                      ev.preventDefault();
-                      setPlanSet("30");
-                    }}
-                  >
-                    <span>30 Days</span>
-                  </DropdownItem>
-                </li>
-              </ul>
-            </DropdownMenu>
-          </UncontrolledDropdown>
         </div>
       </div>
       <div className="progress-list gy-3">
@@ -82,15 +37,12 @@ const InvestPlan = () => {
             <div className="progress-wrap" key={idx}>
               <div className="progress-text">
                 <div className="progress-label">{item.pack}</div>
-                <div className="progress-amount">{item.amount}%</div>
+                <div className="progress-amount">{item.amount} devices</div>
               </div>
-              <Progress className="progress-md" value={item.amount} color={item.color}></Progress>
+              <Progress className="progress-md" value={item.percentage} color={item.color}></Progress>
             </div>
           );
         })}
-      </div>
-      <div className="invest-top-ck mt-auto">
-        <PurchasePlanChart set={planSet} />
       </div>
     </PreviewAltCard>
   );

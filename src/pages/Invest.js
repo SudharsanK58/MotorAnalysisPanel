@@ -256,22 +256,6 @@ const InvestHomePage = () => {
             <Col md="6" xxl="4">
               <InvestPlan />
             </Col>
-
-            {/* <Col md="6" xxl="4">
-              <Card className="card-bordered card-full">
-                <RecentActivity />
-              </Card>
-            </Col>
-            <Col md="6" xxl="4">
-              <Card className="card-bordered h-100">
-                <Notifications />
-              </Card>
-            </Col>
-            <Col xl="12" xxl="8">
-              <Card className="card-bordered card-full">
-                <RecentInvest />
-              </Card>
-            </Col> */}
           </Row>
         </Block>
       </Content>

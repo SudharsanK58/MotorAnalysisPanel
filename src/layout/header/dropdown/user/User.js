@@ -11,6 +11,18 @@ const User = () => {
   const themeUpdate = useThemeUpdate();
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
+  const handleSignOut = () => {
+    // Perform any additional sign-out logic if needed
+    localStorage.setItem("isLoggedIn", "false");
+  };
+  // Retrieve userName from localStorage
+const storedUserName = localStorage.getItem("userName");
+
+// Get the first two letters in uppercase
+const initials = storedUserName ? storedUserName.slice(0, 2).toUpperCase() : "";
+
+// Use the full userName for the lead text
+const leadText = storedUserName || "";
 
   return (
     <Dropdown isOpen={open} className="user-dropdown" toggle={toggle}>
@@ -29,13 +41,12 @@ const User = () => {
       <DropdownMenu end className="dropdown-menu-md dropdown-menu-s1">
         <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
           <div className="user-card sm">
-            <div className="user-avatar">
-              <span>SUD</span>
-            </div>
-            <div className="user-info">
-              <span className="lead-text">Sudharsan K</span>
-              <span className="sub-text">Sudharsan@zed.digital</span>
-            </div>
+          <div className="user-avatar">
+            <span>{initials}</span>
+          </div>
+          <div className="user-info">
+            <span className="lead-text">{leadText}</span>
+          </div>
             {/* <div className="user-action" onClick={() => setOpen(false)}>
               <Link to={`${process.env.PUBLIC_URL}/user-profile-setting`} className="btn btn-icon me-n2">
                 <Icon name="setting"></Icon>
@@ -85,12 +96,12 @@ const User = () => {
           </LinkList>
         </div>
         <div className="dropdown-inner">
-          {/* <LinkList>
-            <a href={`${process.env.PUBLIC_URL}/auth-login`}>
+          <LinkList>
+            <a href={`${process.env.PUBLIC_URL}/`} onClick={handleSignOut}>
               <Icon name="signout"></Icon>
               <span>Sign Out</span>
             </a>
-          </LinkList> */}
+          </LinkList>
         </div>
       </DropdownMenu>
     </Dropdown>

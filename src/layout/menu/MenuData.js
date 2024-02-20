@@ -4,7 +4,7 @@ const menu = [
     subMenu: [
       {
         text: "OVERVIEW",
-        link: "/",
+        link: "/overview",
       },
       // {
       //   text: "Sales Dashboard",
