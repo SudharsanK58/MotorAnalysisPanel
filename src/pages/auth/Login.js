@@ -41,14 +41,14 @@ const Login = () => {
         const data = await response.json();
         if (data.message === "Login successful") {
           localStorage.setItem("accessToken", "token");
-          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("isLoggedIn", true);
           localStorage.setItem("userName", formData.name); // Store the user's name
           // Redirect to the /overview page
           setTimeout(() => {
             window.history.pushState(
-              `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/overview"}`,
+              `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`,
               "auth-login",
-              `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/overview"}`
+              `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`
             );
             window.location.reload();
           }, 1000);
