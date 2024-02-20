@@ -13,7 +13,7 @@ const Footer = () => {
         <div className="nk-footer-wrap">
           <div className="nk-footer-copyright">
             {" "}
-            &copy; 2024 ZIG Remote management system by sudharsan@zed.digtal
+            &copy; 2024 ZIG Remote monitoring system by sudharsan@zed.digtal
           </div>
           {/* <div className="nk-footer-links">
             <ul className="nav nav-sm">

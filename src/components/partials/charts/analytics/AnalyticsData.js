@@ -1052,14 +1052,14 @@ export var deviceStatusData = {
 };
 
 export var deviceStatusDataSet4 = {
-  labels: ["Desktop", "Mobile", "Tablet"],
+  labels: ["ZIGD23FPL1", "FMB920", "FMM920"],
   dataUnit: "People",
   legend: false,
   datasets: [
     {
       borderColor: "#fff",
       backgroundColor: ["#9cabff", "#b8acff", "#7de1f8"],
-      data: [84.5, 14.2, 1.3],
+      data: [40, 12, 48],
     },
   ],
 };

@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Line, Bar, Doughnut } from "react-chartjs-2";
-
-import { Chart, CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Filler, Legend, } from "chart.js";
-Chart.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Filler, Legend, );
-
 import { VectorMap } from "react-jvectormap";
 import {
   analyticOvData,
@@ -20,6 +16,10 @@ import {
   deviceStatusDataSet3,
   deviceStatusDataSet4,
 } from "./AnalyticsData";
+import { Chart, CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Filler, Legend, } from "chart.js";
+Chart.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Filler, Legend, );
+
+
 
 export const AudienceLineChart = ({ state }) => {
   const [data, setData] = useState(analyticOvData);

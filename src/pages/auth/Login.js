@@ -76,7 +76,7 @@ const Login = () => {
     <Head title="Login" />
       <Block className="nk-block-middle nk-auth-body  wide-xs">
         <div className="brand-logo pb-4 text-center">
-          <span style={{ fontWeight: 'bold', color: '#2263b3' ,fontSize: '20px'}}>ZIG Remote management system	</span>
+          <span style={{ fontWeight: 'bold', color: '#2263b3' ,fontSize: '20px'}}>ZIG Remote monitoring system	</span>
         </div>
 
         <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
