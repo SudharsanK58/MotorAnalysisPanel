@@ -41,7 +41,7 @@ const Login = () => {
         const data = await response.json();
         if (data.message === "Login successful") {
           localStorage.setItem("accessToken", "token");
-          localStorage.setItem("isLoggedIn", true);
+          sessionStorage.setItem("isLoggedIn", true);
           localStorage.setItem("userName", formData.name); // Store the user's name
           // Redirect to the /overview page
           setTimeout(() => {
