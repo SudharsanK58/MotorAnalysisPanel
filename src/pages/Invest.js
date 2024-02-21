@@ -191,7 +191,7 @@ const InvestHomePage = () => {
                 </span>
               </div>
               <div className="invest-data-history">
-                <div className="title">Last Week</div>
+                <div className="title">This Week</div>
                 <span className="amount">
                   {ticketCounts.last_week_unique_ticket_count} Tickets
                 </span>

@@ -6,6 +6,7 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
   const [loading, setLoading] = useState(false);
   const [apiData, setApiData] = useState(null);
   const [error, setError] = useState(null);
+  const deviceIdInCaps = deviceId.toUpperCase();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +31,11 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} size="lg">
-      <ModalHeader toggle={toggle}>Device Information - {deviceId} - {lastSeen}</ModalHeader>
+      <ModalHeader toggle={toggle}>
+        Device Information : {deviceIdInCaps}   -   {lastSeen}
+        <br />
+        SIM Number : {apiData?.apiResponses?.gpsDetailsAPI?.lastUpdatedValues?.simNumber}
+      </ModalHeader>
       <ModalBody className="text-center">
         {loading ? (
           <Spinner color="primary" />
@@ -97,7 +102,7 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                       <th>Latitude</th>
                       <th>Longitude</th>
                       <th>Speed</th>
-                      <th>SIM Number</th>
+                      <th>Satellite </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -106,7 +111,7 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                       <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.lat}</td>
                       <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.long}</td>
                       <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.speed}</td>
-                      <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.simNumber}</td>
+                      <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.satellite}</td>
                     </tr>
                   </tbody>
                 </Table>

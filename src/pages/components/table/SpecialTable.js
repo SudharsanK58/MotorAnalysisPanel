@@ -10,6 +10,7 @@ import {
 import { Card, CardBody, Button,Spinner,Input,Table, Badge,PaginationLink, PaginationItem, Pagination,UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import axios from "axios";
 import Example from "./Example";
+import Swal from "sweetalert2";
 
 
 
@@ -24,6 +25,105 @@ const SpecialTablePage = () => {
   const rowsPerPage = 20;
   const [modalData, setModalData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAdvanced1 = async (rowData,e) => {
+    try {
+      // Make API call
+      const response = await fetch('http://54.89.246.64:8001/publish', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          topic: `${rowData.deviceId}/nfc`,
+          message: '301',
+        }),
+      });
+
+      // Check if the API call was successful
+      if (response.ok) {
+        // Show success message using Swal
+        Swal.fire({
+          icon: 'success',
+          title: 'The device has been pinged.',
+          focusConfirm: false,
+        });
+      } else {
+        // Handle error case, show error message
+        Swal.fire({
+          icon: 'error',
+          title: 'Error pinging the device.',
+          text: 'Please try again later.',
+          focusConfirm: false,
+        });
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error('Error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error pinging the device.',
+        text: 'Please try again later.',
+        focusConfirm: false,
+      });
+    }
+
+    // Prevent default link behavior
+    if (e) {
+      e.preventDefault();
+    }
+  };
+  const handleAdvanced3 = async (rowData) => {
+    const deviceId = rowData.deviceId;
+  
+    Swal.fire({
+      title: "Warning",
+      text: "This works only if the device is active",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, refresh GPS info",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // Make API call
+          const response = await fetch('http://54.89.246.64:8001/publish', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              topic: `${deviceId}/react`,
+              message: 'GET',
+            }),
+          });
+  
+          // Check if the API call was successful
+          if (response.ok) {
+            // Show success message using Swal
+            Swal.fire("Request have sent", "Please wait for the device to respond", "success");
+          } else {
+            // Handle error case, show error message
+            Swal.fire({
+              icon: 'error',
+              title: 'Error refreshing GPS info.',
+              text: 'Please try again later.',
+              focusConfirm: false,
+            });
+          }
+        } catch (error) {
+          // Handle network or other errors
+          console.error('Error:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error refreshing GPS info.',
+            text: 'Please try again later.',
+            focusConfirm: false,
+          });
+        }
+      }
+    });
+  };
+  
 
   const handleViewAction = (rowData) => {
     setModalData({
@@ -254,10 +354,10 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
                       <DropdownItem tag="a" href="#links"  onClick={() => handleViewAction(rowData)}>
                         <span>Device info</span>
                       </DropdownItem>
-                      <DropdownItem tag="a" href="#links" onClick={(ev) => ev.preventDefault()}>
+                      <DropdownItem tag="a" href="#links" onClick={(e) => handleAdvanced1(rowData)}>
                         <span>Ping test</span>
                       </DropdownItem>
-                      <DropdownItem tag="a" href="#links" onClick={(ev) => ev.preventDefault()}>
+                      <DropdownItem tag="a" href="#links" onClick={(ev) =>handleAdvanced3(rowData)}>
                         <span>Get GPS info</span>
                       </DropdownItem>
                     </DropdownMenu>
@@ -317,7 +417,7 @@ const dataToMap = searchQuery ? filteredTableData : currentPageData;
               <li>This table provides information about the status of all client devices.</li>
               <li>Time represented in this table is in <strong style={{ color: 'blue' }}>India Standard Time (IST)</strong>.</li>
               <li>This table is for <strong style={{ color: 'blue' }}>hardware team</strong> reference only.</li>
-              <li>No of devices installed and GPS data received is <strong style={{ color: 'blue' }}>{attDevicesCount} devices</strong></li>
+              <li>No of devices installed and GPS data received is <strong style={{ color: 'blue' }}>{attDevicesCount} devices</strong> for the selected client</li>
             </ul>
         </Block>
         {modalData && (

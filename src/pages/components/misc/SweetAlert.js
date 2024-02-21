@@ -98,14 +98,14 @@ const SweetAlertPage = () => {
 
   const handleAdvanced3 = () => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Warning",
+      text: "This works only if device is active",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, refresh GPS info",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        Swal.fire("Request have sent", "Please wait of device reponse", "success");
       }
     });
   };

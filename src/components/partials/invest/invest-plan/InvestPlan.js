@@ -25,7 +25,7 @@ const InvestPlan = () => {
     fetchData();
   }, []);
   const getRandomColor = () => {
-    const colors = ["azure", "pink", "success", "orange", "default"];
+    const colors = ["success"];
     const randomIndex = Math.floor(Math.random() * colors.length);
     return colors[randomIndex];
   };
@@ -35,7 +35,7 @@ const InvestPlan = () => {
       <div className="card-title-group mb-3">
         <div className="card-title">
           <h6 className="title">Active client devices </h6>
-          <p>Below progress shows the no of active devices in % for clients</p>
+          <p>Below progress shows the no of active devices / total devices per client in last 12 hrs</p>
         </div>
         <div className="card-tools mt-n4 me-n1"></div>
       </div>
@@ -49,7 +49,7 @@ const InvestPlan = () => {
             <div className="progress-wrap" key={idx}>
               <div className="progress-text">
                 <div className="progress-label">{item.client_name}</div>
-                <div className="progress-amount">{item.active_device_ids} devices</div>
+                <div className="progress-amount">{item.active_device_ids} / {item.total_device_ids} devices</div>
               </div>
               <Progress className="progress-md" value={item.active_device_percentage} color={getRandomColor()}></Progress>
             </div>
