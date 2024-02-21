@@ -3,6 +3,7 @@ import Logo from "../../images/logo.png";
 import LogoDark from "../../images/logo-dark.png";
 import Head from "../../layout/head/Head";
 import AuthFooter from "./AuthFooter";
+import backImage from "./new5.jpg"
 import {
   Block,
   BlockContent,
@@ -73,18 +74,30 @@ const Login = () => {
   const {  register, handleSubmit, formState: { errors } } = useForm();
 
   return <>
-    <Head title="Login" />
-      <Block className="nk-block-middle nk-auth-body  wide-xs">
-        <div className="brand-logo pb-4 text-center">
-          <span style={{ fontWeight: 'bold', color: '#2263b3' ,fontSize: '20px'}}>ZIG Remote monitoring system	</span>
-        </div>
+  <div
+      style={{
+        backgroundImage: `url(${backImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center', // Adjust as needed
+        minHeight: '100vh',
+        alignItems: 'center',
+        justifyContent: 'center',
 
-        <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
+      }}
+    >
+     <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start',paddingTop: '5%', paddingLeft: '60%'}}>
+    <Head title="Login"/>
+      <Block className="nk-block-middle nk-auth-body  wide-xs" >
+        
+        <div className="brand-logo pb-4 text-center">
+          <span style={{ fontWeight: 'bold', color: '#2263b3' ,fontSize: '20px'}}>	</span>
+        </div>
+        {/* <PreviewCard className="card-bordered" bodyClass="card-inner-lg" > */}  
           <BlockHead>
             <BlockContent>
-              <BlockTitle tag="h4">Sign-In</BlockTitle>
+              <BlockTitle tag="h4">WELCOME TO RHMS!</BlockTitle>
               <BlockDes>
-                <p>Access ZIG RMS using your email and passcode.</p>
+                <p style={{fontWeight: 'bold' ,fontSize:'20px'}}>RHMS is designed to conveniently monitor and manage all of our ZIG networking devices</p>
               </BlockDes>
             </BlockContent>
           </BlockHead>
@@ -146,9 +159,15 @@ const Login = () => {
               </Button>
             </div>
           </Form>
-        </PreviewCard>
+        {/* </PreviewCard> */}
+              {/* <AuthFooter /> */}
       </Block>
-      <AuthFooter />
+            {/* <AuthFooter /> */}
+      </div>
+      
+      </div>
+
+
   </>;
 };
 export default Login;

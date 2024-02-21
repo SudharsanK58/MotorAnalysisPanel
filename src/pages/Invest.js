@@ -88,7 +88,7 @@ const InvestHomePage = () => {
             <BlockHeadContent>
               <BlockTitle page>Dashboard</BlockTitle>
               <BlockDes className="text-soft">
-                <p>Welcome to ZIG Remote monitoring system.</p>
+                <p>Welcome to ZIG Remote hardware monitoring system.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
@@ -120,7 +120,7 @@ const InvestHomePage = () => {
                       {deviceCounts.length > 0 && (
                         <>
                           {deviceCounts[0].active_devices_10min} Devices
-                          <Icon style={{ color: "#7df887", marginLeft: "8px" }} name="circle-fill"></Icon>
+                          <Icon style={{ color: "#7df887", marginLeft: "9px" ,fontSize: "14px"}} name="circle-fill"></Icon>
                         </>
                       )}
                     </span>
@@ -179,7 +179,7 @@ const InvestHomePage = () => {
           <div className="card-amount">
             <span className="amount">
               {ticketCounts.total_unique_ticket_count} Tickets
-              <Icon style={{ color: "#0400ff", marginLeft: "20px" ,fontSize: "30px" }} name="ticket-alt"></Icon>
+              <Icon style={{ color: "#0400ff", marginLeft: "9px" ,fontSize: "22px" }} name="ticket-alt"></Icon>
             </span>
           </div>
           <div className="invest-data">
@@ -224,7 +224,7 @@ const InvestHomePage = () => {
           <div className="card-amount">
             <span className="amount">
               Average: {temperatureStats.average_temp.toFixed(2)} °C
-              <Icon style={{ color: "#ff0000", marginLeft: "20px" ,fontSize: "30px" }} name="cpu"></Icon>
+              <Icon style={{ color: "#ff0000", marginLeft: "9px" ,fontSize: "22px"  }} name="cpu"></Icon>
             </span>
           </div>
           <div className="invest-data">

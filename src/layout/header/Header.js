@@ -33,7 +33,7 @@ const Header = ({ fixed, className, ...props }) => {
           </div>
           <div className="nk-header-brand">
             {/* <Logo /> */}
-            <span style={{ fontWeight: 'bold', color: '#2263b3' ,fontSize: '18px'}}>ZIG Remote monitoring system	</span>
+            <span style={{ fontWeight: 'bold', color: '#2263b3' ,fontSize: '18px'}}>ZIG Remote hardware monitoring system	</span>
           </div>
           <div
             className={`nk-header-menu ms-auto ${theme.sidebarMobile ? "mobile-menu" : ""}  ${

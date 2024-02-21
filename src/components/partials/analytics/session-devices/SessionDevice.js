@@ -19,15 +19,15 @@ const SessionDevice = () => {
         <div className="device-status-group" >
           <div className="device-status-data" style={{ marginLeft: "0px" }}>
             <div className="title">220 devices</div>
-            <div className="amount">ZIGD23FPL1</div>
+            <div className="amount" style={{fontSize: "14px"}}>ZIGD23FPL1</div>
           </div>
           <div className="device-status-data" style={{ marginRight: "0px" }}>
             <div className="title">60 devices</div>
-            <div className="amount"> FMB920</div>
+            <div className="amount" style={{fontSize: "14px"}}> FMB920</div>
           </div>
           <div className="device-status-data" style={{ marginRight: "0px" }}>
             <div className="title">265 devices</div>
-            <div className="amount">FMM920</div>
+            <div className="amount" style={{fontSize: "14px"}}>FMM920</div>
           </div>
         </div>
       </div>

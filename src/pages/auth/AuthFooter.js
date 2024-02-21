@@ -14,7 +14,7 @@ const AuthFooter = () => {
         <Row className="g-3">
           <Col lg="6">
             <div className="nk-block-content text-center text-lg-start">
-              <p className="text-soft">&copy; 2024 ZIG Remote monitoring system by sudharsan@zed.digital.</p>
+              <p className="text-soft">&copy; 2024 ZIG Remote hardware monitoring system by sudharsan@zed.digital.</p>
             </div>
           </Col>
         </Row>

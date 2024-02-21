@@ -93,7 +93,7 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                   </tbody>
                 </Table>
                 <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3',textAlign: 'left' }}>
-                 GPS & SIM info
+                 GPS info
                 </p>
                 <Table bordered>
                   <thead>
@@ -101,7 +101,7 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                       <th>Vehicle No</th>
                       <th>Latitude</th>
                       <th>Longitude</th>
-                      <th>Speed</th>
+                      <th>Speed(mph)</th>
                       <th>Satellite </th>
                     </tr>
                   </thead>
