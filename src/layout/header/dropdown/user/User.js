@@ -13,7 +13,7 @@ const User = () => {
   const toggle = () => setOpen((prevState) => !prevState);
   const handleSignOut = () => {
     // Perform any additional sign-out logic if needed
-    sessionStorage.setItem("isLoggedIn", true);
+    sessionStorage.clear();
   };
   // Retrieve userName from localStorage
 const storedUserName = localStorage.getItem("userName");
@@ -97,7 +97,7 @@ const leadText = storedUserName || "";
         </div>
         <div className="dropdown-inner">
           <LinkList>
-            <a href={`${process.env.PUBLIC_URL}/auth-login`} onClick={handleSignOut}>
+            <a href={`${process.env.PUBLIC_URL}/`} onClick={handleSignOut}>
               <Icon name="signout"></Icon>
               <span>Sign Out</span>
             </a>
