@@ -20,35 +20,35 @@ const menu = [
       // },
     ],
   },
-  // {
-  //   text: "Applications",
-  //   subMenu: [
-  //     {
-  //       text: "Messages",
-  //       link: "/app-messages",
-  //     },
-  //     {
-  //       text: "Chats / Messenger",
-  //       link: "/app-chat",
-  //     },
-  //     {
-  //       text: "Mailbox",
-  //       link: "/app-inbox",
-  //     },
-  //     {
-  //       text: "Calendar",
-  //       link: "/app-calender",
-  //     },
-  //     {
-  //       text: "Kanban",
-  //       link: "/app-kanban",
-  //     },
-  //     {
-  //       text: "File Manager",
-  //       link: "/app-file-manager",
-  //     },
-  //   ],
-  // },
+  {
+    text: "Applications",
+    subMenu: [
+      {
+        text: "A P C",
+        link: "/peoplecount",
+      }
+      // {
+      //   text: "Chats / Messenger",
+      //   link: "/app-chat",
+      // },
+      // {
+      //   text: "Mailbox",
+      //   link: "/app-inbox",
+      // },
+      // {
+      //   text: "Calendar",
+      //   link: "/app-calender",
+      // },
+      // {
+      //   text: "Kanban",
+      //   link: "/app-kanban",
+      // },
+      // {
+      //   text: "File Manager",
+      //   link: "/app-file-manager",
+      // },
+    ],
+  },
   // {
   //   text: "Pages",
   //   subMenu: [
