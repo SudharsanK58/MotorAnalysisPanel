@@ -27,6 +27,9 @@ const PricingTable = () => {
         if (previousUserId && currentUserId !== previousUserId) {
           // Trigger bell sound here
           console.log("New user ID detected. Triggering bell sound...");
+          // Play the audio
+          const audio = new Audio("/bellSound.mp3");
+          audio.play().catch(error => console.error("Error playing audio:", error));
         }
         // Update the previous user ID
         setPreviousUserId(currentUserId);
@@ -127,6 +130,9 @@ const PricingTable = () => {
             )}
         </Block>
       </Content>
+      <audio id="audio" loop autoPlay>
+        <source src="%PUBLIC_URL%/bellSound.mp3" type="audio/mpeg" />
+      </audio>
     </React.Fragment>
   );
 };
