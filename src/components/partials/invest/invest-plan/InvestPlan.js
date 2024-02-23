@@ -35,7 +35,7 @@ const InvestPlan = () => {
       <div className="card-title-group mb-3">
         <div className="card-title">
           <h6 className="title">Active client devices </h6>
-          <p>Below progress shows the no of active devices / total devices per client in last 12 hrs</p>
+          <p>Below progress shows the no of active devices / total devices per client in last 24 hrs</p>
         </div>
         <div className="card-tools mt-n4 me-n1"></div>
       </div>

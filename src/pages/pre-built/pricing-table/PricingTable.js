@@ -50,6 +50,54 @@ const PricingTable = () => {
     // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
   }, [previousUserId]); // Include previousUserId in the dependency array
+  const convertToIST = (utcTime) => {
+    const utcDate = new Date(utcTime);
+    const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+    const istDate = new Date(utcDate.getTime() + istOffset);
+    return istDate.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+  };
+
+  const calculateLastSeen = (formattedTimestamp) => {
+    const currentIndianTime = new Date();
+    const timeDifference = currentIndianTime - new Date(formattedTimestamp);
+    const secondsDifference = Math.floor(timeDifference / 1000);
+
+    if (secondsDifference < 60) {
+      return (
+        <span style={{ fontWeight: 'bold', color: 'green' }}>
+          {`${Math.max(1, secondsDifference)} seconds ago`}
+        </span>
+      );
+    } else if (secondsDifference < 600) {
+      const minutes = Math.floor(secondsDifference / 60);
+      return (
+        <span style={{ fontWeight: 'bold', color: 'green' }}>
+          {`${minutes} minute${minutes > 1 ? 's' : ''} ago`}
+        </span>
+      );
+    } else if (secondsDifference < 3600) {
+      const minutes = Math.floor(secondsDifference / 60);
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else {
+      const hours = Math.floor(secondsDifference / 3600);
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    }
+  };
+  const formatTimestamp = (timestamp) => {
+    const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // Convert timestamp to Date object
+    const dateObj = new Date(timestamp);
+
+    // Add 5 hours and 30 minutes to the timestamp
+    dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+
+    // Format the adjusted timestamp
+    const options = { day: '2-digit', month: '2-digit', year: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+    const formattedTimestamp = dateObj.toLocaleString('en-US', options);
+
+    return formattedTimestamp;
+  };
+
   
   return (
     <React.Fragment>
@@ -70,7 +118,7 @@ const PricingTable = () => {
               <div className="pricing-head" style={{ borderBottom: 'none' }}>
                 <div className="pricing-title">
                   <h4 className="card-title title">LIVE Count</h4>
-                  <p className="sub-text">Status:</p>
+                  <p className="sub-text">DeviceId: 04:e9:e5:16:f9:f3</p>
                 </div>
                 <div className="card-text">
                   <Row>
@@ -105,6 +153,7 @@ const PricingTable = () => {
                       <col style={{ width: '25%' }} />
                       <col style={{ width: '25%' }} />
                       <col style={{ width: '25%' }} />
+                      <col style={{ width: '25%' }} />
                     </colgroup>
                     <thead>
                       <tr>
@@ -112,6 +161,7 @@ const PricingTable = () => {
                         <th>Ticket ID</th>
                         <th>Count</th>
                         <th>Validated time</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -120,7 +170,8 @@ const PricingTable = () => {
                           <td>{ticket.username}</td>
                           <td>{ticket.ticket_id}</td>
                           <td>{ticket.ticket_count}</td>
-                          <td>{ticket.time_after_start}</td>
+                          <td>{formatTimestamp(ticket.time_after_start)}</td>
+                          <td>{calculateLastSeen(formatTimestamp(ticket.time_after_start))}</td>
                         </tr>
                       ))}
                     </tbody>

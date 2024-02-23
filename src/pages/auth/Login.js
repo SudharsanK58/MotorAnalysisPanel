@@ -3,7 +3,7 @@ import Logo from "../../images/logo.png";
 import LogoDark from "../../images/logo-dark.png";
 import Head from "../../layout/head/Head";
 import AuthFooter from "./AuthFooter";
-import backImage from "./new5.jpg"
+import backImage from "./loginPage.jpg"
 import {
   Block,
   BlockContent,
