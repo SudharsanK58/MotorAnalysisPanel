@@ -21,7 +21,7 @@ const menu = [
     ],
   },
   {
-    text: "Applications",
+    text: "APPLICATIONS",
     subMenu: [
       {
         text: "A P C",
