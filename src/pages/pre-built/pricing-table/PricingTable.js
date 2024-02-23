@@ -11,13 +11,17 @@ import {
   Col,
   Row,  // Make sure to import the Table component
 } from "../../../components/Component";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { Table , Spinner ,Alert} from "reactstrap";
+import "react-toastify/dist/ReactToastify.css";
 // ... (previous imports)
 
 const PricingTable = () => {
   const [apiData, setApiData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [previousUserId, setPreviousUserId] = useState(null);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,12 +33,22 @@ const PricingTable = () => {
           console.log("New user ID detected. Triggering bell sound...");
           // Play the audio
           const audio = new Audio("/bellSound.mp3");
+          toast.success(`${currentUserId} has entered!`, {
+            position: "top-right",
+            autoClose: true,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: false,
+          });
           audio.play().catch(error => console.error("Error playing audio:", error));
         }
         // Update the previous user ID
         setPreviousUserId(currentUserId);
         setApiData(data);
         setLoading(false);
+        
       } catch (error) {
         console.error("Error fetching data from API:", error);
         setLoading(false);
@@ -184,6 +198,7 @@ const PricingTable = () => {
       <audio id="audio" loop autoPlay>
         <source src="%PUBLIC_URL%/bellSound.mp3" type="audio/mpeg" />
       </audio>
+      <ToastContainer />
     </React.Fragment>
   );
 };
