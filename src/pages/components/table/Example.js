@@ -9,6 +9,29 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
   const deviceIdInCaps = deviceId.toUpperCase();
   const [addressData, setAddressData] = useState(null);
 
+  const formatTimestamp = (timestamp) => {
+    const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // Convert timestamp to Date object
+    const dateObj = new Date(timestamp);
+  
+    // Add 5 hours and 30 minutes to the timestamp
+    dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+  
+    // Format the adjusted timestamp
+    const options = { 
+      day: '2-digit', 
+      month: 'short', // Use 'short' for abbreviated month name
+      year: 'numeric', 
+      hour: 'numeric', 
+      minute: 'numeric', 
+      second: 'numeric', 
+      hour12: true 
+    };
+    const formattedTimestamp = dateObj.toLocaleString('en-US', options);
+  
+    return formattedTimestamp;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -168,7 +191,7 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                           <td>{ticket.ticketId}</td>
                           <td>{ticket.username}</td>
                           <td>{ticket.emailId}</td>
-                          <td>{ticket.validatedDate}</td>
+                          <td>{formatTimestamp(ticket.validatedDate)}</td>
                         </tr>
                       ))}
                     </tbody>

@@ -153,17 +153,25 @@ const SpecialTablePage = () => {
     const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     // Convert timestamp to Date object
     const dateObj = new Date(timestamp);
-
+  
     // Add 5 hours and 30 minutes to the timestamp
     dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
-
+  
     // Format the adjusted timestamp
-    const options = { day: '2-digit', month: '2-digit', year: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+    const options = { 
+      day: '2-digit', 
+      month: 'short', // Use 'short' for abbreviated month name
+      year: 'numeric', 
+      hour: 'numeric', 
+      minute: 'numeric', 
+      second: 'numeric', 
+      hour12: true 
+    };
     const formattedTimestamp = dateObj.toLocaleString('en-US', options);
-
+  
     return formattedTimestamp;
   };
-
+  
   const filteredTableData = tableData.filter((rowData) =>
   rowData.deviceId.includes(searchQuery) || String(rowData.bleMinor).includes(searchQuery)
 );

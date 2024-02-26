@@ -109,7 +109,7 @@ const InvestHomePage = () => {
                 <>
                   <div className="card-title-group align-start mb-0">
                     <div className="card-title">
-                      <h6 className="subtitle">Online devices</h6>
+                      <h6 className="subtitle">Moving </h6>
                     </div>
                     <div className="card-tools">
                       {/* You can add TooltipComponent here if needed */}
