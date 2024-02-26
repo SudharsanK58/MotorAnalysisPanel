@@ -173,32 +173,39 @@ const reloadTable = () => {
 };
 const dataToMap = searchQuery ? filteredTableData : currentPageData;
 
-  const calculateLastSeen = (formattedTimestamp) => {
-    const currentIndianTime = new Date();
-    const timeDifference = currentIndianTime - new Date(formattedTimestamp);
-    const secondsDifference = Math.floor(timeDifference / 1000);
+const calculateLastSeen = (formattedTimestamp) => {
+  const currentIndianTime = new Date();
+  const timeDifference = currentIndianTime - new Date(formattedTimestamp);
+  const secondsDifference = Math.floor(timeDifference / 1000);
 
-    if (secondsDifference < 60) {
-      return (
-        <span style={{ fontWeight: 'bold', color: 'green' }}>
-          {`${Math.max(1, secondsDifference)} seconds ago`}
-        </span>
-      );
-    } else if (secondsDifference < 600) {
-      const minutes = Math.floor(secondsDifference / 60);
-      return (
-        <span style={{ fontWeight: 'bold', color: 'green' }}>
-          {`${minutes} minute${minutes > 1 ? 's' : ''} ago`}
-        </span>
-      );
-    } else if (secondsDifference < 3600) {
-      const minutes = Math.floor(secondsDifference / 60);
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    } else {
-      const hours = Math.floor(secondsDifference / 3600);
-      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    }
-  };
+  if (secondsDifference < 60) {
+    return (
+      <span style={{ fontWeight: 'bold', color: 'green' }}>
+        {`${Math.max(1, secondsDifference)} seconds ago`}
+      </span>
+    );
+  } else if (secondsDifference < 600) {
+    const minutes = Math.floor(secondsDifference / 60);
+    return (
+      <span style={{ fontWeight: 'bold', color: 'green' }}>
+        {`${minutes} minute${minutes > 1 ? 's' : ''} ago`}
+      </span>
+    );
+  } else if (secondsDifference < 3600) {
+    const minutes = Math.floor(secondsDifference / 60);
+    return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  } else if (secondsDifference < 86400) {
+    const hours = Math.floor(secondsDifference / 3600);
+    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  } else if (secondsDifference < 172800) {
+    return "1 day ago";
+  } else {
+    // If more than one day, return the formatted timestamp without additional formatting
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(formattedTimestamp).toLocaleDateString('en-US', options);
+  }
+};
+
 
   const tableHeadings = [
     "Device ID",

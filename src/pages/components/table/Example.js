@@ -7,6 +7,7 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
   const [apiData, setApiData] = useState(null);
   const [error, setError] = useState(null);
   const deviceIdInCaps = deviceId.toUpperCase();
+  const [addressData, setAddressData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,6 +17,13 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
         console.log('API Response:', response.data);
         setApiData(response.data);
         setError(null); // Clear error state on successful API response
+
+        // Fetch address data only if lastUpdatedValues is available
+        if (response.data.apiResponses.gpsDetailsAPI.lastUpdatedValues) {
+          const { lat, long } = response.data.apiResponses.gpsDetailsAPI.lastUpdatedValues;
+          const addressResponse = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${long}`);
+          setAddressData(addressResponse.data.address);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
         setError('Unknown device configuration. Contact admin.');
@@ -45,8 +53,11 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
           ) : (
             apiData && (
               <div>
-                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3' ,textAlign: 'left' }}>
-                  Assigned Clients
+
+                {apiData.apiResponses.zigConfigAPI.clients.length > 0 && (
+                  <>
+                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3' ,textAlign: 'left'}}>
+                  Assigned clients
                 </p>
                 <Table bordered>
                   <thead>
@@ -68,7 +79,8 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                     ))}
                   </tbody>
                 </Table>
-
+                </>
+                )}
                 <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3' ,textAlign: 'left'}}>
                   Device Config
                 </p>
@@ -92,29 +104,50 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                     </tr>
                   </tbody>
                 </Table>
-                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3',textAlign: 'left' }}>
-                 GPS info
-                </p>
-                <Table bordered>
-                  <thead>
-                    <tr>
-                      <th>Vehicle No</th>
-                      <th>Latitude</th>
-                      <th>Longitude</th>
-                      <th>Speed(mph)</th>
-                      <th>Satellite </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.vehicleNo}</td>
-                      <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.lat}</td>
-                      <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.long}</td>
-                      <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.speed}</td>
-                      <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.satellite}</td>
-                    </tr>
-                  </tbody>
-                </Table>
+                {apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues && (
+                  <>
+                    <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3', textAlign: 'left' }}>
+                      GPS info
+                    </p>
+                    <Table bordered>
+                      <thead>
+                        <tr>
+                          <th>Vehicle No</th>
+                          <th>Latitude</th>
+                          <th>Longitude</th>
+                          <th>Speed(mph)</th>
+                          <th>Satellite</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.vehicleNo}</td>
+                          <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.lat}</td>
+                          <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.long}</td>
+                          <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.speed}</td>
+                          <td>{apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.satellite}</td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                    {apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.long !== '0' && apiData.apiResponses.gpsDetailsAPI.lastUpdatedValues.lat !== '0' && (
+                    <>
+                      <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3', textAlign: 'left' }}>
+                        Address Info
+                      </p>
+                      <Table bordered>
+                        <tbody>
+                          {Object.entries(addressData).map(([property, value]) => (
+                            <tr key={property}>
+                              <td style={{ fontWeight: 'bold' }}>{property.charAt(0).toUpperCase() + property.slice(1)}</td>
+                              <td>{value}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </>
+                  )}
+                  </>
+                )}
                 {/* Tickets Data Table */}
                 <div className="mt-3">
                 {apiData.apiResponses.ticketsData.tickets.length > 0 && (
@@ -140,6 +173,7 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                       ))}
                     </tbody>
                   </Table>
+                  
                     </>
                     )}
                 </div>
