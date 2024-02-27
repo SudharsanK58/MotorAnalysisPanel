@@ -27,13 +27,13 @@ const PricingTable = () => {
       try {
         const response = await fetch("http://3.144.9.52:8001/get_data_by_device_id/04:e9:e5:16:f9:f3");
         const data = await response.json();
-        const currentUserId = data?.TicketData[0]?.username;
+        const currentUserId = data?.TicketData[0]?.ticket_id;
         if (previousUserId && currentUserId !== previousUserId) {
           // Trigger bell sound here
           console.log("New user ID detected. Triggering bell sound...");
           // Play the audio
           const audio = new Audio("/bellSound.mp3");
-          toast.success(`${currentUserId} has entered!`, {
+          toast.success(`${data?.TicketData[0]?.username} has entered!`, {
             position: "top-right",
             autoClose: true,
             hideProgressBar: true,
