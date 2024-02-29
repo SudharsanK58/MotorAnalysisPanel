@@ -272,7 +272,7 @@ const InvestHomePage = () => {
               <div className="invest-data-history">
                 <div className="title">This Week</div>
                 <span className="amount">
-                <CountUp start={0} end={ticketCounts.last_24hrs_unique_ticket_count} duration={3} delay={0} /> Tickets
+                <CountUp start={0} end={ticketCounts.last_week_unique_ticket_count  } duration={3} delay={0} /> Tickets
                 </span>
               </div>
             </div>
