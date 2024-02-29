@@ -8,6 +8,7 @@ import RecentActivity from "../components/partials/default/recent-activity/Activ
 import Notifications from "../components/partials/default/notification/Notification";
 import { DropdownToggle, Spinner,DropdownMenu, Card, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import SessionDevice from "../components/partials/analytics/session-devices/SessionDevice";
+import CountUp from "react-countup";
 import {
   Block,
   BlockDes,
@@ -99,11 +100,58 @@ const InvestHomePage = () => {
           <Row className="g-gs">
             <Col md="4">
             <PreviewAltCard className="card-full" style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div className="dummy-space" style={{ height: loading ? '20px' : '0', width: '100%' }}></div>
               {loading && (
-                <div className="spinner-container" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-                  <Spinner color="primary" />
+                <>
+                <div className="card-title-group align-start mb-0">
+                  <div className="card-title">
+                    <h6 className="subtitle">Moving </h6>
+                  </div>
+                  <div className="card-tools">
+                    {/* You can add TooltipComponent here if needed */}
+                  </div>
                 </div>
+                <div className="card-amount">
+                  <span className="amount">
+                      <>
+                        0 Devices
+                        <div className="spinner-container" style={{ position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                          <Spinner color="primary" />
+                        </div>
+                      </>
+                  </span>
+                </div>
+                <div className="invest-data">
+                  <div className="invest-data-amount g-2">
+                    <div className="invest-data-history">
+                      <div className="title">
+                        Last 10 Minutes
+                      </div>
+                      <span className="amount">
+                        0 Devices
+                      </span>
+                    </div>
+                    <div className="invest-data-history">
+                      <div className="title">
+                        Last 12 Hours
+                      </div>
+                      <span className="amount">
+                        0 Devices
+                        {/* You can add a green dot after count.active_devices_12hrs if needed */}
+                      </span>
+                    </div>
+                    <div className="invest-data-history">
+                      <div className="title">
+                        Last 24 Hours
+                      </div>
+                      <span className="amount">
+                        0 Devices
+                        {/* You can add a green dot after count.active_devices_24hrs if needed */}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </>
+              
               )}
               {!loading && (
                 <>
@@ -119,7 +167,7 @@ const InvestHomePage = () => {
                     <span className="amount">
                       {deviceCounts.length > 0 && (
                         <>
-                          {deviceCounts[0].active_devices_10min} Devices
+                          <CountUp start={0} end={deviceCounts[0].active_devices_10min} duration={3} delay={0} /> Devices
                           <Icon style={{ color: "#7df887", marginLeft: "9px" ,fontSize: "14px"}} name="circle-fill"></Icon>
                         </>
                       )}
@@ -135,16 +183,16 @@ const InvestHomePage = () => {
                           <span className="amount">
                             {index === 0 ? (
                               <>
-                                {count.active_devices_10min} Devices
+                                <CountUp start={0} end={count.active_devices_10min} duration={3} delay={0} /> Devices
                               </>
                             ) : index === 1 ? (
                               <>
-                                {count.active_devices_12hrs} Devices
+                                <CountUp start={0} end={count.active_devices_12hrs} duration={3} delay={0} /> Devices
                                 {/* You can add a green dot after count.active_devices_12hrs if needed */}
                               </>
                             ) : (
                               <>
-                                {count.active_devices_24hrs} Devices
+                                <CountUp start={0} end={count.active_devices_24hrs} duration={3} delay={0} /> Devices
                                 {/* You can add a green dot after count.active_devices_24hrs if needed */}
                               </>
                             )}
@@ -160,11 +208,42 @@ const InvestHomePage = () => {
 
             <Col md="4">
             <PreviewAltCard className="card-full" style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div className="dummy-space" style={{ height: ticketsloading ? '20px' : '0', width: '100%' }}></div>
+      {/* <div className="dummy-space" style={{ height: ticketsloading ? '20px' : '0', width: '100%' }}></div> */}
       {ticketsloading && (
-        <div className="spinner-container" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-          <Spinner color="primary" />
-        </div>
+        <>
+          <div className="card-title-group align-start mb-0">
+            <div className="card-title">
+            <h6 className="subtitle">Validated tickets</h6>
+            </div>
+            <div className="card-tools">
+              {/* You can add TooltipComponent here if needed */}
+            </div>
+          </div>
+          <div className="card-amount">
+            <span className="amount">
+              0 Tickets
+              <div className="spinner-container" style={{ position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                <Spinner color="primary" />
+              </div>
+            </span>
+          </div>
+          <div className="invest-data">
+            <div className="invest-data-amount g-2">
+              <div className="invest-data-history">
+                <div className="title">Last 24 Hrs</div>
+                <span className="amount">
+                0 Tickets
+                </span>
+              </div>
+              <div className="invest-data-history">
+                <div className="title">This Week</div>
+                <span className="amount">
+                  0 Tickets
+                </span>
+              </div>
+            </div>
+          </div>
+        </>
       )}
       {!ticketsloading && (
         <>
@@ -178,7 +257,7 @@ const InvestHomePage = () => {
           </div>
           <div className="card-amount">
             <span className="amount">
-              {ticketCounts.total_unique_ticket_count} Tickets
+              <CountUp start={0} end={ticketCounts.total_unique_ticket_count} duration={7} delay={0} /> Tickets
               <Icon style={{ color: "#0400ff", marginLeft: "9px" ,fontSize: "22px" }} name="ticket-alt"></Icon>
             </span>
           </div>
@@ -187,13 +266,13 @@ const InvestHomePage = () => {
               <div className="invest-data-history">
                 <div className="title">Last 24 Hrs</div>
                 <span className="amount">
-                  {ticketCounts.last_24hrs_unique_ticket_count} Tickets
+                <CountUp start={0} end={ticketCounts.last_24hrs_unique_ticket_count} duration={3} delay={0} /> Tickets
                 </span>
               </div>
               <div className="invest-data-history">
                 <div className="title">This Week</div>
                 <span className="amount">
-                  {ticketCounts.last_week_unique_ticket_count} Tickets
+                <CountUp start={0} end={ticketCounts.last_24hrs_unique_ticket_count} duration={3} delay={0} /> Tickets
                 </span>
               </div>
             </div>
@@ -205,11 +284,42 @@ const InvestHomePage = () => {
 
             <Col md="4">
             <PreviewAltCard className="card-full" style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div className="dummy-space" style={{ height: temperatureLoading ? '20px' : '0', width: '100%' }}></div>
+      
       {temperatureLoading && (
-        <div className="spinner-container" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-          <Spinner color="primary" />
-        </div>
+         <>
+         <div className="card-title-group align-start mb-0">
+           <div className="card-title">
+             <h6 className="subtitle">Temperature Stats</h6>
+           </div>
+           <div className="card-tools">
+             {/* You can add TooltipComponent here if needed */}
+           </div>
+         </div>
+         <div className="card-amount">
+           <span className="amount">
+             Average: 0 °C
+             <div className="spinner-container" style={{ position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                <Spinner color="primary" />
+              </div>
+           </span>
+         </div>
+         <div className="invest-data">
+           <div className="invest-data-amount g-2">
+             <div className="invest-data-history">
+               <div className="title">Lowest</div>
+               <span className="amount">
+                 0 °C
+               </span>
+             </div>
+             <div className="invest-data-history">
+               <div className="title">Highest</div>
+               <span className="amount">
+                 0 °C
+               </span>
+             </div>
+           </div>
+         </div>
+       </>
       )}
       {!temperatureLoading && (
         <>
@@ -223,7 +333,7 @@ const InvestHomePage = () => {
           </div>
           <div className="card-amount">
             <span className="amount">
-              Average: {temperatureStats.average_temp.toFixed(2)} °C
+              Average: <CountUp start={0} end={temperatureStats.average_temp.toFixed(2)} decimals={2} duration={7} delay={0} /> °C
               <Icon style={{ color: "#ff0000", marginLeft: "9px" ,fontSize: "22px"  }} name="cpu"></Icon>
             </span>
           </div>
@@ -232,13 +342,13 @@ const InvestHomePage = () => {
               <div className="invest-data-history">
                 <div className="title">Lowest</div>
                 <span className="amount">
-                  {temperatureStats.lowest_temp.toFixed(2)} °C
+                  <CountUp start={0} end={temperatureStats.lowest_temp.toFixed(2)} decimals={2} duration={3} delay={0} /> °C
                 </span>
               </div>
               <div className="invest-data-history">
                 <div className="title">Highest</div>
                 <span className="amount">
-                  {temperatureStats.highest_temp.toFixed(2)} °C
+                  <CountUp start={0} end={temperatureStats.highest_temp.toFixed(2)} decimals={2} duration={3} delay={0} /> °C
                 </span>
               </div>
             </div>
