@@ -172,7 +172,7 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                   </>
                 )}
                 {/* Tickets Data Table */}
-                <div className="mt-3">
+                {/* <div className="mt-3">
                 {apiData.apiResponses.ticketsData.tickets.length > 0 && (
                     <>
                 <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2263b3',textAlign: 'left' }}>Tickets Data</p>
@@ -199,7 +199,7 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
                   
                     </>
                     )}
-                </div>
+                </div> */}
 
               </div>
             )

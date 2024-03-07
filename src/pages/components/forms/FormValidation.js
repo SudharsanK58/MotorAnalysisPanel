@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import Content from "../../../layout/content/Content";
-import { Row, Col, Label, Form, Card, CardBody, Table } from "reactstrap";
+import { Row, Col, Label, Form,Spinner, Card, CardBody, Table } from "reactstrap";
 import Head from "../../../layout/head/Head";
 import { Button } from "../../../components/Component";
 import axios from "axios";
@@ -24,7 +24,7 @@ const FormValidation = () => {
   const [isTicketIdSelected, setTicketIdSelected] = useState(false);
   const [isdeviceIdSelected, setdeviceIdSelected] = useState(false);
   const [apiResponse, setApiResponse] = useState(null);
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
   // Set the default value for the "searchByTicketID" checkbox
   useEffect(() => {
     setValue("searchByTicketID", true);
@@ -66,18 +66,22 @@ const FormValidation = () => {
     }
     if(isTicketIdSelected){
       try {
+        setLoading(true);
         // Make an API request using axios (replace with fetch if you prefer)
         const response = await axios.get(`http://3.144.9.52:8001/search_ticket/${ticketIdInput}`);
 
         // Handle the API response as needed
         console.log("API Response:", response.data);
         setApiResponse(response.data);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         // Handle errors
         console.error("API Error:", error);
       }
     }else if(isdeviceIdSelected){
       try {
+        setLoading(true);
         const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
         const response = await axios.get(`http://3.144.9.52:8001/device_tickets`, {
           params: {
@@ -89,13 +93,16 @@ const FormValidation = () => {
         setApiResponse(response.data);
         console.log("API Response:", response.data);
         setApiResponse(response.data);
+        setLoading(false);
       } catch (error) {
         // Handle errors
         console.error("API Error:", error);
+        setLoading(false);
       }
     }
     else if(isDateSelected){
       try {
+        setLoading(true);
         const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
         const response = await axios.get(`http://3.144.9.52:8001/latest_tickets`, {
           params: {
@@ -106,9 +113,11 @@ const FormValidation = () => {
         setApiResponse(response.data);
         console.log("API Response:", response.data);
         setApiResponse(response.data);
+        setLoading(false);
       } catch (error) {
         // Handle errors
         console.error("API Error:", error);
+        setLoading(false);
       }
     }
   };
@@ -161,17 +170,17 @@ const getLabel = watch("labelText") || "Ticket ID";
 // ... rest of your component remains unchanged
   return (
     <React.Fragment>
-      <Head title="Form Validation"></Head>
+      <Head title="Search-Ticket"></Head>
       <Content page="component">
         <BlockHead size="lg" wide="sm">
           <BlockHeadContent>
-            <BackTo link="/components" icon="arrow-left">
-              Components
+            <BackTo link="/overview" icon="arrow-left">
+              Dashboard
             </BackTo>
             <BlockTitle tag="h2" className="fw-normal">
-              Form Validation
+              Search-Ticket
             </BlockTitle>
-            <BlockDes>
+            {/* <BlockDes>
               <p className="lead">
                 With validation using the react-hook-form package, you can simply add validation on clientside before
                 submit form. Look up the{" "}
@@ -180,19 +189,19 @@ const getLabel = watch("labelText") || "Ticket ID";
                 </a>{" "}
                 for further details
               </p>
-            </BlockDes>
+            </BlockDes> */}
           </BlockHeadContent>
         </BlockHead>
 
         <Block size="lg">
-          <BlockHead>
+          {/* <BlockHead>
             <BlockHeadContent>
               <BlockTitle tag="h5">Validation - Regular Style</BlockTitle>
               <BlockDes>
                 <p>Below example helps you to build your own form nice way.</p>
               </BlockDes>
             </BlockHeadContent>
-          </BlockHead>
+          </BlockHead> */}
           <PreviewCard>
             
           <Row className="g-gs">
@@ -283,7 +292,7 @@ const getLabel = watch("labelText") || "Ticket ID";
             <Label className="form-label"></Label>
             <div className="form-group">
             <Button color="primary" size="lg" onClick={onButtonClick}>
-                Search Ticket
+            {loading ? <>&nbsp; Loading...<Spinner size="sm" color="light" /> </> : "Search Ticket"}
               </Button>
             </div>
           </Col>

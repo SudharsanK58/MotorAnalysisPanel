@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
-import { Row, Col, Label, Form } from "reactstrap";
+import { Row, Col, Label, Form,Spinner } from "reactstrap";
 import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,6 +8,7 @@ import { Button } from "../../../components/Component";
 
 const FormValidationComponent = ({ alter, id }) => {
   const { register, handleSubmit, setValue, watch } = useForm();
+  const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isDateSelected, setIsDateSelected] = useState(false);
   const [isTicketIdSelected, setTicketIdSelected] = useState(false);
@@ -158,8 +159,8 @@ const getLabel = watch("labelText") || "Ticket ID";
           <Col md="6">
             <Label className="form-label"></Label>
             <div className="form-group">
-              <Button color="primary" size="lg" type="submit">
-                Save Information
+              <Button size="lg" className="btn-block" type="submit" color="primary">
+                {loading ? <Spinner size="sm" color="light" /> : "Sign in"}
               </Button>
             </div>
           </Col>
