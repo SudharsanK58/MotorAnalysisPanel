@@ -5,6 +5,7 @@ import Content from "../../../layout/content/Content";
 import { Row, Col, Label, Form,Spinner, Card, CardBody, Table } from "reactstrap";
 import Head from "../../../layout/head/Head";
 import { Button } from "../../../components/Component";
+import { Alert, UncontrolledAlert } from "reactstrap";
 import axios from "axios";
 import FormValidationComponent from "../../../components/partials/form/FormValidation";
 import {
@@ -24,6 +25,7 @@ const FormValidation = () => {
   const [isTicketIdSelected, setTicketIdSelected] = useState(false);
   const [isdeviceIdSelected, setdeviceIdSelected] = useState(false);
   const [apiResponse, setApiResponse] = useState(null);
+  const [noData, setnoData] = useState(false);
   const [loading, setLoading] = useState(false);
   // Set the default value for the "searchByTicketID" checkbox
   useEffect(() => {
@@ -67,6 +69,7 @@ const FormValidation = () => {
     if(isTicketIdSelected){
       try {
         setLoading(true);
+        setnoData(false);
         // Make an API request using axios (replace with fetch if you prefer)
         const response = await axios.get(`http://3.144.9.52:8001/search_ticket/${ticketIdInput}`);
 
@@ -76,12 +79,14 @@ const FormValidation = () => {
         setLoading(false);
       } catch (error) {
         setLoading(false);
+        setnoData(true);
         // Handle errors
         console.error("API Error:", error);
       }
     }else if(isdeviceIdSelected){
       try {
         setLoading(true);
+        setnoData(false);
         const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
         const response = await axios.get(`http://3.144.9.52:8001/device_tickets`, {
           params: {
@@ -98,11 +103,13 @@ const FormValidation = () => {
         // Handle errors
         console.error("API Error:", error);
         setLoading(false);
+        setnoData(true);
       }
     }
     else if(isDateSelected){
       try {
         setLoading(true);
+        setnoData(false);
         const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
         const response = await axios.get(`http://3.144.9.52:8001/latest_tickets`, {
           params: {
@@ -118,6 +125,7 @@ const FormValidation = () => {
         // Handle errors
         console.error("API Error:", error);
         setLoading(false);
+        setnoData(true);
       }
     }
   };
@@ -174,22 +182,19 @@ const getLabel = watch("labelText") || "Ticket ID";
       <Content page="component">
         <BlockHead size="lg" wide="sm">
           <BlockHeadContent>
-            <BackTo link="/overview" icon="arrow-left">
+            {/* <BackTo link="/overview" icon="arrow-left">
               Dashboard
-            </BackTo>
+            </BackTo> */}
             <BlockTitle tag="h2" className="fw-normal">
               Search-Ticket
             </BlockTitle>
-            {/* <BlockDes>
-              <p className="lead">
-                With validation using the react-hook-form package, you can simply add validation on clientside before
-                submit form. Look up the{" "}
-                <a target="_blank" rel="noreferrer" href="https://react-hook-form.com/">
-                  documentation
-                </a>{" "}
-                for further details
-              </p>
-            </BlockDes> */}
+            <BlockDes>
+            <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>
+              <li>Time represented in this table is in <strong style={{ color: 'blue' }}>India Standard Time (IST)</strong>.</li>
+              <li>This table shows only <strong style={{ color: 'blue' }}>hardware validated tickets</strong></li>
+            </ul>
+            
+            </BlockDes>
           </BlockHeadContent>
         </BlockHead>
 
@@ -300,31 +305,39 @@ const getLabel = watch("labelText") || "Ticket ID";
           </PreviewCard>
         </Block>
       </Content>
-      {apiResponse && (
-        <Card className="card-bordered card-preview mx-auto border-0" style={{ width: '80%', borderRadius: '10px' }}>
-          <CardBody>
-            <div className="d-flex flex-column align-items-center mt-3" >
-              <Table className="text-center" >
-                <thead>
-                  <tr>
-                    {Object.keys(apiResponse[0]).map((key) => (
-                      <th key={key}>{key}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {apiResponse.map((item, index) => (
-                    <tr key={index}>
-                      {Object.values(item).map((value, index) => (
-                        <td key={index}>{value}</td>
-                      ))}
-                    </tr>
+      {noData ? (
+        <div className="d-flex flex-column align-items-center mt-3" >
+            <Alert color="danger">
+              <strong>No ticket data</strong>! found for your search .
+            </Alert>
+        </div>
+) : (
+  apiResponse && apiResponse.length > 0 ? (
+    <Card className="card-bordered card-preview mx-auto border-0" style={{ width: '80%', borderRadius: '10px' }}>
+      <CardBody>
+        <div className="d-flex flex-column align-items-center mt-3" >
+          <Table className="text-center" >
+            <thead>
+              <tr>
+                {Object.keys(apiResponse[0]).map((key) => (
+                  <th key={key}>{key}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {apiResponse.map((item, index) => (
+                <tr key={index}>
+                  {Object.values(item).map((value, index) => (
+                    <td key={index}>{value}</td>
                   ))}
-                </tbody>
-              </Table>
-            </div>
-          </CardBody>
-      </Card>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+      </CardBody>
+    </Card>
+  ) : null
 )}
 
 
