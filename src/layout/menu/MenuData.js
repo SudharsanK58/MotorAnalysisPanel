@@ -21,6 +21,28 @@ const menu = [
     ],
   },
   {
+    text: "TICKET",
+    subMenu: [
+      {
+        text: "SEARCH",
+        link: "/ticket-search",
+      },
+      // {
+      //   text: "Sales Dashboard",
+      //   link: "/sales",
+      // },
+      // {
+      //   text: "Crypto Dashboard",
+      //   link: "/crypto",
+      // },
+      // {
+      //   text: "Analytics Dashboard",
+      //   link: "/analytics",
+      // },
+    ],
+  },
+  
+  {
     text: "APPLICATIONS",
     subMenu: [
       {

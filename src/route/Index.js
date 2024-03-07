@@ -139,6 +139,7 @@ const Pages = () => {
                 <Route element={<Invest/>} path="/overview" exact/>
                 <Route element={<PricingTable />} path="/peoplecount" exact/>
                 <Route element={<SpecialTablePage/>} path="/All-device-status"/>
+                <Route element={<FormValidation/>} path="/ticket-search"/>
               </Route>
             </Route>
             <Route path={`${process.env.PUBLIC_URL}`} element={<LayoutNoSidebar />}>

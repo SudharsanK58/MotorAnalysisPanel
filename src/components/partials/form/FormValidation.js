@@ -1,139 +1,92 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames";
-import { Row, Col,  Label, Form } from "reactstrap";
+import { Row, Col, Label, Form } from "reactstrap";
 import { useForm } from "react-hook-form";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "../../../components/Component";
 
 const FormValidationComponent = ({ alter, id }) => {
-  const {  register, handleSubmit, formState: { errors } } = useForm();
-  const onFormSubmit = (e) => {};
-  const formClass = classNames({
-    "form-validate": true,
-    "is-alter": alter,
-  });
+  const { register, handleSubmit, setValue, watch } = useForm();
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isDateSelected, setIsDateSelected] = useState(false);
+  const [isTicketIdSelected, setTicketIdSelected] = useState(false);
+  
+
+  // Set the default value for the "searchByTicketID" checkbox
+  useEffect(() => {
+    setValue("searchByTicketID", true);
+    setTicketIdSelected(true);
+    setValue("labelText", "Search by Ticket ID");
+  }, [setValue]);
+
+  const handleCheckboxChange = (checkboxName) => {
+    // Unselect other checkboxes when one is selected
+    ["searchByTicketID", "searchByDeviceID", "searchBydate"].forEach((name) => {
+      if (name !== checkboxName) {
+        setValue(name, false);
+      }
+    });
+
+    // Update the label text and date selection based on the selected checkbox
+    switch (checkboxName) {
+      case "searchByTicketID":
+        setValue("labelText", "Search by Ticket ID");
+        setIsDateSelected(false);
+        setTicketIdSelected(true);
+        break;
+      case "searchByDeviceID":
+        setValue("labelText", "Search by Device ID");
+        setIsDateSelected(false);
+        setTicketIdSelected(false);
+        break;
+      case "searchBydate":
+        setValue("labelText", "*");
+        setIsDateSelected(true);
+        setTicketIdSelected(false);
+        break;
+      default:
+        setValue("labelText", "");
+        setIsDateSelected(false);
+        setTicketIdSelected(false);
+        break;
+    }
+  };
+
+
+const getLabel = watch("labelText") || "Ticket ID";
+
+// ... rest of your component remains unchanged
+
+
+  const onFormSubmit = (data) => {
+    // Handle form submission logic here using the form data (data object).
+    console.log("Form data submitted:", data);
+  };
+
+
 
   return (
     <React.Fragment>
-      <Form className={formClass} onSubmit={handleSubmit(onFormSubmit)}>
         <Row className="g-gs">
           <Col md="6">
+            <Label className="form-label">Search by</Label>
             <div className="form-group">
-              <Label className="form-label" htmlFor="fv-full-name">
-                Full Name
-              </Label>
-              <div className="form-control-wrap">
-                <input
-                  type="text"
-                  id="fv-full-name"
-                  {...register('fullname', { required: true })}
-                  className="form-control" />
-                {errors.fullname && <span className="invalid">This field is required</span>}
-              </div>
-            </div>
-          </Col>
-          <Col md="6">
-            <div className="form-group">
-              <Label className="form-label" htmlFor="fv-email">
-                Email address
-              </Label>
-              <div className="form-control-wrap">
-                <input
-                  type="email"
-                  id="fv-email"
-                  {...register('email', {
-                    required: true,
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Invalid email address",
-                    },
-                  })}
-                  className="form-control" />
-                {errors.email && errors.email.type === "required" && <span className="invalid">This is required</span>}
-                {errors.email && errors.email.type === "pattern" && (
-                  <span className="invalid">{errors.email.message}</span>
-                )}
-              </div>
-            </div>
-          </Col>
-          <Col md="6">
-            <div className="form-group">
-              <Label className="form-label" htmlFor="fv-subject">
-                Subject
-              </Label>
-              <div className="form-control-wrap">
-                <input
-                  type="text"
-                  id="fv-subject"
-                  {...register('subject', { required: true })}
-                  className="form-control" />
-                {errors.subject && <span className="invalid">This field is required</span>}
-              </div>
-            </div>
-          </Col>
-          <Col md="6">
-            <div className="form-group">
-              <Label className="form-label" htmlFor="fv-topics">
-                Topics
-              </Label>
-              <div className="form-control-wrap">
-                <div className="form-control-select">
-                  <select
-                    className="form-control form-select"
-                    id="fv-topics"
-                    {...register('topics', {
-                      required: true,
-                    })}
-                    placeholder="Select a option">
-                    <option label="Select a topic" value=""></option>
-                    <option value="fv-gq">General Question</option>
-                    <option value="fv-tq">Tachnical Question</option>
-                    <option value="fv-ab">Account &amp; Billing</option>
-                  </select>
-                  {errors.topics && <span className="invalid">This field is required</span>}
-                </div>
-              </div>
-            </div>
-          </Col>
-          <Col md="12">
-            <div className="form-group">
-              <Label className="form-label" htmlFor="fv-message">
-                Message
-              </Label>
-              <div className="form-control-wrap">
-                <textarea
-                  type="textarea"
-                  className="form-control form-control-sm"
-                  id="fv-message"
-                  {...register('message', {
-                    required: true,
-                  })}
-                  placeholder="Write your message" />
-                {errors.message && <span className="invalid">This field is required</span>}
-              </div>
-            </div>
-          </Col>
-          <Col md="12">
-            <div className="form-group">
-              <Label className="form-label">Communication</Label>
+              <Label className="form-label"></Label>
               <ul className="custom-control-group g-3 align-center">
                 <li>
                   <div className="custom-control custom-checkbox">
                     <input
                       type="checkbox"
                       className="form-control custom-control-input"
-                      id={id + " fv-com-email"}
-                      {...register('com', {
-                        required: true,
-                      })}
-                      value="email" />
-                    <Label className="custom-control-label" htmlFor={id + " fv-com-email"}>
-                      Email
+                      id={id + " fv-search-ticket-id"}
+                      {...register("searchByTicketID")}
+                      value="ticketId"
+                      onChange={() => handleCheckboxChange("searchByTicketID")}
+                    />
+                    <Label className="custom-control-label" htmlFor={id + " fv-search-ticket-id"}>
+                      Ticket ID
                     </Label>
-                    {errors.com && (
-                      <span id="fv-com-error" className="invalid">
-                        This field is required
-                      </span>
-                    )}
                   </div>
                 </li>
                 <li>
@@ -141,12 +94,13 @@ const FormValidationComponent = ({ alter, id }) => {
                     <input
                       type="checkbox"
                       className="form-control custom-control-input"
-                      id={id + " fv-com-sms"}
-                      name="com"
-                      value="sms"
+                      id={id + " fv-search-device-id"}
+                      {...register("searchByDeviceID")}
+                      value="deviceId"
+                      onChange={() => handleCheckboxChange("searchByDeviceID")}
                     />
-                    <Label className="custom-control-label" htmlFor={id + " fv-com-sms"}>
-                      SMS
+                    <Label className="custom-control-label" htmlFor={id + " fv-search-device-id"}>
+                      Device ID
                     </Label>
                   </div>
                 </li>
@@ -154,30 +108,64 @@ const FormValidationComponent = ({ alter, id }) => {
                   <div className="custom-control custom-checkbox">
                     <input
                       type="checkbox"
-                      className="custom-control-input"
-                      id={id + " fv-com-phone"}
-                      name="com"
-                      value="phone"
+                      className="form-control custom-control-input"
+                      id={id + " fv-search-date"}
+                      {...register("searchBydate")}
+                      value="date"
+                      onChange={() => handleCheckboxChange("searchBydate")}
                     />
-                    <Label className="custom-control-label" htmlFor={id + " fv-com-phone"}>
-                      {" "}
-                      Phone{" "}
+                    <Label className="custom-control-label" htmlFor={id + " fv-search-date"}>
+                      Date
                     </Label>
                   </div>
                 </li>
               </ul>
             </div>
           </Col>
-          <Col md="12">
+
+          {/* Datepicker */}
+          <Col sm="6">
             <div className="form-group">
-              <Button color="primary" size="lg">
+              <Label>Select validated date</Label>
+              <div className="form-control-wrap">
+                <DatePicker
+                  selected={selectedDate}
+                  className="form-control date-picker"
+                  onChange={(date) => setSelectedDate(date)}
+                  disabled={isTicketIdSelected}
+                />
+              </div>
+              <div className="form-note">
+                Date Format <code>mm/dd/yyyy</code>
+              </div>
+            </div>
+          </Col>
+          <Col sm="6">
+            <div className="form-group">
+              <Label>{getLabel}</Label>
+              <div className="form-control-wrap">
+                <input
+                  type="text"
+                  {...register("textInput")}
+                  className="form-control"
+                  disabled={isDateSelected}
+                />
+              </div>
+              {/* You can add validation messages here if needed */}
+            </div>
+          </Col>
+
+          <Col md="6">
+            <Label className="form-label"></Label>
+            <div className="form-group">
+              <Button color="primary" size="lg" type="submit">
                 Save Information
               </Button>
             </div>
           </Col>
         </Row>
-      </Form>
     </React.Fragment>
   );
 };
+
 export default FormValidationComponent;
