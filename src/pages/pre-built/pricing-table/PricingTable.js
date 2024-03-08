@@ -25,7 +25,7 @@ const PricingTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://3.144.9.52:8001/get_data_by_device_id/04:e9:e5:16:f9:f3");
+        const response = await fetch("http://3.144.9.52:8001/get_data_by_device_id/04:e9:e5:16:f6:3d");
         const data = await response.json();
         const currentUserId = data?.TicketData[0]?.ticket_id;
         if (previousUserId && currentUserId !== previousUserId) {
