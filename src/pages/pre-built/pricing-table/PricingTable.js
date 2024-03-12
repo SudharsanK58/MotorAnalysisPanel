@@ -15,13 +15,30 @@ import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import { Table , Spinner ,Alert} from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
+import './binktext.css';
 // ... (previous imports)
 
 const PricingTable = () => {
   const [apiData, setApiData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [previousUserId, setPreviousUserId] = useState(null);
-  
+  const [isBlinking, setIsBlinking] = useState(false);
+  useEffect(() => {
+    // Check if Illgel_count is greater than zero
+    if (apiData?.TofData?.Illgel_count > 0) {
+      // Start blinking effect
+      const intervalId = setInterval(() => {
+        setIsBlinking(prevState => !prevState);
+      }, 700); // Adjust the interval as needed
+
+      // Cleanup the interval when the component unmounts or when Illgel_count becomes zero
+      return () => clearInterval(intervalId);
+    } else {
+      // Reset blinking when Illgel_count is zero
+      setIsBlinking(false);
+    }
+  }, [apiData?.TofData?.Illgel_count]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -111,7 +128,10 @@ const PricingTable = () => {
 
     return formattedTimestamp;
   };
-
+  const textStyle = {
+    fontSize: '70px',
+    color: apiData?.TofData?.Illgel_count > 0  ? 'red' : 'inherit',
+  };
   
   return (
     <React.Fragment>
@@ -136,11 +156,17 @@ const PricingTable = () => {
                 </div>
                 <div className="card-text">
                   <Row>
-                    <Col size={6}>
+                    <Col size={4}>
                     <span className="h4 fw-500" style={{ fontSize: '70px' }}>{apiData?.TofData?.people_count || "N/A"}</span>
-                      <span className="sub-text" style={{ fontSize: '15px' }}>People</span>
+                      <span className="sub-text" style={{ fontSize: '15px' }}>Total entries</span>
                     </Col>
-                    <Col size={6}>
+                    <Col size={4}>
+                      <span className={`h4 fw-500 ${isBlinking ? 'blink-text' : ''}`} style={textStyle}>
+                        {apiData?.TofData?.Illgel_count || "N/A"}
+                      </span>
+                      <span className="sub-text" style={{ fontSize: '15px' }}>Illgel entries</span>
+                    </Col>
+                    <Col size={4}>
                     <span className="h4 fw-500" style={{ fontSize: '70px' }}>{apiData?.TofData?.total_tickets_count || "N/A"}</span>
                       <span className="sub-text" style={{ fontSize: '15px' }}>Tickets</span>
                     </Col>

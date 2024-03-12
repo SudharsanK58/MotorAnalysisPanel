@@ -129,6 +129,28 @@ const FormValidation = () => {
       }
     }
   };
+  const formatTimestamp = (timestamp) => {
+    const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // Convert timestamp to Date object
+    const dateObj = new Date(timestamp);
+  
+    // Add 5 hours and 30 minutes to the timestamp
+    dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+  
+    // Format the adjusted timestamp
+    const options = { 
+      day: '2-digit', 
+      month: 'short', // Use 'short' for abbreviated month name
+      year: 'numeric', 
+      hour: 'numeric', 
+      minute: 'numeric', 
+      second: 'numeric', 
+      hour12: true 
+    };
+    const formattedTimestamp = dateObj.toLocaleString('en-US', options);
+  
+    return formattedTimestamp;
+  };
 
   const handleCheckboxChange = (checkboxName) => {
     // Unselect other checkboxes when one is selected
@@ -327,10 +349,12 @@ const getLabel = watch("labelText") || "Ticket ID";
             <tbody>
               {apiResponse.map((item, index) => (
                 <tr key={index}>
-                  {Object.values(item).map((value, index) => (
-                    <td key={index}>{value}</td>
-                  ))}
-                </tr>
+                {Object.entries(item).map(([key, value], index) => (
+                  <td key={index}>
+                    {key.endsWith('date') ? formatTimestamp(value) : value}
+                  </td>
+                ))}
+              </tr>
               ))}
             </tbody>
           </Table>
