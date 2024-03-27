@@ -46,7 +46,7 @@ const menu = [
     text: "APPLICATIONS",
     subMenu: [
       {
-        text: "A P C",
+        text: "PEOPLE COUNT",
         link: "/peoplecount",
       }
       // {
