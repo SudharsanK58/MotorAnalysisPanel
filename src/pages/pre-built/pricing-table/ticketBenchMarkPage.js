@@ -93,7 +93,7 @@ const TicketBenchMark = () => {
               <ol style={{ color: 'blue', paddingLeft: '20px', margin: '0' }}>
                   <li style={{ color: 'black' }}>1.Below table is in <strong>Indian standard format</strong>.</li>
                   <li style={{ color: 'black' }}>2.If time taken is when a person enters TOF range to data received in MQTT, <strong>excluding validator beep sound</strong>.</li>
-                  <li style={{ color: 'black' }}>3.If ticket is updated here, it means the ticket is validated out of TOF range.</li>
+                  <li style={{ color: 'black' }}>3.If ticket is not updated here but validated on device, it means the ticket is validated out of TOF range.</li>
                   <li style={{ color: 'black' }}>4.Do not manually reload this page. If a ticket is validated, the data will be <strong>updated every 5 seconds</strong>.</li>
                 </ol>
               </p>
