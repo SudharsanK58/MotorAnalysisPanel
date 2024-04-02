@@ -156,17 +156,17 @@ const PricingTable = () => {
                 </div>
                 <div className="card-text">
                   <Row>
-                    <Col size={4}>
+                    <Col size={7}>
                     <span className="h4 fw-500" style={{ fontSize: '70px' }}>{apiData?.TofData?.people_count || "N/A"}</span>
                       <span className="sub-text" style={{ fontSize: '15px' }}>Total entries</span>
                     </Col>
-                    <Col size={4}>
+                    {/* <Col size={4}>
                       <span className={`h4 fw-500 ${isBlinking ? 'blink-text' : ''}`} style={textStyle}>
                         {apiData?.TofData?.Illgel_count || "N/A"}
                       </span>
                       <span className="sub-text" style={{ fontSize: '15px' }}>Illgel entries</span>
-                    </Col>
-                    <Col size={4}>
+                    </Col> */}
+                    <Col size={3}>
                     <span className="h4 fw-500" style={{ fontSize: '70px' }}>{apiData?.TofData?.total_tickets_count || "N/A"}</span>
                       <span className="sub-text" style={{ fontSize: '15px' }}>Tickets</span>
                     </Col>

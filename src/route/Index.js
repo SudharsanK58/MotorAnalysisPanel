@@ -76,6 +76,7 @@ import InvoiceList from "../pages/pre-built/invoice/InvoiceList";
 import InvoiceDetails from "../pages/pre-built/invoice/InvoiceDetails";
 import InvoicePrint from "../pages/pre-built/invoice/InvoicePrint";
 import PricingTable from "../pages/pre-built/pricing-table/PricingTable";
+import TicketBenchMark from "../pages/pre-built/pricing-table/ticketBenchMarkPage";
 import GalleryPreview from "../pages/pre-built/gallery/GalleryCardPreview";
 
 import AppMessages from "../pages/app/messages/Messages";
@@ -138,6 +139,7 @@ const Pages = () => {
                 <Route element={<Invest/>} path="/" exact/>
                 <Route element={<Invest/>} path="/overview" exact/>
                 <Route element={<PricingTable />} path="/peoplecount" exact/>
+                <Route element={<TicketBenchMark />} path="/ticket-benchmark" exact/>
                 <Route element={<SpecialTablePage/>} path="/All-device-status"/>
                 <Route element={<FormValidation/>} path="/ticket-search"/>
               </Route>

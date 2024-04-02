@@ -27,6 +27,10 @@ const menu = [
         text: "SEARCH",
         link: "/ticket-search",
       },
+      {
+        text: "BENCHMARK",
+        link: "/ticket-benchmark",
+      },
       // {
       //   text: "Sales Dashboard",
       //   link: "/sales",
