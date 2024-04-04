@@ -52,7 +52,11 @@ const menu = [
       {
         text: "PEOPLE COUNT",
         link: "/peoplecount",
-      }
+      },
+      {
+        text: "DEVICE PRECHECK",
+        link: "/device-pre-check",
+      },
       // {
       //   text: "Chats / Messenger",
       //   link: "/app-chat",

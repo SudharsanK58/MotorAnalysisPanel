@@ -22,6 +22,7 @@ import Dropdowns from "../pages/components/Dropdowns";
 import FormElements from "../pages/components/forms/FormElements";
 import FormLayouts from "../pages/components/forms/FormLayouts";
 import FormValidation from "../pages/components/forms/FormValidation";
+import FormValidation2 from "../pages/components/forms/devicePrecheck";
 import Modals from "../pages/components/Modals";
 import Pagination from "../pages/components/Pagination";
 import Popovers from "../pages/components/Popovers";
@@ -141,6 +142,7 @@ const Pages = () => {
                 <Route element={<PricingTable />} path="/peoplecount" exact/>
                 <Route element={<TicketBenchMark />} path="/ticket-benchmark" exact/>
                 <Route element={<SpecialTablePage/>} path="/All-device-status"/>
+                <Route element={<FormValidation2 />} path="/device-pre-check"/>
                 <Route element={<FormValidation/>} path="/ticket-search"/>
               </Route>
             </Route>
