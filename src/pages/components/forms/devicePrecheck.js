@@ -7,6 +7,8 @@ import Head from "../../../layout/head/Head";
 import { Button } from "../../../components/Component";
 import { Alert } from "reactstrap";
 import axios from "axios";
+import Icon from "../../../components/icon/Icon";
+// import Icon from "../../../components/Component";
 import {
   Block,
   BlockDes,
@@ -29,6 +31,7 @@ const FormValidation2 = () => {
 // Handler for form submission
 // Handler for form submission
 const onButtonClick = async () => {
+  setnoData(false);
   const selectedDeviceId = watch("validatorList");
   const selectedValidator = validatorData.find(item => item.deviceId === selectedDeviceId);
   if (!selectedValidator) {
@@ -87,22 +90,23 @@ const onButtonClick = async () => {
 const renderAlert = () => {
   if (secondApiResponse.message === "Good for validation") {
     return (
-      <Alert color="success">
-        <strong>{secondApiResponse.message}</strong>
+      <Alert color="success" style={{ fontSize: '30px' }}>
+        <Icon name="check-thick" style={{ fontSize: '50px', verticalAlign: 'middle' }}></Icon>
+        <strong>{" " + secondApiResponse.message}</strong>
       </Alert>
     );
   } else if (secondApiResponse.message === "Error in smartvenues") {
     return (
-      <Alert color="danger">
-        <strong>{secondApiResponse.message}</strong><br />
-        Reasons: {secondApiResponse.reasons}
+      <Alert color="danger" style={{ fontSize: '30px' }}>
+        <Icon name="cross-circle" style={{ fontSize: '50px', verticalAlign: 'middle' }}></Icon>
+        <strong>{" " + secondApiResponse.reasons}</strong>
       </Alert>
     );
   } else if (secondApiResponse.message === "Mismatch in SmartVenue Config") {
     return (
       <Alert color="error">
-        <strong>{secondApiResponse.message}</strong>
-        <Table>
+        <strong className="error-message">{secondApiResponse.message}</strong>
+        <Table className="text-center">
           <thead>
             <tr>
               <th>Parameter</th>
@@ -117,7 +121,7 @@ const renderAlert = () => {
                 <td>{param.actual_value}</td>
                 <td>{param.expected_value}</td>
               </tr>
-            ))}
+            ))} 
           </tbody>
         </Table>
       </Alert>
@@ -137,8 +141,8 @@ const renderAlert = () => {
   ];
   // Data for the app dropdown
   const appData = [
-    { appName: "ZIG app", value: "ZIG" },
-    { appName: "MDOT app", value: "MDOT" }
+    { appName: "ZIG - Travel Places Safely", value: "ZIG" },
+    { appName: "MDOT - Michigan Mobility Wallet", value: "MDOT" }
   ];
   
   return (
@@ -158,102 +162,69 @@ const renderAlert = () => {
             </BlockDes>
           </BlockHeadContent>
         </BlockHead>
-
-        <Block size="lg">
-          <PreviewCard>
-          <Row className="g-gs">
-            <Col md="6">
-              <div className="form-group">
-                {/* First dropdown list */}
-                <Label>Validator List</Label>
-                <select className="form-control" {...register("validatorList")}>
+          <PreviewCard >
+            <Row className="g-gs">
+              <Col md="4">
+                <div className="form-group">
+                  {/* First dropdown list */}
+                  <div className="form-group" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+    {/* Second dropdown list */}
+                  <select className="form-control" style={{ textAlignLast: "center" }} {...register("validatorList")}>
                     <option value="">Select Validator</option>
                     {validatorData.map((item, index) => (
                       <option key={index} value={item.deviceId}>{item.deviceId}</option>
                     ))}
                   </select>
-              </div>
-            </Col>
-            <Col md="6">
-              <div className="form-group">
-                {/* Second dropdown list */}
-                <Label>App List</Label>
-                <select className="form-control" {...register("appList")}>
+                </div>
+                </div>
+              </Col>
+              <Col md="4">
+                <div className="form-group">
+                  {/* Second dropdown list */}
+                  <div className="form-group" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+    {/* Second dropdown list */}
+                  <select className="form-control"style={{ textAlignLast: "center" }} {...register("appList")}>
+                  <option value="">Choose validation app</option>
                     {appData.map((item, index) => (
                       <option key={index} value={item.value}>{item.appName}</option>
                     ))}
-                </select>
-              </div>
-            </Col>
-          </Row>
-          <Row className="g-gs">
-            <Col md="6">
-              {/* Empty column to create space */}
-              <div style={{ height: "20px" }}></div>
-            </Col>
-          </Row>
-          <Row className="g-gs">
-            <Col md="6">
-              <div className="form-group">
-                {/* Search button */}
-                <Button color="primary" size="lg" onClick={onButtonClick}>
-                  {loading ? (
-                    <>
-                      &nbsp; Please wait... <Spinner size="sm" color="light" />
-                    </>
-                  ) : (
-                    "Verify device and config"
-                  )}
-                </Button>
-              </div>
-            </Col>
-          </Row>
-
+                  </select>
+                  </div>
+                </div>
+              </Col>
+              <Col md="4">
+              <div className="form-group" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {/* Search button */}
+                  <Button color="primary" size="lm" onClick={onButtonClick} style={{ width: '100%', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '10%' }}>
+                    {loading ? (
+                      <>
+                        &nbsp; Please wait... <Spinner size="sm" color="light" />
+                      </>
+                    ) : (
+                      "Verify device and config"
+                    )}
+                    
+                  </Button>
+                </div>
+              </Col>
+            </Row>
           </PreviewCard>
-        </Block>
       </Content>
       {noData ? (
-  <div className="d-flex flex-column align-items-center mt-3">
-    {isDeviceActive ? (
-      renderAlert() // Render appropriate Alert component
-    ) : (
-      <Alert color="danger">
-        <strong>Device is not active! Please turn ON the validator or Check in device display</strong>
-      </Alert>
-    )}
-  </div>
-) :  (
-        apiResponse && apiResponse.length > 0 ? (
-          <Card className="card-bordered card-preview mx-auto border-0" style={{ width: '80%', borderRadius: '10px' }}>
-            <CardBody>
-              <div className="d-flex flex-column align-items-center mt-3" >
-                <Table className="text-center" >
-                  <thead>
-                    <tr>
-                      {Object.keys(apiResponse[0]).map((key) => (
-                        <th key={key}>{key}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {apiResponse.map((item, index) => (
-                      <tr key={index}>
-                        {Object.entries(item).map(([key, value], index) => (
-                          <td key={index}>
-                            {/* {key.endsWith('date') ? formatTimestamp(value) : value} */}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-            </CardBody>
-          </Card>
-        ) : null
-      )}
+        <div className="d-flex flex-column align-items-center mt-3">
+          {isDeviceActive ? (
+            renderAlert() // Render appropriate Alert component
+          ) : (
+            <Alert color="danger" style={{ fontSize: '20px' }}>
+              <Icon name="wifi-off" style={{ fontSize: '40px', verticalAlign: 'middle' }}></Icon>
+              <strong> Device is not active! Please turn ON the validator or Check in device display</strong>
+            </Alert>
+          )}
+        </div>
+      ) : null}
     </React.Fragment>
   );
+  
 };
 
 export default FormValidation2;
