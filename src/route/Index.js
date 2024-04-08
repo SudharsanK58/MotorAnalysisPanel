@@ -148,8 +148,9 @@ const Pages = () => {
             </Route>
             <Route path={`${process.env.PUBLIC_URL}`} element={<LayoutNoSidebar />}>
               <Route element={<Login/>} path="/auth-login"/>
+              <Route path="*" element={<Error404Modern />}></Route>
             </Route>
-            <Route path="*" element={<Error504Modern />} />
+           
     </Routes>
   );
 };
