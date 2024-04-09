@@ -47,6 +47,9 @@ const onButtonClick = async () => {
     case "MDOT":
       apiUrl = "MDOT";
       break;
+    case "ECOL":
+      apiUrl = "ECOL";
+      break;
     default:
       console.error("Invalid app selected.");
       return;
@@ -90,15 +93,15 @@ const onButtonClick = async () => {
 const renderAlert = () => {
   if (secondApiResponse.message === "Good for validation") {
     return (
-      <Alert color="success" style={{ fontSize: '30px' }}>
-        <Icon name="check-thick" style={{ fontSize: '50px', verticalAlign: 'middle' }}></Icon>
+      <Alert color="success" style={{ fontSize: '20px' }}>
+        <Icon name="check-thick" style={{ fontSize: '30px', verticalAlign: 'middle' }}></Icon>
         <strong>{" " + secondApiResponse.message}</strong>
       </Alert>
     );
   } else if (secondApiResponse.message === "Error in smartvenues") {
     return (
-      <Alert color="danger" style={{ fontSize: '30px' }}>
-        <Icon name="cross-circle" style={{ fontSize: '50px', verticalAlign: 'middle' }}></Icon>
+      <Alert color="danger" style={{ fontSize: '20px' }}>
+        <Icon name="cross-circle" style={{ fontSize: '30px', verticalAlign: 'middle' }}></Icon>
         <strong>{" " + secondApiResponse.reasons}</strong>
       </Alert>
     );
@@ -142,7 +145,8 @@ const renderAlert = () => {
   // Data for the app dropdown
   const appData = [
     { appName: "ZIG - Travel Places Safely", value: "ZIG" },
-    { appName: "MDOT - Michigan Mobility Wallet", value: "MDOT" }
+    { appName: "MDOT - Michigan Mobility Wallet", value: "MDOT" },
+    { appName: "ECOLANE - X4MaaS", value: "ECOL" }
   ];
   
   return (
@@ -216,7 +220,7 @@ const renderAlert = () => {
             renderAlert() // Render appropriate Alert component
           ) : (
             <Alert color="danger" style={{ fontSize: '20px' }}>
-              <Icon name="wifi-off" style={{ fontSize: '40px', verticalAlign: 'middle' }}></Icon>
+              <Icon name="wifi-off" style={{ fontSize: '30px', verticalAlign: 'middle' }}></Icon>
               <strong> Device is not active! Please turn ON the validator or Check in device display</strong>
             </Alert>
           )}
