@@ -137,8 +137,7 @@ const renderAlert = () => {
 
   // Data for the validator dropdown
   const validatorData = [
-    { deviceId: "ZIGWG1038 USA-MAM-DEMO-DEVICE-1", macId: "04:e9:e5:16:96:46" },
-    { deviceId: "ZIGWG1034 USA-MAM-DEMO-DEVICE-2", macId: "04:e9:e5:16:96:f5" },
+    { deviceId: "ZIGWG1029 USA-MAM-DEMO-DEVICE-1", macId: "04:e9:e5:16:95:87" },
     { deviceId: "ZIGWG1171 INDIA-4G-DEMO-DEVICE", macId: "04:e9:e5:16:f6:3d" },
     { deviceId: "ZIGWG1196 INDIA-TOF-R&D-DEVICE", macId: "04:e9:e5:16:f9:f3" },
   ];
@@ -156,7 +155,7 @@ const renderAlert = () => {
         <BlockHead size="lg" wide="sm">
           <BlockHeadContent>
             <BlockTitle tag="h2" className="fw-normal">
-              Pre-check-validation-wizard
+              Troubleshoot
             </BlockTitle>
             <BlockDes>
               <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>

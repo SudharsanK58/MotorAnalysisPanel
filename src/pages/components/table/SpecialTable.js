@@ -178,6 +178,7 @@ const SpecialTablePage = () => {
 
 const reloadTable = () => {
   fetchDeviceLogData();
+  setSelectedClient("All Client Devices");
 };
 const dataToMap = searchQuery ? filteredTableData : currentPageData;
 
