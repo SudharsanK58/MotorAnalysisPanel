@@ -3,7 +3,7 @@ import Carr from "../../../../images/avatar/d-sm.jpg";
 
 export const activityData = [
   {
-    img: Kieth,
+    img: null,
     initial: "KJ",
     theme: "success",
     name: "Kieth Jensen",
@@ -27,7 +27,7 @@ export const activityData = [
     time: "2 hours ago",
   },
   {
-    img: Carr,
+    img: null,
     initial: "NC",
     theme: "purple",
     name: "Nicolas Carr",
@@ -42,4 +42,13 @@ export const activityData = [
     activity: "placed a Order",
     time: "2 hours ago",
   },
+  {
+    img: null,
+    initial: "TM",
+    theme: "pink",
+    name: "Timothy Moreno",
+    activity: "placed a Order",
+    time: "2 hours ago",
+  },
+
 ];

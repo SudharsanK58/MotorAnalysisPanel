@@ -360,7 +360,8 @@ const InvestHomePage = () => {
 
             <Col md="6" xxl="4">
             <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
-                <SessionDevice />
+                {/* <SessionDevice /> */}
+                <RecentActivity/>
               </PreviewAltCard>
             </Col>
 
