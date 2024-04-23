@@ -89,10 +89,26 @@ const PricingTable = () => {
   };
 
   const calculateLastSeen = (formattedTimestamp) => {
-    const currentIndianTime = new Date();
-    const timeDifference = currentIndianTime - new Date(formattedTimestamp);
+    const givenTime = new Date(Date.UTC(
+      formattedTimestamp.substring(0, 4), // Year
+      formattedTimestamp.substring(5, 7) - 1, // Month (zero-based)
+      formattedTimestamp.substring(8, 10), // Day
+      formattedTimestamp.substring(11, 13), // Hour
+      formattedTimestamp.substring(14, 16), // Minute
+      formattedTimestamp.substring(17, 19), // Second
+      formattedTimestamp.substring(20, 23) // Millisecond
+    ));
+    const currentTime = new Date(Date.UTC(
+      new Date().getUTCFullYear(),
+      new Date().getUTCMonth(),
+      new Date().getUTCDate(),
+      new Date().getUTCHours(),
+      new Date().getUTCMinutes(),
+      new Date().getUTCSeconds()
+    ));
+    const timeDifference = currentTime - givenTime;
     const secondsDifference = Math.floor(timeDifference / 1000);
-
+  
     if (secondsDifference < 60) {
       return (
         <span style={{ fontWeight: 'bold', color: 'green' }}>
@@ -109,9 +125,15 @@ const PricingTable = () => {
     } else if (secondsDifference < 3600) {
       const minutes = Math.floor(secondsDifference / 60);
       return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    } else {
+    } else if (secondsDifference < 86400) {
       const hours = Math.floor(secondsDifference / 3600);
       return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (secondsDifference < 172800) {
+      return "1 day ago";
+    } else {
+      // If more than one day, return the formatted timestamp without additional formatting
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(formattedTimestamp).toLocaleDateString('en-US', options);
     }
   };
   const formatTimestamp = (timestamp) => {

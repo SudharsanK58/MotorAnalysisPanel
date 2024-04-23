@@ -183,8 +183,24 @@ const reloadTable = () => {
 const dataToMap = searchQuery ? filteredTableData : currentPageData;
 
 const calculateLastSeen = (formattedTimestamp) => {
-  const currentIndianTime = new Date();
-  const timeDifference = currentIndianTime - new Date(formattedTimestamp);
+  const givenTime = new Date(Date.UTC(
+    formattedTimestamp.substring(0, 4), // Year
+    formattedTimestamp.substring(5, 7) - 1, // Month (zero-based)
+    formattedTimestamp.substring(8, 10), // Day
+    formattedTimestamp.substring(11, 13), // Hour
+    formattedTimestamp.substring(14, 16), // Minute
+    formattedTimestamp.substring(17, 19), // Second
+    formattedTimestamp.substring(20, 23) // Millisecond
+  ));
+  const currentTime = new Date(Date.UTC(
+    new Date().getUTCFullYear(),
+    new Date().getUTCMonth(),
+    new Date().getUTCDate(),
+    new Date().getUTCHours(),
+    new Date().getUTCMinutes(),
+    new Date().getUTCSeconds()
+  ));
+  const timeDifference = currentTime - givenTime;
   const secondsDifference = Math.floor(timeDifference / 1000);
 
   if (secondsDifference < 60) {
@@ -347,7 +363,7 @@ const calculateLastSeen = (formattedTimestamp) => {
               <tr key={rowIndex}>
                 <td>{rowData.deviceId}</td>
                 {/* Last seen - Leave empty for now */}
-                <td>{calculateLastSeen(formatTimestamp(rowData.timestamp))}</td>
+                <td>{calculateLastSeen(rowData.timestamp)}</td>
                 <td>{formatTimestamp(rowData.timestamp)}</td>
                 <td>
                   {rowData.networkConnection === 1 ? (

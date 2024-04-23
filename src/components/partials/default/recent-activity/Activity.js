@@ -21,9 +21,97 @@ const RecentActivity = () => {
       });
   }, []);
 
+  const formatTimestamp = (timestamp) => {
+    const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // Convert timestamp to Date object
+    const dateObj = new Date(timestamp);
+  
+    // Add 5 hours and 30 minutes to the timestamp
+    dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+  
+    // Format the adjusted timestamp
+    const options = { 
+      day: '2-digit', 
+      month: 'short', // Use 'short' for abbreviated month name
+      year: 'numeric', 
+      hour: 'numeric', 
+      minute: 'numeric', 
+      second: 'numeric', 
+      hour12: true 
+    };
+    const formattedTimestamp = dateObj.toLocaleString('en-US', options);
+  
+    return formattedTimestamp;
+  };
+  const calculateLastSeen = (formattedTimestamp) => {
+    const givenTime = new Date(Date.UTC(
+      formattedTimestamp.substring(0, 4), // Year
+      formattedTimestamp.substring(5, 7) - 1, // Month (zero-based)
+      formattedTimestamp.substring(8, 10), // Day
+      formattedTimestamp.substring(11, 13), // Hour
+      formattedTimestamp.substring(14, 16), // Minute
+      formattedTimestamp.substring(17, 19), // Second
+      formattedTimestamp.substring(20, 23) // Millisecond
+    ));
+    const currentTime = new Date(Date.UTC(
+      new Date().getUTCFullYear(),
+      new Date().getUTCMonth(),
+      new Date().getUTCDate(),
+      new Date().getUTCHours(),
+      new Date().getUTCMinutes(),
+      new Date().getUTCSeconds()
+    ));
+    const timeDifference = currentTime - givenTime;
+    const secondsDifference = Math.floor(timeDifference / 1000);
+  
+    if (secondsDifference < 60) {
+      return (
+        <span style={{ fontWeight: 'bold', color: 'green' }}>
+          {`${Math.max(1, secondsDifference)} seconds ago`}
+        </span>
+      );
+    } else if (secondsDifference < 600) {
+      const minutes = Math.floor(secondsDifference / 60);
+      return (
+        <span style={{ fontWeight: 'bold', color: 'green' }}>
+          {`${minutes} minute${minutes > 1 ? 's' : ''} ago`}
+        </span>
+      );
+    } else if (secondsDifference < 3600) {
+      const minutes = Math.floor(secondsDifference / 60);
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else if (secondsDifference < 86400) {
+      const hours = Math.floor(secondsDifference / 3600);
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (secondsDifference < 172800) {
+      return "1 day ago";
+    } else {
+      // If more than one day, return the formatted timestamp without additional formatting
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(formattedTimestamp).toLocaleDateString('en-US', options);
+    }
+  };
+  
   const calculateTimeDifference = (timestamp) => {
-    const currentTime = new Date();
-    const activityTime = new Date(timestamp);
+    const activityTime = new Date(Date.UTC(
+      timestamp.substring(0, 4), // Year
+      timestamp.substring(5, 7) - 1, // Month (zero-based)
+      timestamp.substring(8, 10), // Day
+      timestamp.substring(11, 13), // Hour
+      timestamp.substring(14, 16), // Minute
+      timestamp.substring(17, 19), // Second
+      timestamp.substring(20, 23) // Millisecond
+    ));
+    const currentTime = new Date(Date.UTC(
+      new Date().getUTCFullYear(),
+      new Date().getUTCMonth(),
+      new Date().getUTCDate(),
+      new Date().getUTCHours(),
+      new Date().getUTCMinutes(),
+      new Date().getUTCSeconds()
+    ));
+    console.log("Activity Time (UTC):", activityTime.toISOString());
+    console.log("Current Time (UTC):", currentTime.toISOString());
     const differenceInSeconds = Math.floor((currentTime - activityTime) / 1000);
 
     if (differenceInSeconds < 60) {
@@ -39,6 +127,7 @@ const RecentActivity = () => {
       return days === 1 ? `${days} day ago` : `${days} days ago`;
     }
   };
+
 
   return (
     <React.Fragment>
@@ -65,7 +154,7 @@ const RecentActivity = () => {
               ></UserAvatar>
               <div className="nk-activity-data">
                 <div className="label">{item.name + " " + item.activity}</div>
-                <span className="time">{calculateTimeDifference(item.time)}</span>
+                <span className="time">{calculateLastSeen(item.time)}</span>
               </div>
             </li>
           ))
