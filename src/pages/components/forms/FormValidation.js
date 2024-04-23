@@ -34,6 +34,7 @@ const FormValidation = () => {
     setValue("labelText", "Search by Ticket ID");
   }, [setValue]);
   const onButtonClick = async () => {
+    setApiResponse(null)
     const ticketIdInput = watch("textInput"); // Get the Ticket ID from the input field
     const datePickerDate = watch("datePicker");
     if(isTicketIdSelected && !ticketIdInput){

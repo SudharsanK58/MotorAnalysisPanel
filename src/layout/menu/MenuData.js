@@ -324,8 +324,12 @@ const menu = [
     text: "TICKET",
     subMenu: [
       {
-        text: "SEARCH",
+        text: "ALL-SEARCH",
         link: "/ticket-search",
+      },
+      {
+        text: "MODOT-SEARCH",
+        link: "/client-ticket-search",
       },
       // {
       //   text: "Sales Dashboard",
