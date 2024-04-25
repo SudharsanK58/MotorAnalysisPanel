@@ -173,7 +173,7 @@ const SpecialTablePage = () => {
   };
   
   const filteredTableData = tableData.filter((rowData) =>
-  rowData.deviceId.includes(searchQuery) || String(rowData.bleMinor).includes(searchQuery)
+  rowData.deviceId.includes(searchQuery) || String(rowData.vehicleNo).includes(searchQuery)
 );
 
 const reloadTable = () => {
@@ -233,11 +233,12 @@ const calculateLastSeen = (formattedTimestamp) => {
 
 
   const tableHeadings = [
+    "Vehicle name",
     "Device ID",
     "Last seen",
     "Last IN time",
     "Network Name",
-    "BLE minor",
+    // "BLE minor",
     "BLE TX power",
     "Temperature",
     "Actions",
@@ -313,9 +314,9 @@ const calculateLastSeen = (formattedTimestamp) => {
               <div style={{ width: '20px' }}></div>
               <Input
                 type="text"
-                placeholder="Search by deviceId or Minor"
+                placeholder="Search by deviceId or Vehicle Name"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="mr-2 input-sm" // Add input-sm class to reduce size
                 style={{ width: '200px' }} // Adjust width based on your preference
               />
@@ -361,6 +362,7 @@ const calculateLastSeen = (formattedTimestamp) => {
           ) : (
             dataToMap.map((rowData, rowIndex) => (
               <tr key={rowIndex}>
+                <td>{rowData.vehicleNo}</td>
                 <td>{rowData.deviceId}</td>
                 {/* Last seen - Leave empty for now */}
                 <td>{calculateLastSeen(rowData.timestamp)}</td>
@@ -374,7 +376,7 @@ const calculateLastSeen = (formattedTimestamp) => {
                     rowData.networkName
                   )}
                 </td>
-                <td>{rowData.bleMinor}</td>
+                {/* <td>{rowData.bleMinor}</td> */}
                 <td>{rowData.bleTxpower}</td>
                 <td>{rowData["current temp"]}°C</td>
                 <td>
