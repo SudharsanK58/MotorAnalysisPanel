@@ -315,7 +315,7 @@ const calculateLastSeen = (formattedTimestamp) => {
                 type="text"
                 placeholder="Search by deviceId or Minor"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
                 className="mr-2 input-sm" // Add input-sm class to reduce size
                 style={{ width: '200px' }} // Adjust width based on your preference
               />
