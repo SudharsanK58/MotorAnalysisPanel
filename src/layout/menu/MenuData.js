@@ -347,15 +347,29 @@ const menu = [
   },
   
   {
-    text: "APPLICATIONS",
+    text: "BENCHMARK",
     subMenu: [
       {
-        text: "PEOPLE COUNT",
-        link: "/peoplecount",
-      },
-      {
-        text: "BENCHMARK",
+        text: "LIVE-TOF",
         link: "/ticket-benchmark",
+      },
+      // {
+      //   text: "BENCHMARK",
+      //   link: "/zig-app-benchmark",
+      // },
+      {
+        text: "APP-BASED",
+        active: false,
+        subMenu: [
+          {
+            text: "ZIG-TRAVEL-PLACES",
+            link: "/zig-app-benchmark",
+          },
+          // {
+          //   text: "MICHIGAN-MOBILITY-WALLET",
+          //   link: "/table-datatable",
+          // },
+        ],
       },
       // {
       //   text: "Chats / Messenger",

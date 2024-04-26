@@ -23,6 +23,7 @@ import FormElements from "../pages/components/forms/FormElements";
 import FormLayouts from "../pages/components/forms/FormLayouts";
 import FormValidation from "../pages/components/forms/FormValidation";
 import FormValidation2 from "../pages/components/forms/devicePrecheck";
+import AppBenchMarkTicketSearch from "../pages/components/forms/AppBenchMarkTicketSearch";
 import SearchByClient from "../pages/components/forms/SearchByClient";
 import Modals from "../pages/components/Modals";
 import Pagination from "../pages/components/Pagination";
@@ -144,6 +145,7 @@ const Pages = () => {
                 <Route element={<TicketBenchMark />} path="/ticket-benchmark" exact/>
                 <Route element={<SpecialTablePage/>} path="/All-device-status"/>
                 <Route element={<FormValidation2 />} path="/device-pre-check"/>
+                <Route element={<AppBenchMarkTicketSearch />} path="/zig-app-benchmark"/>
                 <Route element={<FormValidation/>} path="/ticket-search"/>
                 <Route element={<SearchByClient/>} path="/client-ticket-search"/>
               </Route>
