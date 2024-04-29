@@ -31,6 +31,7 @@ const AppBenchMarkTicketSearch = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [detail, setDetail] = useState({});
   const [viewModal, setViewModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   // Set the default value for the "searchByTicketID" checkbox
   useEffect(() => {
     setValue("searchByTicketID", true);
@@ -134,6 +135,56 @@ const AppBenchMarkTicketSearch = () => {
       }
     }
   };
+  const renderTable = () => {
+    if (apiResponse && apiResponse.length > 0) {
+      return (
+        <Card className="card-bordered card-preview mx-auto border-0" style={{ width: '80%', borderRadius: '10px' }}>
+          <CardBody>
+            <div className="d-flex flex-column align-items-center mt-3">
+              <Table className="text-center">
+                <thead>
+                  <tr>
+                    <th>Hardware</th>
+                    <th>User name</th>
+                    <th>Coach Number</th>
+                    <th>Ticket ID</th>
+                    <th>Time taken</th>
+                    <th>ValidationMode</th>
+                    <th>Validated date</th>
+                    <th>View</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {apiResponse.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.hardware ? <Icon name="apple" style={{ fontSize: '24px' }} /> : <Icon name="android" style={{ fontSize: '24px' }} />}</td>
+                    <td>{item.userName}</td>
+                    <td>{item.coachNumber}</td>
+                    <td>{item.ticketId}</td>
+                    <td>
+                      <span style={{ fontWeight: 'bold', color: 'blue' }}>
+                        {item.timeTaken < 1000 ? `${item.timeTaken} ms` : `${(item.timeTaken / 1000).toFixed(1)} secs`}
+                      </span>
+                    </td>
+                    <td>{item.validationMode ? <Badge color="primary">Pocket mode</Badge> : <Badge color="secondary">Foreground</Badge>}</td>
+                    <td>{formatTimestamp(item.ValidatedDate)}</td>
+                    <td>
+                    <Button onClick={() => handleViewAction(item.ticketId)}>
+                      <Icon name="eye-fill" style={{ fontSize: '24px' }} />
+                    </Button>
+                    </td>
+                  </tr>
+                ))}
+                </tbody>
+              </Table>
+            </div>
+          </CardBody>
+        </Card>
+      );
+    } else {
+      return null;
+    }
+  };
   const formatTimestamp = (timestamp) => {
     const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     // Convert timestamp to Date object
@@ -198,18 +249,28 @@ const AppBenchMarkTicketSearch = () => {
         break;
     }
   };
-  const handleViewAction = (rowData) => {
-    console.log("Ticket ID:",rowData);
+// Function to handle API call
+const handleViewAction = async (ticketId) => {
+  try {
+    setIsLoading(true); // Set loading state to true when API starts loading
     setViewModal(true);
-  };
-
+    const response = await axios.get(`http://3.144.9.52:8001/app_benchmark_ticket_details/${ticketId}`);
+    console.log("Ticket Details:", response.data);
+    setDetail(response.data); // Set the fetched data to the detail state
+    setIsLoading(false); // Set loading state to false when API finishes loading
+ // Open the modal after loading the data
+  } catch (error) {
+    console.error("Error fetching ticket details:", error);
+    setIsLoading(false); // Set loading state to false if there's an error
+  }
+};
 
 const getLabel = watch("labelText") || "Ticket ID";
 
 // ... rest of your component remains unchanged
   return (
     <React.Fragment>
-      <Head title="Search-Ticket"></Head>
+      <Head title="Benchmark-Search-Ticket"></Head>
       <Content page="component">
         <BlockHead size="lg" wide="sm">
           <BlockHeadContent>
@@ -217,7 +278,7 @@ const getLabel = watch("labelText") || "Ticket ID";
               Dashboard
             </BackTo> */}
             <BlockTitle tag="h2" className="fw-normal">
-              Check-1
+              Zig Travel Places
             </BlockTitle>
             <BlockDes>
             <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>
@@ -344,104 +405,167 @@ const getLabel = watch("labelText") || "Ticket ID";
         </div>
 ) : (
   apiResponse && apiResponse.length > 0 ? (
-    <Card className="card-bordered card-preview mx-auto border-0" style={{ width: '80%', borderRadius: '10px' }}>
-      <CardBody>
-        <div className="d-flex flex-column align-items-center mt-3" >
-          <Table className="text-center" >
-            <thead>
-            <tr>
-              {Object.keys(apiResponse[0]).map((key) => (
-                <th key={key}>{key}</th>
-              ))}
-              <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-              {apiResponse.map((item, index) => (
-                <tr key={index}>
-                {Object.entries(item).map(([key, value], index) => (
-                  <td key={index}>
-                    {key === "Hardware" ? (
-                      value ? <Icon name="apple" style={{ fontSize: '24px' }} /> : <Icon name="android" style={{ fontSize: '24px' }} />
-                    ) : key === "ValidationMode" ? (
-                      value ? <Badge color="primary">Pocket mode</Badge> : <Badge color="secondary">Foreground</Badge>
-                    ) : key === "Time taken" ? (
-                      <span style={{ fontWeight: 'bold', color: 'blue' }}>
-                        {value < 1000 ? `${value} ms` : `${(value / 1000).toFixed(1)} secs`}
-                      </span>
-                    ) : (
-                      key.endsWith('date') ? formatTimestamp(value) : value
-                    )}
-                  </td>
-                ))}
-                <td>
-                <Button
-                  onClick={() => handleViewAction(item["Ticket ID"])}
-                >
-                  <Icon name="info-i" style={{ fontSize: '24px' }} />
-                </Button>
-                </td>
-              </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
-      </CardBody>
-    </Card>
+    renderTable()
   ) : null
 )}
       <Modal isOpen={viewModal} toggle={() => setViewModal(false)} className="modal-dialog-centered" size="lg">
         <ModalBody>
-          <a
-            href="#cancel"
-            onClick={(ev) => {
-              ev.preventDefault();
-              setViewModal(false);
-            }}
-            className="close"
-          >
-            <Icon name="cross-sm"></Icon>
+          <a href="#cancel" onClick={(ev) => { ev.preventDefault(); setViewModal(false); }} className="close">
+            <Icon name="cross-sm" />
           </a>
           <div className="nk-modal-head">
-            <h4 className="nk-modal-title title">
-              KYC Details <small className="text-primary"> {detail.id}</small>
-            </h4>
+            <h4 className="nk-modal-title title">Validation Details <small className="text-primary">{detail.id}</small></h4>
           </div>
-          <div className="nk-tnx-details mt-sm-3">
-            <Row className="gy-3">
-              <Col lg={6}>
-                <span className="sub-text"> ID</span>
-                <span className="caption-text">{detail.id}</span>
-              </Col>
-              <Col lg={6}>
-                <span className="sub-text">Applicant Name </span>
-                <span className="caption-text text-break">{detail.name}</span>
-              </Col>
-              <Col lg={6}>
-                <span className="sub-text">Document Type </span>
-                <span className="caption-text">{detail.doc}</span>
-              </Col>
-              <Col lg={6}>
-                <span className="sub-text">Status</span>
-                <Badge
-                  color={detail.status === "Approved" ? "success" : detail.status === "Pending" ? "info" : "danger"}
-                  size="md"
-                >
-                  {detail.status}
-                </Badge>
-              </Col>
-              <Col lg={6}>
-                <span className="sub-text">Date</span>
-                <span className="caption-text"> {detail.date}</span>
-              </Col>
-              <Col lg={6}>
-                <span className="sub-text">Checked By</span>
-                <span className="caption-text"> {detail.checked}</span>
-              </Col>
-            </Row>
-          </div>
+          {isLoading ? (
+            <div className="text-center mt-3">
+              <Spinner color="primary" />
+            </div>
+          ) : (
+            <div className="nk-tnx-details mt-sm-3">
+              <Row className="gy-3">
+                {/* Filtering out only the "User ID" and its corresponding value */}
+                <Col lg={6}>
+                  <span className="sub-text">User ID</span>
+                  <span className="caption-text text-break">{detail.userId}</span>
+                </Col>
+                <Col lg={6}>
+                  <span className="sub-text">User Name</span>
+                  <span className="caption-text text-break">{detail.userName}</span>
+                </Col>
+                <Col lg={6}>
+                  <span className="sub-text">Phone Model</span>
+                  <span className="caption-text text-break">
+                    {detail.phoneSystem ? (
+                      <>
+                        <Icon name="apple" style={{ fontSize: '24px' }} /> {detail.phoneModel}
+                      </>
+                    ) : (
+                      <>
+                        <Icon name="android" style={{ fontSize: '24px' }} /> {detail.phoneModel}
+                      </>
+                    )}
+                  </span>
+                </Col>
+                <Col lg={6}>
+                  <span className="sub-text">Battery Health</span>
+                  <span className="caption-text text-break">{detail.batteryPercentage}%</span>
+                </Col>
+                <Col lg={6}>
+                  <span className="sub-text">Ticket ID</span>
+                  <span className="caption-text text-break">{detail.ticketId}</span>
+                </Col>
+                <Col lg={6}>
+                  <span className="sub-text">Time Taken</span>
+                  <span className="caption-text text-break">
+                  <span style={{ fontWeight: 'bold', color: 'blue' }}>
+                    {detail.validationTimeMillis !== 'N/A' ? (
+                      <>
+                        {detail.validationTimeMillis < 1000 ? `${detail.validationTimeMillis} ms` : `${(detail.validationTimeMillis / 1000).toFixed(1)} secs`}
+                      </>
+                    ) : (
+                      "N/A"
+                    )}
+                    </span>
+                  </span>
+                </Col>
+                <Col lg={6}>
+                  <span className="sub-text">Validated Mode</span>
+                  <span className="caption-text text-break">
+                    {detail.validationMode !== "N/A" ? (
+                      detail.validationMode ? (
+                        <Badge color="primary" style={{ fontSize: "0.9rem" }}>Pocket mode</Badge>
+                      ) : (
+                        <Badge color="secondary" style={{ fontSize: "0.9rem" }}>Foreground</Badge>
+                      )
+                    ) : (
+                      "N/A"
+                    )}
+                  </span>
+                </Col>
+                {/* Display iBeacon Status */}
+                <Col lg={6}>
+                  <span className="sub-text">iBeacon Status</span>
+                  <span className="caption-text text-break">
+                    {detail.ibeaconStatus === 1 ? (
+                      <Badge color="dark" style={{ fontSize: "0.9rem" }} >Intermediate</Badge>
+                    ) : detail.ibeaconStatus === 2 ? (
+                      <Badge color="gray" style={{ fontSize: "0.9rem" }}>Near</Badge>
+                    ) : detail.ibeaconStatus === 3 ? (
+                      <Badge color="light"style={{ fontSize: "0.9rem" }}>Far</Badge>
+                    ) : (
+                      "Unknown"
+                    )}
+                  </span>
+                </Col>
+                <Col lg={6}>
+                  <span className="sub-text">Validation Distance</span>
+                  <span className="caption-text text-break">
+                    {detail.validationRangeFeet !== "N/A" ? 
+                    <span style={{ fontWeight: 'bold', color: 'blue' }}>
+                      `${parseFloat(detail.validationRangeFeet).toFixed(2)} Feet` </span> : 
+                      "N/A"
+                    }
+                  </span>
+                </Col>
+                {/* Display Activate API Time */}
+                <Col lg={6}>
+                  <span className="sub-text">Activate API Time</span>
+                  <span className="caption-text text-break">
+                    {detail.activateApiTime !== "N/A" ? (
+                      <span style={{ fontWeight: 'bold', color: 'blue' }}>
+                        {detail.activateApiTime < 1000 ? `${detail.activateApiTime} ms` : `${(detail.activateApiTime / 1000).toFixed(1)} secs`}
+                      </span>
+                    ) : (
+                      "N/A"
+                    )}
+                  </span>
+                </Col>
+
+                {/* Display Get Ticket API Time */}
+                <Col lg={6}>
+                  <span className="sub-text">Get Ticket API Time</span>
+                  <span className="caption-text text-break">
+                    {detail.getTicketApiTime !== "N/A" ? (
+                      <span style={{ fontWeight: 'bold', color: 'blue' }}>
+                        {detail.getTicketApiTime < 1000 ? `${detail.getTicketApiTime} ms` : `${(detail.getTicketApiTime / 1000).toFixed(1)} secs`}
+                      </span>
+                    ) : (
+                      "N/A"
+                    )}
+                  </span>
+                </Col>
+
+                {/* Display Config API Time */}
+                <Col lg={6}>
+                  <span className="sub-text">Config API Time</span>
+                  <span className="caption-text text-break">
+                    {detail.configApiTime !== "N/A" ? (
+                      <span style={{ fontWeight: 'bold', color: 'blue' }}>
+                        {detail.configApiTime < 1000 ? `${detail.configApiTime} ms` : `${(detail.configApiTime / 1000).toFixed(1)} secs`}
+                      </span>
+                    ) : (
+                      "N/A"
+                    )}
+                  </span>
+                </Col>
+                {/* Display Config Background Feet */}
+                <Col lg={6}>
+                  <span className="sub-text">Config Background Feet</span>
+                  <span className="caption-text text-break">{detail.configBackgroundFeet}</span>
+                </Col>
+
+                {/* Display Config Foreground Feet */}
+                <Col lg={6}>
+                  <span className="sub-text">Config Foreground Feet</span>
+                  <span className="caption-text text-break">{detail.configForegroundFeet}</span>
+                </Col>
+
+              </Row>
+            </div>
+          )}
         </ModalBody>
       </Modal>
+
     </React.Fragment>
   );
 };
