@@ -241,7 +241,7 @@ const calculateLastSeen = (formattedTimestamp) => {
 
 
   const tableHeadings = [
-    "Vehicle name",
+    "Coach number",
     "Device ID",
     "Last seen",
     "Last IN time",

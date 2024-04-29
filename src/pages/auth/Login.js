@@ -44,6 +44,7 @@ const Login = () => {
           localStorage.setItem("accessToken", "token");
           sessionStorage.setItem("isLoggedIn", true);
           sessionStorage.setItem("TimeZone", 0);
+          sessionStorage.setItem("ShowUpdate", 1);
           localStorage.setItem("userName", formData.name); // Store the user's name
           // Redirect to the /overview page
           setTimeout(() => {

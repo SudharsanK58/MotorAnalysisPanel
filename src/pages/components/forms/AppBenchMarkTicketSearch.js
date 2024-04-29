@@ -508,7 +508,7 @@ const getLabel = watch("labelText") || "Ticket ID";
                   <span className="caption-text text-break">
                     {detail.validationRangeFeet !== "N/A" ? 
                     <span style={{ fontWeight: 'bold', color: 'blue' }}>
-                      `${parseFloat(detail.validationRangeFeet).toFixed(2)} Feet` </span> : 
+                      {parseFloat(detail.validationRangeFeet).toFixed(2)} Feet </span> : 
                       "N/A"
                     }
                   </span>

@@ -6,7 +6,7 @@ import InvestPlan from "../components/partials/invest/invest-plan/InvestPlan";
 import RecentInvest from "../components/partials/invest/recent-investment/RecentInvest";
 import RecentActivity from "../components/partials/default/recent-activity/Activity";
 import Notifications from "../components/partials/default/notification/Notification";
-import { DropdownToggle, Spinner,DropdownMenu, Card, UncontrolledDropdown, DropdownItem } from "reactstrap";
+import { DropdownToggle, Spinner,DropdownMenu, Card, UncontrolledDropdown, DropdownItem, Modal,ModalBody} from "reactstrap";
 import SessionDevice from "../components/partials/analytics/session-devices/SessionDevice";
 import CountUp from "react-countup";
 import {
@@ -33,6 +33,8 @@ const InvestHomePage = () => {
   const [ticketCounts, setTicketCounts] = useState({});
   const [temperatureStats, setTemperatureStats] = useState({});
   const [temperatureLoading, setTemperatureLoading] = useState(true);
+  const [viewModal, setViewModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchTemperatureData = async () => {
@@ -64,6 +66,7 @@ const InvestHomePage = () => {
 
     fetchData();
   }, []); // Empty dependency array ensures the effect runs once after the initial render
+
   useEffect(() => {
     const fetchTicketData = async () => {
       try {
@@ -71,6 +74,16 @@ const InvestHomePage = () => {
         const data = await response.json();
         setTicketCounts(data);
         seticketsloading(false); // Set loading to false once data is fetched
+        // setViewModal(true);
+        if (sessionStorage.getItem("ShowUpdate") === '1') {
+          // Eastern Standard Time (EST)
+          setViewModal(true);
+          sessionStorage.setItem("ShowUpdate", 0);
+        } else {
+          // Indian Standard Time (IST)
+          setViewModal(false);
+        }
+      
       } catch (error) {
         console.error('Error fetching ticket data:', error);
         seticketsloading(false); // Set loading to false in case of an error
@@ -371,6 +384,19 @@ const InvestHomePage = () => {
           </Row>
         </Block>
       </Content>
+      <Modal isOpen={viewModal} toggle={() => setViewModal(false)} className="modal-dialog-centered" size="lg">
+      <ModalBody>
+        <a href="#cancel" onClick={(ev) => { ev.preventDefault(); setViewModal(false); }} className="close">
+          <Icon name="cross-sm" />
+        </a>
+        <div className="nk-modal-head">
+          <h4 className="nk-modal-title title">What's New <small className="text-primary">Version 2.01</small></h4>
+        </div>
+        <div style={{ marginBottom: '10px' }}></div>
+        <p>In this update, we've added the ability to change your time zone in the Account Settings. Simply go to your profile icon in the top left corner to access it.</p>
+        <p>The Benchmark details have been added for the Zig travel places app. Now, you can view validation data such as validation distance, time, and API response time. Navigate to Benchmark -&gt; App based -&gt; Zig travel place. You can also see the specific validation data by clicking on the view (eye) icon.</p>
+      </ModalBody>
+      </Modal>
     </React.Fragment>
   );
 };
