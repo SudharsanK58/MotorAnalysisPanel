@@ -15,7 +15,14 @@ function Example({ isOpen, toggle, deviceId,lastSeen }) {
     const dateObj = new Date(timestamp);
   
     // Add 5 hours and 30 minutes to the timestamp
-    dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+     // Adjust the timestamp based on the time zone
+    if (sessionStorage.getItem("TimeZone") === '1') {
+      // Eastern Standard Time (EST)
+      dateObj.setHours(dateObj.getHours() - 4, dateObj.getMinutes());
+    } else {
+      // Indian Standard Time (IST)
+      dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+    }
   
     // Format the adjusted timestamp
     const options = { 

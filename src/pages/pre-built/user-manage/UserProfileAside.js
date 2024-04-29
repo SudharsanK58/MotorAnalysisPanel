@@ -98,7 +98,7 @@ const UserProfileAside = ({updateSm,sm}) => {
             <span>Notification</span>
             </Link>
         </li> */}
-        <li onClick={() => updateSm(false)}>
+        {/* <li onClick={() => updateSm(false)}>
             <Link
             to={`${process.env.PUBLIC_URL}/user-profile-activity`}
             className={
@@ -108,8 +108,8 @@ const UserProfileAside = ({updateSm,sm}) => {
             <Icon name="activity-round-fill"></Icon>
             <span>Account Activity</span>
             </Link>
-        </li>
-        {/* <li onClick={() => updateSm(false)}>
+        </li> */}
+        <li onClick={() => updateSm(false)}>
             <Link
             to={`${process.env.PUBLIC_URL}/user-profile-setting`}
             className={
@@ -117,9 +117,9 @@ const UserProfileAside = ({updateSm,sm}) => {
             }
             >
             <Icon name="lock-alt-fill"></Icon>
-            <span>Security Setting</span>
+            <span>Setting</span>
             </Link>
-        </li> */}
+        </li>
         </ul>
     </div>
     </div>

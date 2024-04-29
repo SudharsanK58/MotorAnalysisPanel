@@ -19,6 +19,7 @@ import './binktext.css';
 const TicketBenchMark = () => {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [timeZone, setTimeZone] = useState(sessionStorage.getItem("TimeZone") || 0);
   const [previousTicketID, setPreviousTicketID] = useState(null);
 
   useEffect(() => {
@@ -71,7 +72,14 @@ const TicketBenchMark = () => {
     const dateObj = new Date(timestamp);
 
     // Add 5 hours and 30 minutes to the timestamp
-    dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+    // Adjust the timestamp based on the time zone
+    if (sessionStorage.getItem("TimeZone") === '1') {
+      // Eastern Standard Time (EST)
+      dateObj.setHours(dateObj.getHours() - 4, dateObj.getMinutes());
+    } else {
+      // Indian Standard Time (IST)
+      dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+    }
 
     // Format the adjusted timestamp
     const options = { day: '2-digit', month: '2-digit', year: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
@@ -91,7 +99,7 @@ const TicketBenchMark = () => {
             <BlockDes className="text-soft">
               <p>
               <ol style={{ color: 'blue', paddingLeft: '20px', margin: '0' }}>
-                  <li style={{ color: 'black' }}>1.Below table is in <strong>Indian standard format</strong>.</li>
+                  <li>Time represented in this table is in <strong style={{ color: 'blue' }}>{timeZone === '1' ? "Eastern" : "India"} Standard Time ({timeZone === '1' ? "EST" : "IST"})</strong>.</li>
                   <li style={{ color: 'black' }}>2.The time taken is when a person enters TOF range to data received in MQTT, <strong>excluding validator beep sound</strong>.</li>
                   <li style={{ color: 'black' }}>3.If ticket is not updated here but validated on device, it means the ticket is validated out of TOF range.</li>
                   <li style={{ color: 'black' }}>4.Do not manually reload this page. If a ticket is validated, the data will be <strong>updated every 5 seconds</strong>.</li>

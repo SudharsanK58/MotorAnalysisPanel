@@ -25,6 +25,7 @@ const SpecialTablePage = () => {
   const rowsPerPage = 20;
   const [modalData, setModalData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [timeZone, setTimeZone] = useState(sessionStorage.getItem("TimeZone") || 0);
 
   const handleAdvanced1 = async (rowData,e) => {
     try {
@@ -154,8 +155,15 @@ const SpecialTablePage = () => {
     // Convert timestamp to Date object
     const dateObj = new Date(timestamp);
   
-    // Add 5 hours and 30 minutes to the timestamp
+
+    // Adjust the timestamp based on the time zone
+  if (sessionStorage.getItem("TimeZone") === '1') {
+    // Eastern Standard Time (EST)
+    dateObj.setHours(dateObj.getHours() - 4, dateObj.getMinutes());
+  } else {
+    // Indian Standard Time (IST)
     dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+  }
   
     // Format the adjusted timestamp
     const options = { 
@@ -449,7 +457,7 @@ const calculateLastSeen = (formattedTimestamp) => {
           <div style={{ width: '20px' }}></div>
             <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>
               <li>This table provides information about the status of all client devices.</li>
-              <li>Time represented in this table is in <strong style={{ color: 'blue' }}>India Standard Time (IST)</strong>.</li>
+              <li>Time represented in this table is in <strong style={{ color: 'blue' }}>{timeZone === '1' ? "Eastern" : "India"} Standard Time ({timeZone === '1' ? "EST" : "IST"})</strong>.</li>
               <li>This table is for <strong style={{ color: 'blue' }}>hardware team</strong> reference only.</li>
               <li>No of devices installed and GPS data received is <strong style={{ color: 'blue' }}>{attDevicesCount} devices</strong> for the selected client</li>
             </ul>

@@ -18,7 +18,19 @@ import UserProfileAside from "./UserProfileAside";
 const UserProfileSettingPage = () => {
   const [sm, updateSm] = useState(false);
   const [mobileView , setMobileView] = useState(false);
-  
+  const [isChecked, setIsChecked] = useState(sessionStorage.getItem("TimeZone") === '1');
+  // Set up a useEffect hook to update the state when component mounts or sessionStorage changes
+  useEffect(() => {
+    setIsChecked(sessionStorage.getItem("TimeZone") === '1');
+  }, []);
+
+
+  const handleSwitchChange = (event) => {
+    const checked = event.target.checked;
+    setIsChecked(checked);
+    sessionStorage.setItem("TimeZone", checked ? '1' : '0');
+    console.log("TimeZone set to:", checked ? '1' : '0');
+  };
   // function to change the design view under 990 px
   const viewChange = () => {
     if (window.innerWidth < 990) {
@@ -60,7 +72,7 @@ const UserProfileSettingPage = () => {
               <BlockHead size="lg">
                 <BlockBetween>
                   <BlockHeadContent>
-                    <BlockTitle tag="h4">Security Settings</BlockTitle>
+                    <BlockTitle tag="h4">Settings</BlockTitle>
                     <BlockDes>
                       <p>These settings will help you to keep your account secure.</p>
                     </BlockDes>
@@ -82,21 +94,24 @@ const UserProfileSettingPage = () => {
                     <div className="card-inner">
                       <div className="between-center flex-wrap flex-md-nowrap g-3">
                         <div className="nk-block-text">
-                          <h6>Save my Activity Logs</h6>
-                          <p>You can save your all activity logs including unusual activity detected.</p>
+                          <h6>Adjust Time Zone Settings</h6>
+                          <p>Please enable the switch to change the time zone to EST. Otherwise, it will remain defaulted to IST.</p>
                         </div>
                         <div className="nk-block-actions">
                           <ul className="align-center gx-3">
                             <li className="order-md-last">
-                              <div className="custom-control custom-switch me-n2">
-                                <InputSwitch checked id="activity-log" />
-                              </div>
+                            <div className="custom-control custom-switch">
+                            <input type="checkbox" className="custom-control-input" checked={isChecked} id="activity-log" onChange={handleSwitchChange} />
+                              <label className="custom-control-label" htmlFor="activity-log">
+                                {sessionStorage.getItem("TimeZone") === '1' ? "Eastern" : "Indian"}
+                              </label>
+                            </div>
                             </li>
                           </ul>
                         </div>
                       </div>
                     </div>
-                    <div className="card-inner">
+                    {/* <div className="card-inner">
                       <div className="between-center flex-wrap g-3">
                         <div className="nk-block-text">
                           <h6>Change Password</h6>
@@ -131,7 +146,7 @@ const UserProfileSettingPage = () => {
                           <Button color="primary">Disable</Button>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </Card>
               </Block>

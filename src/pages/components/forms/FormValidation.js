@@ -27,6 +27,7 @@ const FormValidation = () => {
   const [apiResponse, setApiResponse] = useState(null);
   const [noData, setnoData] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [timeZone, setTimeZone] = useState(sessionStorage.getItem("TimeZone") || 0);
   // Set the default value for the "searchByTicketID" checkbox
   useEffect(() => {
     setValue("searchByTicketID", true);
@@ -136,7 +137,14 @@ const FormValidation = () => {
     const dateObj = new Date(timestamp);
   
     // Add 5 hours and 30 minutes to the timestamp
-    dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+    // Adjust the timestamp based on the time zone
+    if (sessionStorage.getItem("TimeZone") === '1') {
+      // Eastern Standard Time (EST)
+      dateObj.setHours(dateObj.getHours() - 4, dateObj.getMinutes());
+    } else {
+      // Indian Standard Time (IST)
+      dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+    }
   
     // Format the adjusted timestamp
     const options = { 
@@ -213,7 +221,7 @@ const getLabel = watch("labelText") || "Ticket ID";
             </BlockTitle>
             <BlockDes>
             <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>
-              <li>Time represented in this table is in <strong style={{ color: 'blue' }}>India Standard Time (IST)</strong>.</li>
+              <li>Time represented in this table is in <strong style={{ color: 'blue' }}>{timeZone === '1' ? "Eastern" : "India"} Standard Time ({timeZone === '1' ? "EST" : "IST"})</strong>.</li>
               <li>This table shows only <strong style={{ color: 'blue' }}>hardware validated tickets</strong></li>
             </ul>
             

@@ -149,6 +149,7 @@ const Pages = () => {
                 <Route element={<FormValidation/>} path="/ticket-search"/>
                 <Route element={<SearchByClient/>} path="/client-ticket-search"/>
                 <Route element={<UserProfileActivity/>} path="/user-profile-activity"/>
+                <Route element={<UserProfileSetting/>} path="/user-profile-setting"/>
               </Route>
             </Route>
             <Route path={`${process.env.PUBLIC_URL}`} element={<LayoutNoSidebar />}>

@@ -73,13 +73,13 @@ const leadText = storedUserName || "";
           <LinkList>
             {/* <LinkItem link={"/user-profile-regular"} icon="user-alt" onClick={toggle}>
               View Profile
-            </LinkItem>
+            </LinkItem> */}
             <LinkItem link={"/user-profile-setting"} icon="setting-alt" onClick={toggle}>
               Account Setting
-            </LinkItem> */}
-            <LinkItem link={"/user-profile-activity"} icon="activity-alt" onClick={toggle}>
-              Login Activity
             </LinkItem>
+            {/* <LinkItem link={"/user-profile-activity"} icon="activity-alt" onClick={toggle}>
+              Login Activity
+            </LinkItem> */}
             <li>
               <a className={`dark-switch ${theme.skin === 'dark' ? 'active' : ''}`} href="#" 
               onClick={(ev) => {
