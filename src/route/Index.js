@@ -148,6 +148,7 @@ const Pages = () => {
                 <Route element={<AppBenchMarkTicketSearch />} path="/zig-app-benchmark"/>
                 <Route element={<FormValidation/>} path="/ticket-search"/>
                 <Route element={<SearchByClient/>} path="/client-ticket-search"/>
+                <Route element={<UserProfileActivity/>} path="/user-profile-activity"/>
               </Route>
             </Route>
             <Route path={`${process.env.PUBLIC_URL}`} element={<LayoutNoSidebar />}>

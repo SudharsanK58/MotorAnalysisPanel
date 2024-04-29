@@ -6,6 +6,7 @@ import {  DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle } fro
 
 const UserProfileAside = ({updateSm,sm}) => {
   const [profileName, setProfileName] = useState("Abu Bin Ishtiak");
+  const storedUserName = localStorage.getItem("userName");
   
   useEffect(() => {
     sm ? document.body.classList.add("toggle-shown") : document.body.classList.remove("toggle-shown");
@@ -15,12 +16,12 @@ const UserProfileAside = ({updateSm,sm}) => {
     <div className="card-inner-group">
     <div className="card-inner">
         <div className="user-card">
-        <UserAvatar text={findUpper(profileName)} theme="primary" />
+        <UserAvatar text={findUpper(storedUserName )} theme="primary" />
         <div className="user-info">
-            <span className="lead-text">{profileName}</span>
-            <span className="sub-text">info@softnio.com</span>
+            <span className="lead-text">{storedUserName}</span>
+            {/* <span className="sub-text">info@softnio.com</span> */}
         </div>
-        <div className="user-action">
+        {/* <div className="user-action">
             <UncontrolledDropdown>
             <DropdownToggle tag="a" className="btn btn-icon btn-trigger me-n2">
                 <Icon name="more-v"></Icon>
@@ -54,10 +55,10 @@ const UserProfileAside = ({updateSm,sm}) => {
                 </ul>
             </DropdownMenu>
             </UncontrolledDropdown>
-        </div>
+        </div> */}
         </div>
     </div>
-    <div className="card-inner">
+    {/* <div className="card-inner">
         <div className="user-account-info py-0">
         <h6 className="overline-title-alt">Nio Wallet Account</h6>
         <div className="user-balance">
@@ -70,10 +71,10 @@ const UserProfileAside = ({updateSm,sm}) => {
             </span>
         </div>
         </div>
-    </div>
+    </div> */}
     <div className="card-inner p-0">
         <ul className="link-list-menu">
-        <li onClick={() => updateSm(false)}>
+        {/* <li onClick={() => updateSm(false)}>
             <Link
             to={`${process.env.PUBLIC_URL}/user-profile-regular`}
             className={
@@ -83,8 +84,8 @@ const UserProfileAside = ({updateSm,sm}) => {
             <Icon name="user-fill-c"></Icon>
             <span>Personal Information</span>
             </Link>
-        </li>
-        <li onClick={() => updateSm(false)}>
+        </li> */}
+        {/* <li onClick={() => updateSm(false)}>
             <Link
             to={`${process.env.PUBLIC_URL}/user-profile-notification`}
             className={
@@ -96,7 +97,7 @@ const UserProfileAside = ({updateSm,sm}) => {
             <Icon name="bell-fill"></Icon>
             <span>Notification</span>
             </Link>
-        </li>
+        </li> */}
         <li onClick={() => updateSm(false)}>
             <Link
             to={`${process.env.PUBLIC_URL}/user-profile-activity`}
@@ -108,7 +109,7 @@ const UserProfileAside = ({updateSm,sm}) => {
             <span>Account Activity</span>
             </Link>
         </li>
-        <li onClick={() => updateSm(false)}>
+        {/* <li onClick={() => updateSm(false)}>
             <Link
             to={`${process.env.PUBLIC_URL}/user-profile-setting`}
             className={
@@ -118,7 +119,7 @@ const UserProfileAside = ({updateSm,sm}) => {
             <Icon name="lock-alt-fill"></Icon>
             <span>Security Setting</span>
             </Link>
-        </li>
+        </li> */}
         </ul>
     </div>
     </div>
