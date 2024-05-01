@@ -17,7 +17,7 @@ import {
   BlockTitle,
   BackTo,
 } from "../../../components/Component";
-
+import BASE_URL from "../../../config";
 const SearchByClient = () => {
   const { register, setValue, watch, formState: { errors } } = useForm();
   const [selectedDate, setSelectedDate] = useState(new Date()); // Set today's date as initial state
@@ -33,7 +33,7 @@ const SearchByClient = () => {
     // Fetch list of clients when component mounts
     const fetchClients = async () => {
       try {
-        const response = await axios.get("http://3.144.9.52:8001/clients");
+        const response = await axios.get(`${BASE_URL}/clients`);
         const filteredClients = response.data.filter(client => client !== "All Client Devices");
         setClients(filteredClients);
         setLoading(false);
@@ -83,7 +83,7 @@ const SearchByClient = () => {
 
     try {
       const formattedDate = selectedDate ? selectedDate.toLocaleDateString('en-US') : '';
-      const response = await axios.get(`http://3.144.9.52:8001/ticketsbyclientallmac?client_name=${encodeURIComponent(selectedClient)}&date=${encodeURIComponent(formattedDate)}`);
+      const response = await axios.get(`${BASE_URL}/ticketsbyclientallmac?client_name=${encodeURIComponent(selectedClient)}&date=${encodeURIComponent(formattedDate)}`);
       if (response.data.length === 0) {
         setNoData(true);
       } else {

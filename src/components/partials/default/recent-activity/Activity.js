@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import UserAvatar from "../../../user/UserAvatar";
 import { CardTitle, Spinner } from "reactstrap";
+import BASE_URL from "../../../../config";
 
 const RecentActivity = () => {
   const [activityData, setActivityData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const url = `${BASE_URL}/ticketsbyclientfordisplay?client_name=Clinton%20Area%20Transit`;
+
     // Fetch data from the API when the component mounts
-    fetch("http://3.144.9.52:8001/ticketsbyclientfordisplay?client_name=Clinton%20Area%20Transit")
+    fetch(url)
       .then(response => response.json())
       .then(data => {
         // Assuming the data structure is similar to activityData, update the state

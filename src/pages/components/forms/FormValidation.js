@@ -8,6 +8,7 @@ import { Button } from "../../../components/Component";
 import { Alert, UncontrolledAlert } from "reactstrap";
 import axios from "axios";
 import FormValidationComponent from "../../../components/partials/form/FormValidation";
+import BASE_URL from "../../../config";
 import {
   Block,
   BlockDes,
@@ -73,7 +74,7 @@ const FormValidation = () => {
         setLoading(true);
         setnoData(false);
         // Make an API request using axios (replace with fetch if you prefer)
-        const response = await axios.get(`http://3.144.9.52:8001/search_ticket/${ticketIdInput}`);
+        const response = await axios.get(`${BASE_URL}/search_ticket/${ticketIdInput}`);
 
         // Handle the API response as needed
         console.log("API Response:", response.data);
@@ -90,7 +91,7 @@ const FormValidation = () => {
         setLoading(true);
         setnoData(false);
         const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
-        const response = await axios.get(`http://3.144.9.52:8001/device_tickets`, {
+        const response = await axios.get(`${BASE_URL}/device_tickets`, {
           params: {
             device_id: ticketIdInput,
             date: formattedDate,
@@ -113,7 +114,7 @@ const FormValidation = () => {
         setLoading(true);
         setnoData(false);
         const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
-        const response = await axios.get(`http://3.144.9.52:8001/latest_tickets`, {
+        const response = await axios.get(`${BASE_URL}/latest_tickets`, {
           params: {
             date: formattedDate,
           },

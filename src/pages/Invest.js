@@ -9,6 +9,7 @@ import Notifications from "../components/partials/default/notification/Notificat
 import { DropdownToggle, Spinner,DropdownMenu, Card, UncontrolledDropdown, DropdownItem, Modal,ModalBody} from "reactstrap";
 import SessionDevice from "../components/partials/analytics/session-devices/SessionDevice";
 import CountUp from "react-countup";
+import BASE_URL from "../config";
 import {
   Block,
   BlockDes,
@@ -39,7 +40,7 @@ const InvestHomePage = () => {
   useEffect(() => {
     const fetchTemperatureData = async () => {
       try {
-        const response = await fetch('http://3.144.9.52:8001/temperature_stats');
+        const response = await fetch(`${BASE_URL}/temperature_stats`);
         const data = await response.json();
         setTemperatureStats(data);
         setTemperatureLoading(false); // Set loading to false once data is fetched
@@ -54,7 +55,7 @@ const InvestHomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://3.144.9.52:8001/active_devices_counts');
+        const response = await fetch(`${BASE_URL}/active_devices_counts`);
         const data = await response.json();
         setDeviceCounts(data);
         setLoading(false);
@@ -70,7 +71,7 @@ const InvestHomePage = () => {
   useEffect(() => {
     const fetchTicketData = async () => {
       try {
-        const response = await fetch('http://3.144.9.52:8001/ticket_counts');
+        const response = await fetch(`${BASE_URL}/ticket_counts`);
         const data = await response.json();
         setTicketCounts(data);
         seticketsloading(false); // Set loading to false once data is fetched

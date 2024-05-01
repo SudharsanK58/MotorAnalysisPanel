@@ -8,6 +8,7 @@ import { Button } from "../../../components/Component";
 import { Alert } from "reactstrap";
 import axios from "axios";
 import Icon from "../../../components/icon/Icon";
+import BASE_URL from "../../../config";
 // import Icon from "../../../components/Component";
 import {
   Block,
@@ -66,11 +67,11 @@ const onButtonClick = async () => {
     let isSecondApiTrue = false; // Flag for the second API call
     for (let i = 0; i < 5; i++) {
       await new Promise(resolve => setTimeout(resolve, 3000)); // 10 seconds gap
-      const response = await axios.get(`http://3.144.9.52:8001/device_log_data2?device_id=${selectedValidator.macId}`);
+      const response = await axios.get(`${BASE_URL}/device_log_data2?device_id=${selectedValidator.macId}`);
       if (response.data === true) {
         isDeviceActive = true;
         // Make the second API call only if the device is active
-        const secondResponse = await axios.get(`http://3.144.9.52:8001/precheck?macId=${selectedValidator.macId}&apiUrl=${apiUrl}`);
+        const secondResponse = await axios.get(`${BASE_URL}/precheck?macId=${selectedValidator.macId}&apiUrl=${apiUrl}`);
         console.log("Second API Response:", secondResponse.data);
         setSecondApiResponse(secondResponse.data); // Store the response in state variable
         if (secondResponse.data === true) {

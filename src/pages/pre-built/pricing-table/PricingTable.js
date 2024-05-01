@@ -16,6 +16,7 @@ import { ToastContainer } from "react-toastify";
 import { Table , Spinner ,Alert} from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
 import './binktext.css';
+import BASE_URL from "../../../config";
 // ... (previous imports)
 
 const PricingTable = () => {
@@ -42,7 +43,7 @@ const PricingTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://3.144.9.52:8001/get_data_by_device_id/04:e9:e5:16:f6:3d");
+        const response = await fetch(`${BASE_URL}/get_data_by_device_id/04:e9:e5:16:f6:3d`);
         const data = await response.json();
         const currentUserId = data?.TicketData[0]?.ticket_id;
         if (previousUserId && currentUserId !== previousUserId) {

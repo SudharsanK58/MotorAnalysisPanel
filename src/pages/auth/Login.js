@@ -4,6 +4,7 @@ import LogoDark from "../../images/logo-dark.png";
 import Head from "../../layout/head/Head";
 import AuthFooter from "./AuthFooter";
 import backImage from "./loginPage.jpg"
+import BASE_URL from "../../config";
 import {
   Block,
   BlockContent,
@@ -27,7 +28,7 @@ const Login = () => {
     setLoading(true);
   
     try {
-      const response = await fetch("http://3.144.9.52:8001/login", {
+      const response = await fetch(`${BASE_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -8,6 +8,7 @@ import Head from "../../../layout/head/Head";
 import { Button,TooltipComponent } from "../../../components/Component";
 import { Alert,Badge,UncontrolledAlert } from "reactstrap";
 import axios from "axios";
+import BASE_URL from "../../../config";
 import FormValidationComponent from "../../../components/partials/form/FormValidation";
 import {
   Block,
@@ -77,7 +78,7 @@ const AppBenchMarkTicketSearch = () => {
         setLoading(true);
         setnoData(false);
         // Make an API request using axios (replace with fetch if you prefer)
-        const response = await axios.get(`http://3.144.9.52:8001/app_benchmark_search_ticket/${ticketIdInput}`);
+        const response = await axios.get(`${BASE_URL}/app_benchmark_search_ticket/${ticketIdInput}`);
 
         // Handle the API response as needed
         console.log("API Response:", response.data);
@@ -94,7 +95,7 @@ const AppBenchMarkTicketSearch = () => {
         setLoading(true);
         setnoData(false);
         const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
-        const response = await axios.get(`http://3.144.9.52:8001/app_benchmark_device_date`, {
+        const response = await axios.get(`${BASE_URL}/app_benchmark_device_date`, {
           params: {
             device_id: ticketIdInput,
             date: formattedDate,
@@ -117,7 +118,7 @@ const AppBenchMarkTicketSearch = () => {
         setLoading(true);
         setnoData(false);
         const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
-        const response = await axios.get(`http://3.144.9.52:8001/latest_app_benchmark`, {
+        const response = await axios.get(`${BASE_URL}/latest_app_benchmark`, {
           params: {
             date: formattedDate,
           },
@@ -260,7 +261,7 @@ const handleViewAction = async (ticketId) => {
   try {
     setIsLoading(true); // Set loading state to true when API starts loading
     setViewModal(true);
-    const response = await axios.get(`http://3.144.9.52:8001/app_benchmark_ticket_details/${ticketId}`);
+    const response = await axios.get(`${BASE_URL}/app_benchmark_ticket_details/${ticketId}`);
     console.log("Ticket Details:", response.data);
     setDetail(response.data); // Set the fetched data to the detail state
     setIsLoading(false); // Set loading state to false when API finishes loading

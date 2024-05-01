@@ -16,6 +16,7 @@ import { ToastContainer } from "react-toastify";
 import { Table , Spinner ,Alert} from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
 import './binktext.css';
+import BASE_URL from "../../../config";
 const TicketBenchMark = () => {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ const TicketBenchMark = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://3.144.9.52:8001/benchmark_ticket/");
+        const response = await fetch(`${BASE_URL}/benchmark_ticket/`);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }

@@ -11,7 +11,7 @@ import { Card, CardBody, Button,Spinner,Input,Table, Badge,PaginationLink, Pagin
 import axios from "axios";
 import Example from "./Example";
 import Swal from "sweetalert2";
-
+import BASE_URL from "../../../config";
 
 
 const SpecialTablePage = () => {
@@ -30,7 +30,7 @@ const SpecialTablePage = () => {
   const handleAdvanced1 = async (rowData,e) => {
     try {
       // Make API call
-      const response = await fetch('http://54.89.246.64:8001/publish', {
+      const response = await fetch(`${BASE_URL}/publish`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const SpecialTablePage = () => {
       if (result.isConfirmed) {
         try {
           // Make API call
-          const response = await fetch('http://54.89.246.64:8001/publish', {
+          const response = await fetch(`${BASE_URL}//publish`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -255,7 +255,7 @@ const calculateLastSeen = (formattedTimestamp) => {
   const fetchDeviceLogData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://3.144.9.52:8001/device_log_data");
+      const response = await axios.get(`${BASE_URL}/device_log_data`);
       setTableData(response.data);
       // Initialize dropdownOpen state for each row
       setDropdownOpen(Array(response.data.length).fill(false));
@@ -272,7 +272,7 @@ const calculateLastSeen = (formattedTimestamp) => {
   const fetchClientData = async (client) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://3.144.9.52:8001/macaddresses?client_name=${encodeURIComponent(client)}`);
+      const response = await axios.get(`${BASE_URL}/macaddresses?client_name=${encodeURIComponent(client)}`);
       setTableData(response.data);
       setLoading(false);
     } catch (error) {
@@ -284,7 +284,7 @@ const calculateLastSeen = (formattedTimestamp) => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await axios.get("http://3.144.9.52:8001/clients");
+        const response = await axios.get(`${BASE_URL}/clients`);
         setClients(response.data);
       } catch (error) {
         console.error("Error fetching clients:", error);

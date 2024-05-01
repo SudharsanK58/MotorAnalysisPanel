@@ -4,6 +4,7 @@ import { Progress, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropd
 import { PreviewAltCard } from "../../../preview/Preview";
 import { PurchasePlanChart } from "../../charts/invest/InvestChart";
 import { investData, investDataSet2, investDataSet3, investDataSet4 } from "./InvestData";
+import BASE_URL from "../../../../config";
 
 const InvestPlan = () => {
   const [data, setData] = useState([]);
@@ -12,7 +13,7 @@ const InvestPlan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://3.144.9.52:8001/active_devices_percentage");
+        const response =await fetch(`${BASE_URL}/active_devices_percentage`);
         const apiData = await response.json();
         setData(apiData);
         setLoading(false);
