@@ -350,7 +350,7 @@ const menu = [
     text: "BENCHMARK",
     subMenu: [
       {
-        text: "TOF-SENDOR-BASED",
+        text: "TOF-SENSOR-BASED",
         link: "/ticket-benchmark",
       },
       {
