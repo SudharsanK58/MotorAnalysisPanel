@@ -395,7 +395,7 @@ const InvestHomePage = () => {
         </div>
         <div style={{ marginBottom: '10px' }}></div>
         <p>In this update, we've added the ability to change your time zone in the Account Settings. Simply go to your profile icon in the top left corner to access it.</p>
-        <p>The Benchmark details have been added for the Zig travel places app. Now, you can view validation data such as validation distance, time, and API response time. Navigate to Benchmark -&gt; App based -&gt; Zig travel place. You can also see the specific validation data by clicking on the view (eye) icon.</p>
+        <p>The Benchmark details have been added for the Zig travel places app. Now, you can view validation data such as validation distance, time, and API response time. Navigate to Benchmark -&gt; App based. You can also see the specific validation data by clicking on the view (eye) icon.</p>
       </ModalBody>
       </Modal>
     </React.Fragment>
