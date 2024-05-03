@@ -145,7 +145,6 @@ const AppBenchMarkTicketSearch = () => {
               <Table className="text-center">
                 <thead>
                   <tr>
-                    <th>Hardware</th>
                     <th>User name</th>
                     <th>App Name</th>
                     <th>Ticket ID</th>
@@ -158,8 +157,15 @@ const AppBenchMarkTicketSearch = () => {
                 <tbody>
                 {apiResponse.map((item, index) => (
                   <tr key={index}>
-                    <td>{item.hardware ? <Icon name="apple" style={{ fontSize: '24px' }} /> : <Icon name="android" style={{ fontSize: '24px' }} />}</td>
-                    <td>{item.userName}</td>
+                    <td style={{ textAlign: 'center' }}>
+                      <div style={{ display: 'inline-block', verticalAlign: 'middle', textAlign: 'left' }}>
+                        {item.hardware ? 
+                          <span style={{ marginRight: '5px', verticalAlign: 'middle' }}><Icon name="apple" style={{ fontSize: '24px' }} /></span> : 
+                          <span style={{ marginRight: '5px', verticalAlign: 'middle' }}><Icon name="android" style={{ fontSize: '24px' }} /></span>
+                        }
+                        {item.userName}
+                      </div>
+                    </td>
                     <td>{item.appName}</td>
                     <td>{item.ticketId}</td>
                     <td>
@@ -285,7 +291,7 @@ const getLabel = watch("labelText") || "Ticket ID";
               Dashboard
             </BackTo> */}
             <BlockTitle tag="h2" className="fw-normal">
-              Zig Travel Places
+              App based validation benchmark
             </BlockTitle>
             <BlockDes>
             <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>
