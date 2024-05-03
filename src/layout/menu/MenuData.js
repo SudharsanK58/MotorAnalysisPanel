@@ -350,27 +350,27 @@ const menu = [
     text: "BENCHMARK",
     subMenu: [
       {
-        text: "LIVE-TOF",
+        text: "TOF-SENDOR-BASED",
         link: "/ticket-benchmark",
       },
-      // {
-      //   text: "BENCHMARK",
-      //   link: "/zig-app-benchmark",
-      // },
       {
         text: "APP-BASED",
-        active: false,
-        subMenu: [
-          {
-            text: "ZIG-TRAVEL-PLACES",
-            link: "/zig-app-benchmark",
-          },
-          // {
-          //   text: "MICHIGAN-MOBILITY-WALLET",
-          //   link: "/table-datatable",
-          // },
-        ],
+        link: "/zig-app-benchmark",
       },
+      // {
+      //   text: "APP-BASED",
+      //   active: false,
+      //   subMenu: [
+      //     {
+      //       text: "ZIG-TRAVEL-PLACES",
+      //       link: "/zig-app-benchmark",
+      //     },
+      //     // {
+      //     //   text: "MICHIGAN-MOBILITY-WALLET",
+      //     //   link: "/table-datatable",
+      //     // },
+      //   ],
+      // },
       // {
       //   text: "Chats / Messenger",
       //   link: "/app-chat",

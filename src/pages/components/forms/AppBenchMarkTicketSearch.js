@@ -147,7 +147,7 @@ const AppBenchMarkTicketSearch = () => {
                   <tr>
                     <th>Hardware</th>
                     <th>User name</th>
-                    <th>Coach Number</th>
+                    <th>App Name</th>
                     <th>Ticket ID</th>
                     <th>Time taken</th>
                     <th>ValidationMode</th>
@@ -160,7 +160,7 @@ const AppBenchMarkTicketSearch = () => {
                   <tr key={index}>
                     <td>{item.hardware ? <Icon name="apple" style={{ fontSize: '24px' }} /> : <Icon name="android" style={{ fontSize: '24px' }} />}</td>
                     <td>{item.userName}</td>
-                    <td>{item.coachNumber}</td>
+                    <td>{item.appName}</td>
                     <td>{item.ticketId}</td>
                     <td>
                       <span style={{ fontWeight: 'bold', color: 'blue' }}>
@@ -328,7 +328,7 @@ const getLabel = watch("labelText") || "Ticket ID";
                     </Label>
                   </div>
                 </li>
-                <li>
+                {/* <li>
                   <div className="custom-control custom-checkbox">
                     <input
                       type="checkbox"
@@ -342,7 +342,7 @@ const getLabel = watch("labelText") || "Ticket ID";
                       Device ID
                     </Label>
                   </div>
-                </li>
+                </li> */}
                 <li>
                   <div className="custom-control custom-checkbox">
                     <input
@@ -456,6 +456,14 @@ const getLabel = watch("labelText") || "Ticket ID";
                 <Col lg={6}>
                   <span className="sub-text">Battery Health</span>
                   <span className="caption-text text-break">{detail.batteryPercentage}%</span>
+                </Col>
+                <Col lg={6}>
+                  <span className="sub-text">App Name</span>
+                  <span className="caption-text text-break">{detail.appName}</span>
+                </Col>
+                <Col lg={6}>
+                  <span className="sub-text">App Version</span>
+                  <span className="caption-text text-break">{detail.appVersion}</span>
                 </Col>
                 <Col lg={6}>
                   <span className="sub-text">Ticket ID</span>
