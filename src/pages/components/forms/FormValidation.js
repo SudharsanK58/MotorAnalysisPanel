@@ -5,7 +5,7 @@ import Content from "../../../layout/content/Content";
 import { Row, Col, Label, Form,Spinner, Card, CardBody, Table } from "reactstrap";
 import Head from "../../../layout/head/Head";
 import { Button } from "../../../components/Component";
-import { Alert, Badge, UncontrolledAlert } from "reactstrap";
+import { Alert, Badge, UncontrolledAlert,Pagination,PaginationItem,PaginationLink } from "reactstrap";
 import axios from "axios";
 import FormValidationComponent from "../../../components/partials/form/FormValidation";
 import BASE_URL from "../../../config";
@@ -29,6 +29,17 @@ const FormValidation = () => {
   const [noData, setnoData] = useState(false);
   const [loading, setLoading] = useState(false);
   const [timeZone, setTimeZone] = useState(sessionStorage.getItem("TimeZone") || 0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Number of items per page
+  
+// Calculate total number of pages
+const totalPages = apiResponse ? Math.ceil(apiResponse.length / itemsPerPage) : 0;
+
+// Get current page of data
+const indexOfLastItem = currentPage * itemsPerPage;
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLastItem) : [];
+
   // Set the default value for the "searchByTicketID" checkbox
   useEffect(() => {
     setValue("searchByTicketID", true);
@@ -357,32 +368,68 @@ const getLabel = watch("labelText") || "Ticket ID";
               </tr>
             </thead>
             <tbody>
-              {apiResponse.map((item, index) => (
-                <tr key={index}>
+            {currentItems.map((item, index) => (
+              <tr key={index}>
                 {Object.entries(item).map(([key, value], index) => (
                   <td key={index}>
-                  {/* Check if the key is "Ticket type" and the value is 301 */}
-                  {key === "Ticket type" && value === 301 ? (
-                    <Badge color="danger">illegal</Badge>
-                  ) : (
-                    // If not, render the value normally
-                    key.endsWith('date') ? formatTimestamp(value) : value
-                  )}
-                </td>
+                    {/* Check if the key is "Ticket type" and the value is 301 */}
+                    {key === "Ticket type" && value === 301 ? (
+                      <Badge color="danger">illegal</Badge>
+                    ) : (
+                      // If not, render the value normally
+                      key.endsWith('date') ? formatTimestamp(value) : value
+                    )}
+                  </td>
                 ))}
               </tr>
-              ))}
+            ))}
             </tbody>
           </Table>
-        </div>
+
+        {apiResponse && apiResponse.length > 0 && (
+        <Pagination aria-label="Page navigation example" className="text-center mt-3">
+        <PaginationItem>
+          <PaginationLink
+            previous
+            href="#previous"
+            onClick={(ev) => {
+              ev.preventDefault();
+              setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
+            }}
+            disabled={currentPage === 1}
+          />
+        </PaginationItem>
+        {/* Render page numbers */}
+        {[...Array(totalPages)].map((_, index) => (
+          <PaginationItem key={index} active={index + 1 === currentPage}>
+            <PaginationLink
+              href={`#page-${index + 1}`}
+              onClick={(ev) => {
+                ev.preventDefault();
+                setCurrentPage(index + 1);
+              }}
+            >
+              {index + 1}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+        <PaginationItem>
+          <PaginationLink
+            next
+            href="#next"
+            onClick={(ev) => {
+              ev.preventDefault();
+              setCurrentPage((prevPage) => Math.min(totalPages, prevPage + 1));
+            }}
+            disabled={currentPage === totalPages}
+          />
+        </PaginationItem>
+      </Pagination>
+        )} </div>
       </CardBody>
     </Card>
   ) : null
 )}
-
-
-
-
     </React.Fragment>
   );
 };

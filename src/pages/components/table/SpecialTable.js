@@ -451,7 +451,7 @@ const calculateLastSeen = (formattedTimestamp) => {
                     />
                   </PaginationItem>
                 </Pagination>
-                </div>
+              </div>
             </CardBody>
           </Card>
           <div style={{ width: '20px' }}></div>

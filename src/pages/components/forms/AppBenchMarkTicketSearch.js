@@ -6,7 +6,7 @@ import Content from "../../../layout/content/Content";
 import { Row, Col, Label, Form,Spinner, Card, CardBody, Table,  Modal,ModalBody } from "reactstrap";
 import Head from "../../../layout/head/Head";
 import { Button,TooltipComponent } from "../../../components/Component";
-import { Alert,Badge,UncontrolledAlert } from "reactstrap";
+import { Alert,Badge,UncontrolledAlert, PaginationItem, Pagination,PaginationLink } from "reactstrap";
 import axios from "axios";
 import BASE_URL from "../../../config";
 import FormValidationComponent from "../../../components/partials/form/FormValidation";
@@ -33,6 +33,17 @@ const AppBenchMarkTicketSearch = () => {
   const [detail, setDetail] = useState({});
   const [viewModal, setViewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Number of items per page
+  
+// Calculate total number of pages
+const totalPages = apiResponse ? Math.ceil(apiResponse.length / itemsPerPage) : 0;
+
+// Get current page of data
+const indexOfLastItem = currentPage * itemsPerPage;
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLastItem) : [];
+  
   // Set the default value for the "searchByTicketID" checkbox
   useEffect(() => {
     setValue("searchByTicketID", true);
@@ -155,7 +166,7 @@ const AppBenchMarkTicketSearch = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {apiResponse.map((item, index) => (
+                {currentItems.map((item, index) => (
                   <tr key={index}>
                     <td style={{ textAlign: 'center' }}>
                       <div style={{ display: 'inline-block', verticalAlign: 'middle', textAlign: 'left' }}>
@@ -184,6 +195,46 @@ const AppBenchMarkTicketSearch = () => {
                 ))}
                 </tbody>
               </Table>
+              {apiResponse && apiResponse.length > 0 && (
+        <Pagination aria-label="Page navigation example" className="text-center mt-3">
+        <PaginationItem>
+          <PaginationLink
+            previous
+            href="#previous"
+            onClick={(ev) => {
+              ev.preventDefault();
+              setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
+            }}
+            disabled={currentPage === 1}
+          />
+        </PaginationItem>
+        {/* Render page numbers */}
+        {[...Array(totalPages)].map((_, index) => (
+          <PaginationItem key={index} active={index + 1 === currentPage}>
+            <PaginationLink
+              href={`#page-${index + 1}`}
+              onClick={(ev) => {
+                ev.preventDefault();
+                setCurrentPage(index + 1);
+              }}
+            >
+              {index + 1}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+        <PaginationItem>
+          <PaginationLink
+            next
+            href="#next"
+            onClick={(ev) => {
+              ev.preventDefault();
+              setCurrentPage((prevPage) => Math.min(totalPages, prevPage + 1));
+            }}
+            disabled={currentPage === totalPages}
+          />
+        </PaginationItem>
+      </Pagination>
+        )} 
             </div>
           </CardBody>
         </Card>
