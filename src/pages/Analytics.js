@@ -34,10 +34,10 @@ const AnalyticsHomePage = () => {
           <div className="nk-block-between">
             <BlockHeadContent>
               <BlockTitle page tag="h3">
-                Website Analytics
+                Valdiation Analytics
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>Welcome to Analytics Dashboard.</p>
+                <p>Welcome to Valdiation Analytics Dashboard.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
@@ -48,7 +48,7 @@ const AnalyticsHomePage = () => {
                 >
                   <Icon name="more-v"></Icon>
                 </Button>
-                <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
+                {/* <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
                   <ul className="nk-block-tools g-3">
                     <li>
                       <UncontrolledDropdown>
@@ -102,7 +102,7 @@ const AnalyticsHomePage = () => {
                       </Button>
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </div>
             </BlockHeadContent>
           </div>
@@ -110,6 +110,16 @@ const AnalyticsHomePage = () => {
 
         <Block>
           <Row className="g-gs">
+          <Col sm="7" lg="4">
+              <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
+                <SessionDevice />
+              </PreviewAltCard>
+            </Col>
+            <Col sm="7" lg="8">
+              <PreviewAltCard className="h-100">
+                <TrafficDougnut />
+              </PreviewAltCard>
+            </Col>
             <Col lg="7">
               <PreviewAltCard className="h-100">
                 <AudienceOverview />

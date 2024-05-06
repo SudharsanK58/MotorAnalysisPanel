@@ -357,6 +357,10 @@ const menu = [
         text: "APP-BASED",
         link: "/zig-app-benchmark",
       },
+      {
+        text: "REPORT",
+        link: "/benchmark-analytics",
+      },
       // {
       //   text: "APP-BASED",
       //   active: false,

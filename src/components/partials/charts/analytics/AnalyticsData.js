@@ -1059,7 +1059,7 @@ export var deviceStatusDataSet4 = {
     {
       borderColor: "#fff",
       backgroundColor: ["#9cabff", "#b8acff", "#7de1f8"],
-      data: [40, 12, 48],
+      data: [40, 10, 50],
     },
   ],
 };

@@ -11,34 +11,6 @@ const AudienceOverview = () => {
           <h6 className="title">Audience Overview</h6>
           <p>How have your users, sessions, bounce rate metrics trended.</p>
         </div>
-        <div className="card-tools shrink-0 d-none d-sm-block">
-          <ul className="nav nav-switch-s2 nav-tabs bg-white">
-            <li className="nav-item">
-              <a
-                href="#navitem"
-                className={auOverview === "day-7" ? "nav-link active" : "nav-link"}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setAuOverview("day-7");
-                }}
-              >
-                7 D
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                href="#navitem"
-                className={auOverview === "month-1" ? "nav-link active" : "nav-link"}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setAuOverview("month-1");
-                }}
-              >
-                1 M
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
       <div className="analytic-ov">
         <div className="analytic-data-group analytic-ov-group g-3">
@@ -71,14 +43,9 @@ const AudienceOverview = () => {
             </div>
           </div>
         </div>
-        <div className="analytic-ov-ck">
+        {/* <div className="analytic-ov-ck">
           <AudienceLineChart state={auOverview} />
-        </div>
-        <div className="chart-label-group ms-5">
-          <div className="chart-label">01 Jan, 2020</div>
-          <div className="chart-label d-none d-sm-block">{auOverview === "month-1" ? "15" : "4"} Jan, 2020</div>
-          <div className="chart-label"> {auOverview === "month-1" ? "30" : "7"} Jan, 2020</div>
-        </div>
+        </div> */}
       </div>
     </React.Fragment>
   );
