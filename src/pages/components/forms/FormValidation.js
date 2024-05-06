@@ -5,7 +5,7 @@ import Content from "../../../layout/content/Content";
 import { Row, Col, Label, Form,Spinner, Card, CardBody, Table } from "reactstrap";
 import Head from "../../../layout/head/Head";
 import { Button } from "../../../components/Component";
-import { Alert, UncontrolledAlert } from "reactstrap";
+import { Alert, Badge, UncontrolledAlert } from "reactstrap";
 import axios from "axios";
 import FormValidationComponent from "../../../components/partials/form/FormValidation";
 import BASE_URL from "../../../config";
@@ -361,8 +361,14 @@ const getLabel = watch("labelText") || "Ticket ID";
                 <tr key={index}>
                 {Object.entries(item).map(([key, value], index) => (
                   <td key={index}>
-                    {key.endsWith('date') ? formatTimestamp(value) : value}
-                  </td>
+                  {/* Check if the key is "Ticket type" and the value is 301 */}
+                  {key === "Ticket type" && value === 301 ? (
+                    <Badge color="danger">illegal</Badge>
+                  ) : (
+                    // If not, render the value normally
+                    key.endsWith('date') ? formatTimestamp(value) : value
+                  )}
+                </td>
                 ))}
               </tr>
               ))}

@@ -391,11 +391,10 @@ const InvestHomePage = () => {
           <Icon name="cross-sm" />
         </a>
         <div className="nk-modal-head">
-          <h4 className="nk-modal-title title">What's New <small className="text-primary">Version 2.01</small></h4>
+          <h4 className="nk-modal-title title">What's New <small className="text-primary">Version 2.02</small></h4>
         </div>
         <div style={{ marginBottom: '10px' }}></div>
-        <p>In this update, we've added the ability to change your time zone in the Account Settings. Simply go to your profile icon in the top left corner to access it.</p>
-        <p>The Benchmark details have been added for the Zig travel places app. Now, you can view validation data such as validation distance, time, and API response time. Navigate to Benchmark -&gt; App based. You can also see the specific validation data by clicking on the view (eye) icon.</p>
+        <p>      * Now illegal entry data can be also seen in ticket-search page.</p>
       </ModalBody>
       </Modal>
     </React.Fragment>
