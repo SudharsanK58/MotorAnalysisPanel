@@ -87,7 +87,7 @@ const SpecialTablePage = () => {
       if (result.isConfirmed) {
         try {
           // Make API call
-          const response = await fetch(`${BASE_URL}//publish`, {
+          const response = await fetch(`${BASE_URL}/publish`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

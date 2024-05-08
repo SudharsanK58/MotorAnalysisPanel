@@ -2,99 +2,70 @@ import React, { useState, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { DropdownToggle, DropdownMenu, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import { Icon } from "../../../Component";
+import { ResponsivePie } from '@nivo/pie'
+import axios from "axios";
+import BASE_URL from "../../../../config";
 
 const SessionDevice = () => {
-  const [ticketCounts, setTicketCounts] = useState({
-    ios: 0,
-    android: 0,
-  });
-
+  const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8001/latest_app_benchmark_ticket_ids?date=5%2F6%2F2024");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const responseData = await response.json();
-        // Assuming the API response is an array with a single object
-        const { datasets } = responseData[0];
-        const iosCount = datasets[0].data[0];
-        const androidCount = datasets[0].data[1];
-        setTicketCounts({ ios: iosCount, android: androidCount });
+        const response = await axios.get(`${BASE_URL}/latest_app_benchmark_phone_model?date=5%2F8%2F2024`);
+        setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
+
     fetchData();
   }, []);
 
-  const doughnutData = {
-    labels: ["IOS", "ANDROID"],
-    dataUnit: "Tickets",
-    legend: true, // Make sure legend is defined in the data object
-    datasets: [
-      {
-        borderColor: "#fff",
-        backgroundColor: ["#36a2eb", "#ff6384"], // Example colors
-        data: [ticketCounts.ios, ticketCounts.android],
-      },
-    ],
-  };
-
   return (
     <React.Fragment>
-      <div className="card-title-group">
-        <div className="card-title card-title-sm">
-          <h6 className="title">Sessions by IOS vs Android Validation %</h6>
-        </div>
-      </div>
-      <div className="device-status my-auto">
-        <div className="device-status-ck">
-          <Doughnut
-            className="analytics-doughnut"
-            data={doughnutData}
-            options={{
-              plugins: {
-                tooltip: {
-                  enabled: true,
-                  displayColors: false,
-                  backgroundColor: "#eff6ff",
-                  titleFont: {
-                    size: "13px",
-                  },
-                  titleColor: "#6783b8",
-                  titleMarginBottom: 6,
-                  bodyColor: "#9eaecf",
-                  bodyFont: {
-                    size: "12px",
-                  },
-                  bodySpacing: 4,
-                  padding: 10,
-                  footerMarginTop: 0,
-                },
-              },
-              rotation: -1.5,
-              cutoutPercentage: 70,
-              maintainAspectRatio: false,
-            }}
-          />
-        </div>
-        <div className="device-status-group">
-          <div className="device-status-data" style={{ marginLeft: "0px" }}>
-            <div className="title">IOS</div>
-            <div className="amount" style={{ fontSize: "14px" }}>
-              {ticketCounts.ios} Tickets
-            </div>
-          </div>
-          <div className="device-status-data" style={{ marginLeft: "0px" }}>
-            <div className="title">Android</div>
-            <div className="amount" style={{ fontSize: "14px" }}>
-              {ticketCounts.android} Tickets
-            </div>
-          </div>
-        </div>
-      </div>
+      <h6 className="title">Ticket validated by phone models</h6>
+      <ResponsivePie
+        data={data}
+        margin={{ top: 10, right: 80, bottom: 60, left: 80 }}
+        innerRadius={0.5}
+        padAngle={0}
+        cornerRadius={6}
+        activeOuterRadiusOffset={16}
+        borderWidth={1}
+        borderColor={{
+          from: 'color',
+          modifiers: [['darker', 0.1]],
+        }}
+        arcLinkLabelsSkipAngle={15}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsThickness={3}
+        arcLinkLabelsColor={{ from: 'color' }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+          from: 'color',
+          modifiers: [['darker', 2]],
+        }}
+        defs={[
+          {
+            id: 'dots',
+            type: 'patternDots',
+            background: 'inherit',
+            color: 'rgba(255, 255, 255, 0.3)',
+            size: 4,
+            padding: 1,
+            stagger: false,
+          },
+          {
+            id: 'lines',
+            type: 'patternLines',
+            background: 'inherit',
+            color: 'rgba(255, 255, 255, 0.3)',
+            rotation: -45,
+            lineWidth: 6,
+            spacing: 10,
+          },
+        ]}
+      />
     </React.Fragment>
   );
 };

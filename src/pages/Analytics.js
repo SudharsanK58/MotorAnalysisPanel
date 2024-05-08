@@ -24,6 +24,7 @@ import {
   PreviewAltCard,
 } from "../components/Component";
 
+
 const AnalyticsHomePage = () => {
   const [sm, updateSm] = useState(false);
   return (
@@ -107,64 +108,48 @@ const AnalyticsHomePage = () => {
             </BlockHeadContent>
           </div>
         </BlockHead>
-
         <Block>
           <Row className="g-gs">
-          <Col sm="7" lg="4">
+          <Col sm="6" lg="4">
               <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
                 <SessionDevice />
               </PreviewAltCard>
             </Col>
-            <Col sm="7" lg="8">
+            <Col sm="6" lg="4">
               <PreviewAltCard className="h-100">
                 <TrafficDougnut />
               </PreviewAltCard>
             </Col>
-            <Col lg="7">
+            {/* <Col lg="7">
               <PreviewAltCard className="h-100">
                 <AudienceOverview />
               </PreviewAltCard>
-            </Col>
-            <Col md="6" lg="5">
+            </Col> */}
+            {/* <Col md="6" lg="5">
               <PreviewAltCard className="h-100">
                 <ActiveUser />
               </PreviewAltCard>
-            </Col>
-            <Col md="6" lg="5">
+            </Col> */}
+            {/* <Col md="6" lg="5">
               <PreviewAltCard className="h-100">
                 <WebsitePerformance />
               </PreviewAltCard>
-            </Col>
-            <Col lg="7">
+            </Col> */}
+            {/* <Col lg="7">
               <Card className="card-bordered h-100">
                 <TrafficChannel />
               </Card>
-            </Col>
-            <Col sm="6" lg="4">
-              <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
-                <SessionDevice />
-              </PreviewAltCard>
-            </Col>
-            <Col sm="6" lg="4">
-              <PreviewAltCard className="h-100">
-                <UserMap />
-              </PreviewAltCard>
-            </Col>
-            <Col sm="6" lg="4">
-              <PreviewAltCard className="h-100">
-                <TrafficDougnut />
-              </PreviewAltCard>
-            </Col>
-            <Col sm="6" lg="5">
+            </Col> */}
+            {/* <Col sm="6" lg="5">
               <Card className="card-bordered h-100">
                 <PageViewer />
               </Card>
-            </Col>
-            <Col lg="7">
+            </Col> */}
+            {/* <Col lg="7">
               <Card className="card-bordered h-100">
                 <BrowserUser />
               </Card>
-            </Col>
+            </Col> */}
           </Row>
         </Block>
       </Content>
