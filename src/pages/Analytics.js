@@ -110,9 +110,13 @@ const AnalyticsHomePage = () => {
         </BlockHead>
         <Block>
           <Row className="g-gs">
+            
           <Col sm="6" lg="4">
+            
               <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
+              <div style={{ height: 400 }}>
                 <SessionDevice />
+                </div>
               </PreviewAltCard>
             </Col>
             <Col sm="6" lg="4">
