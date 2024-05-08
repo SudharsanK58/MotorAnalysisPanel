@@ -116,7 +116,7 @@ const AnalyticsHomePage = () => {
               </PreviewAltCard>
             </Col>
             <Col sm="6" lg="4">
-              <PreviewAltCard className="h-100">
+            <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
                 <TrafficDougnut />
               </PreviewAltCard>
             </Col>
