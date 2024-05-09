@@ -26,8 +26,6 @@ const SessionDevice = () => {
       <h6 className="title">Ticket validated by phone models</h6>
       <ResponsivePie
         data={data}
-        width={350} // Adjust the width as needed
-        height={350} // Adjust the height as needed
         margin={{ top: 10, right: 80, bottom: 60, left: 80 }}
         innerRadius={0.5}
         padAngle={0}

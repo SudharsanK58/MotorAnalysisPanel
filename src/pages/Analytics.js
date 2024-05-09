@@ -10,6 +10,7 @@ import UserMap from "../components/partials/analytics/user-map/UserMap";
 import BrowserUser from "../components/partials/analytics/browser-users/BrowserUser";
 import PageViewer from "../components/partials/analytics/page-view/PageView";
 import SessionDevice from "../components/partials/analytics/session-devices/SessionDevice";
+import TicketsCirclePacking from "../components/partials/analytics/traffic-dougnut/TicketsCirclePacking";
 import { DropdownToggle, DropdownMenu, Card, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import {
   Block,
@@ -124,6 +125,12 @@ const AnalyticsHomePage = () => {
                 <TrafficDougnut />
               </PreviewAltCard>
             </Col>
+            <Col sm="6" lg="4">
+            <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
+                <TicketsCirclePacking />
+              </PreviewAltCard>
+            </Col>
+            
             {/* <Col lg="7">
               <PreviewAltCard className="h-100">
                 <AudienceOverview />

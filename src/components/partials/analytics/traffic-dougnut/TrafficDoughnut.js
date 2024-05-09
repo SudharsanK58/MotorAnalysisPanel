@@ -5,6 +5,7 @@ import { ResponsiveRadialBar } from '@nivo/radial-bar'
 import BASE_URL from "../../../../config";
 import axios from "axios";
 
+
 const TrafficDougnut = () => {
   const [traffic, setTraffic] = useState("30");
   const [data, setData] = useState([]);
@@ -50,11 +51,9 @@ const TrafficDougnut = () => {
   ];
   return (
     <React.Fragment>
-          <h6 className="title">Traffic Channel</h6>
+          <h6 className="title">Foreground Vs Pocket mode Valdiation</h6>
         <ResponsiveRadialBar
         data={data}
-        width={350} // Adjust the width as needed
-        height={350} // Adjust the height as needed
         valueFormat=" >-.2f"
         padding={0.4}
         cornerRadius={2}
