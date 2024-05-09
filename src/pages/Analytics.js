@@ -130,12 +130,13 @@ const AnalyticsHomePage = () => {
                 <TicketsCirclePacking />
               </PreviewAltCard>
             </Col>
-            
-            {/* <Col lg="7">
-              <PreviewAltCard className="h-100">
-                <AudienceOverview />
-              </PreviewAltCard>
-            </Col> */}
+            <Col lg="20">
+            <div style={{ height: 500 }}>
+            <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
+              <AudienceOverview />
+            </PreviewAltCard>
+            </div>
+            </Col>
             {/* <Col md="6" lg="5">
               <PreviewAltCard className="h-100">
                 <ActiveUser />
