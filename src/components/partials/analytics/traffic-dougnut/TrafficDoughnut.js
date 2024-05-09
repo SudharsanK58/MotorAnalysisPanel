@@ -21,34 +21,7 @@ const TrafficDougnut = () => {
 
     fetchData();
   }, []);
-  const data43 = [
-    {
-      "id": "iOS",
-      "data": [
-        {
-          "x": "Michigan Mobility Wallet Foreground",
-          "y": 23
-        },
-        {
-          "x": "Michigan Mobility Wallet Pocket",
-          "y": 9
-        }
-      ]
-    },
-    {
-      "id": "Android",
-      "data": [
-        {
-          "x": "Michigan Mobility Wallet Foreground",
-          "y": 23
-        },
-        {
-          "x": "Michigan Mobility Wallet Pocket",
-          "y": 37
-        }
-      ]
-    }
-  ];
+
   return (
     <React.Fragment>
           <h6 className="title">Foreground Vs Pocket mode Valdiation</h6>
