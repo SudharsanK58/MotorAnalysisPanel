@@ -35,6 +35,7 @@ const AppBenchMarkTicketSearch = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
+  const [timeZone, setTimeZone] = useState(sessionStorage.getItem("TimeZone") || 0);
   
 // Calculate total number of pages
 const totalPages = apiResponse ? Math.ceil(apiResponse.length / itemsPerPage) : 0;
@@ -129,11 +130,24 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
         setLoading(true);
         setnoData(false);
         const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
-        const response = await axios.get(`${BASE_URL}/latest_app_benchmark`, {
-          params: {
-            date: formattedDate,
-          },
-        });
+        let response;
+        if (sessionStorage.getItem("TimeZone") === '1') {
+          // Eastern Standard Time (EST)
+          response = await axios.get(`${BASE_URL}/latest_app_benchmark`, {
+            params: {
+              date: formattedDate,
+              timeselect: 2
+            },
+          });
+        } else {
+          // Indian Standard Time (IST)
+          response = await axios.get(`${BASE_URL}/latest_app_benchmark`, {
+            params: {
+              date: formattedDate,
+              timeselect: 1
+            },
+          });
+        }
         // Set the API response in the state
         setApiResponse(response.data);
         console.log("API Response:", response.data);
@@ -346,7 +360,7 @@ const getLabel = watch("labelText") || "Ticket ID";
             </BlockTitle>
             <BlockDes>
             <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>
-              <li>Time represented in this table is in <strong style={{ color: 'blue' }}>India Standard Time (IST)</strong>.</li>
+            <li>Time represented in this table is in <strong style={{ color: 'blue' }}>{timeZone === '1' ? "Eastern" : "India"} Standard Time ({timeZone === '1' ? "EST" : "IST"})</strong>.</li>
               <li>This table shows only <strong style={{ color: 'blue' }}>hardware validated tickets</strong></li>
             </ul>
             

@@ -44,7 +44,11 @@ const Login = () => {
         if (data.message === "Login successful") {
           localStorage.setItem("accessToken", "token");
           sessionStorage.setItem("isLoggedIn", true);
-          sessionStorage.setItem("TimeZone", 0);
+          if (data.timeZone === 2) {
+            sessionStorage.setItem("TimeZone", 1);
+          } else {
+            sessionStorage.setItem("TimeZone", 0);
+          }
           if (data.showUpdatesInfo === true) {
             sessionStorage.setItem("ShowUpdate", 1);
           } else {

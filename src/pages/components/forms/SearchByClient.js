@@ -80,10 +80,17 @@ const SearchByClient = () => {
       setLoading(false);
       return;
     }
-
+  
     try {
       const formattedDate = selectedDate ? selectedDate.toLocaleDateString('en-US') : '';
-      const response = await axios.get(`${BASE_URL}/ticketsbyclientallmac?client_name=${encodeURIComponent(selectedClient)}&date=${encodeURIComponent(formattedDate)}`);
+      let response;
+      if (sessionStorage.getItem("TimeZone") === '1') {
+        // Eastern Standard Time (EST)
+        response = await axios.get(`${BASE_URL}/ticketsbyclientallmac?client_name=${encodeURIComponent(selectedClient)}&date=${encodeURIComponent(formattedDate)}&timeselect=2`);
+      } else {
+        // Indian Standard Time (IST)
+        response = await axios.get(`${BASE_URL}/ticketsbyclientallmac?client_name=${encodeURIComponent(selectedClient)}&date=${encodeURIComponent(formattedDate)}&timeselect=1`);
+      }
       if (response.data.length === 0) {
         setNoData(true);
       } else {
@@ -96,7 +103,7 @@ const SearchByClient = () => {
       setNoData(true); // Set noData to true if fetching fails
     }
   };
-
+    
   return (
     <React.Fragment>
       <Head title="Search-Ticket"></Head>

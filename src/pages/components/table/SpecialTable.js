@@ -87,7 +87,7 @@ const SpecialTablePage = () => {
       if (result.isConfirmed) {
         try {
           // Make API call
-          const response = await fetch(`${BASE_URL}//publish`, {
+          const response = await fetch(`${BASE_URL}/publish`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ const SpecialTablePage = () => {
   };
   
   const filteredTableData = tableData.filter((rowData) =>
-  rowData.deviceId.includes(searchQuery) || String(rowData.vehicleNo).includes(searchQuery)
+  rowData.deviceId.includes(searchQuery) || String(rowData.vehicleNo).includes(searchQuery) || String(rowData.bleMacAddress).includes(searchQuery)
 );
 
 const reloadTable = () => {

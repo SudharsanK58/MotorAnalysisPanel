@@ -391,10 +391,13 @@ const InvestHomePage = () => {
           <Icon name="cross-sm" />
         </a>
         <div className="nk-modal-head">
-          <h4 className="nk-modal-title title">What's New <small className="text-primary">Version 2.02</small></h4>
+          <h4 className="nk-modal-title title">What's New <small className="text-primary">Version 2.03</small></h4>
         </div>
         <div style={{ marginBottom: '10px' }}></div>
-        <p>      * Now illegal entry data can be also seen in ticket-search page.</p>
+        <p>
+          * Fixed the bug when selecting date when mismatch in EST and IST.<br/>
+          * Now we can search device by A beacon mac address in all search device.
+        </p>
       </ModalBody>
       </Modal>
     </React.Fragment>

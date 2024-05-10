@@ -125,11 +125,24 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
         setLoading(true);
         setnoData(false);
         const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
-        const response = await axios.get(`${BASE_URL}/latest_tickets`, {
-          params: {
-            date: formattedDate,
-          },
-        });
+        let response;
+        if (sessionStorage.getItem("TimeZone") === '1') {
+          // Eastern Standard Time (EST)
+          response = await axios.get(`${BASE_URL}/latest_tickets`, {
+            params: {
+              date: formattedDate,
+              timeselect : 2
+            },
+          });
+        } else {
+          // Indian Standard Time (IST)
+          response = await axios.get(`${BASE_URL}/latest_tickets`, {
+            params: {
+              date: formattedDate,
+              timeselect : 1
+            },
+          });
+        }
         // Set the API response in the state
         setApiResponse(response.data);
         console.log("API Response:", response.data);
