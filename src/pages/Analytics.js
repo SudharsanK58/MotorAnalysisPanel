@@ -10,6 +10,7 @@ import UserMap from "../components/partials/analytics/user-map/UserMap";
 import BrowserUser from "../components/partials/analytics/browser-users/BrowserUser";
 import PageViewer from "../components/partials/analytics/page-view/PageView";
 import SessionDevice from "../components/partials/analytics/session-devices/SessionDevice";
+import TicketsCirclePacking from "../components/partials/analytics/traffic-dougnut/TicketsCirclePacking";
 import { DropdownToggle, DropdownMenu, Card, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import {
   Block,
@@ -24,6 +25,7 @@ import {
   PreviewAltCard,
 } from "../components/Component";
 
+
 const AnalyticsHomePage = () => {
   const [sm, updateSm] = useState(false);
   return (
@@ -34,10 +36,10 @@ const AnalyticsHomePage = () => {
           <div className="nk-block-between">
             <BlockHeadContent>
               <BlockTitle page tag="h3">
-                Website Analytics
+                Valdiation Analytics
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>Welcome to Analytics Dashboard.</p>
+                <p>Welcome to Valdiation Analytics Dashboard.</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
@@ -48,7 +50,7 @@ const AnalyticsHomePage = () => {
                 >
                   <Icon name="more-v"></Icon>
                 </Button>
-                <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
+                {/* <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
                   <ul className="nk-block-tools g-3">
                     <li>
                       <UncontrolledDropdown>
@@ -102,59 +104,64 @@ const AnalyticsHomePage = () => {
                       </Button>
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </div>
             </BlockHeadContent>
           </div>
         </BlockHead>
-
         <Block>
           <Row className="g-gs">
-            <Col lg="7">
-              <PreviewAltCard className="h-100">
-                <AudienceOverview />
-              </PreviewAltCard>
-            </Col>
-            <Col md="6" lg="5">
-              <PreviewAltCard className="h-100">
-                <ActiveUser />
-              </PreviewAltCard>
-            </Col>
-            <Col md="6" lg="5">
-              <PreviewAltCard className="h-100">
-                <WebsitePerformance />
-              </PreviewAltCard>
-            </Col>
-            <Col lg="7">
-              <Card className="card-bordered h-100">
-                <TrafficChannel />
-              </Card>
-            </Col>
-            <Col sm="6" lg="4">
+            
+          <Col sm="6" lg="4">
+            
               <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
+              <div style={{ height: 400 }}>
                 <SessionDevice />
+                </div>
               </PreviewAltCard>
             </Col>
             <Col sm="6" lg="4">
-              <PreviewAltCard className="h-100">
-                <UserMap />
-              </PreviewAltCard>
-            </Col>
-            <Col sm="6" lg="4">
-              <PreviewAltCard className="h-100">
+            <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
                 <TrafficDougnut />
               </PreviewAltCard>
             </Col>
-            <Col sm="6" lg="5">
+            <Col sm="6" lg="4">
+            <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
+                <TicketsCirclePacking />
+              </PreviewAltCard>
+            </Col>
+            <Col lg="20">
+            <div style={{ height: 500 }}>
+            <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
+              <AudienceOverview />
+            </PreviewAltCard>
+            </div>
+            </Col>
+            {/* <Col md="6" lg="5">
+              <PreviewAltCard className="h-100">
+                <ActiveUser />
+              </PreviewAltCard>
+            </Col> */}
+            {/* <Col md="6" lg="5">
+              <PreviewAltCard className="h-100">
+                <WebsitePerformance />
+              </PreviewAltCard>
+            </Col> */}
+            {/* <Col lg="7">
+              <Card className="card-bordered h-100">
+                <TrafficChannel />
+              </Card>
+            </Col> */}
+            {/* <Col sm="6" lg="5">
               <Card className="card-bordered h-100">
                 <PageViewer />
               </Card>
-            </Col>
-            <Col lg="7">
+            </Col> */}
+            {/* <Col lg="7">
               <Card className="card-bordered h-100">
                 <BrowserUser />
               </Card>
-            </Col>
+            </Col> */}
           </Row>
         </Block>
       </Content>

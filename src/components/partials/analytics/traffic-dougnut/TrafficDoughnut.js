@@ -1,102 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DropdownToggle, DropdownMenu, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import { TCDoughnut } from "../../charts/analytics/AnalyticsCharts";
+import { ResponsiveRadialBar } from '@nivo/radial-bar'
+import BASE_URL from "../../../../config";
+import axios from "axios";
+
 
 const TrafficDougnut = () => {
   const [traffic, setTraffic] = useState("30");
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/latest_app_benchmark_app_data?date=5%2F8%2F2024`);
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <React.Fragment>
-      {" "}
-      <div className="card-title-group">
-        <div className="card-title card-title-sm">
-          <h6 className="title">Traffic Channel</h6>
-        </div>
-        <UncontrolledDropdown>
-          <DropdownToggle className="dropdown-toggle dropdown-indicator btn btn-sm btn-outline-light btn-white">
-            {traffic} Days
-          </DropdownToggle>
-          <DropdownMenu end className="dropdown-menu-xs">
-            <ul className="link-list-opt no-bdr">
-              <li className={traffic === "7" ? "active" : ""}>
-                <DropdownItem
-                  href="#dropdownitem"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setTraffic("7");
-                  }}
-                >
-                  <span>7 Days</span>
-                </DropdownItem>
-              </li>
-              <li className={traffic === "15" ? "active" : ""}>
-                <DropdownItem
-                  href="#dropdownitem"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setTraffic("15");
-                  }}
-                >
-                  <span>15 Days</span>
-                </DropdownItem>
-              </li>
-              <li className={traffic === "30" ? "active" : ""}>
-                <DropdownItem
-                  href="#dropdownitem"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setTraffic("30");
-                  }}
-                >
-                  <span>30 Days</span>
-                </DropdownItem>
-              </li>
-            </ul>
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      </div>
-      <div className="traffic-channel">
-        <div className="traffic-channel-doughnut-ck">
-          <TCDoughnut state={traffic} className="analytics-doughnut"></TCDoughnut>
-        </div>
-        <div className="traffic-channel-group g-2">
-          <div className="traffic-channel-data">
-            <div className="title">
-              <span className="dot dot-lg sq" style={{ background: "#798bff" }}></span>
-              <span>Organic Search</span>
-            </div>
-            <div className="amount">
-              {traffic === "7" ? "3,055" : traffic === "15" ? "4,505" : "4,705"} <small>58.63%</small>
-            </div>
-          </div>
-          <div className="traffic-channel-data">
-            <div className="title">
-              <span className="dot dot-lg sq" style={{ background: "#b8acff" }}></span>
-              <span>Social Media</span>
-            </div>
-            <div className="amount">
-              {traffic === "7" ? "259" : traffic === "15" ? "1,059" : "1509"} <small>23.94%</small>
-            </div>
-          </div>
-          <div className="traffic-channel-data">
-            <div className="title">
-              <span className="dot dot-lg sq" style={{ background: "#ffa9ce" }}></span>
-              <span>Referrals</span>
-            </div>
-            <div className="amount">
-              {traffic === "7" ? "438" : traffic === "15" ? "282" : "482"} <small>12.94%</small>
-            </div>
-          </div>
-          <div className="traffic-channel-data">
-            <div className="title">
-              <span className="dot dot-lg sq" style={{ background: "#f9db7b" }}></span>
-              <span>Others</span>
-            </div>
-            <div className="amount">
-              {traffic === "7" ? "438" : traffic === "15" ? "800" : "1000"} <small>4.49%</small>
-            </div>
-          </div>
-        </div>
-      </div>
+          <h6 className="title">Foreground Vs Pocket mode Valdiation</h6>
+        <ResponsiveRadialBar
+        data={data}
+        valueFormat=" >-.2f"
+        padding={0.4}
+        cornerRadius={2}
+        margin={{ top: 10, right: 80, bottom: 60, left: 80 }}
+        colors={{ scheme: 'category10' }}
+        borderColor={{
+            from: 'color',
+            modifiers: [
+                [
+                    'darker',
+                    '1.1'
+                ]
+            ]
+        }}
+        enableTracks={false}
+        enableRadialGrid={false}
+        radialAxisStart={{ tickSize: 5, tickPadding: 5, tickRotation: 0 }}
+        circularAxisOuter={{ tickSize: 5, tickPadding: 12, tickRotation: 0 }}
+    />
+
     </React.Fragment>
   );
 };
