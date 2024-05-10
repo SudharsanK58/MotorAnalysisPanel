@@ -22,6 +22,7 @@ const SessionDevice = ({ startDate }) => {
         const response = await axios.get(`${BASE_URL}/latest_app_benchmark_phone_model?date=${encodeURIComponent(formattedDate)}`);
         setData(response.data);
         setIsLoading(false);
+        setError(null);
       } catch (error) {
         console.error("Error fetching data:", error);
         if (error.response && error.response.status === 404) {
