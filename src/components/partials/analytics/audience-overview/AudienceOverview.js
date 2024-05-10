@@ -6,13 +6,18 @@ import BASE_URL from "../../../../config";
 import axios from "axios";
 
 
-const AudienceOverview = () => {
+const AudienceOverview = ({ startDate }) => {
   const [auOverview, setAuOverview] = useState("month-1");
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/app_benchmark_api_graph?date=5%2F8%2F2024`);
+        const formattedDate = startDate.toLocaleDateString("en-US", {
+          month: "numeric",
+          day: "numeric",
+          year: "numeric",
+        });
+        const response = await axios.get(`${BASE_URL}/app_benchmark_api_graph?date=${encodeURIComponent(formattedDate)}`);
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -20,7 +25,8 @@ const AudienceOverview = () => {
     };
 
     fetchData();
-  }, []);
+  }, [startDate]); // Trigger effect whenever startDate changes
+
   
   return (
     <React.Fragment>

@@ -24,10 +24,13 @@ import {
   Col,
   PreviewAltCard,
 } from "../components/Component";
+import DatePicker from "react-datepicker";
+
 
 
 const AnalyticsHomePage = () => {
   const [sm, updateSm] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
   return (
     <React.Fragment>
       <Head title="Analytics Dashboard" />
@@ -50,61 +53,17 @@ const AnalyticsHomePage = () => {
                 >
                   <Icon name="more-v"></Icon>
                 </Button>
-                {/* <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
-                  <ul className="nk-block-tools g-3">
-                    <li>
-                      <UncontrolledDropdown>
-                        <DropdownToggle tag="a" className="dropdown-toggle btn btn-white btn-dim btn-outline-light">
-                          <Icon className="d-none d-sm-inline" name="calender-date"></Icon>
-                          <span>
-                            <span className="d-none d-md-inline">Last</span> 30 Days
-                          </span>
-                          <Icon className="dd-indc" name="chevron-right"></Icon>
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          <ul className="link-list-opt no-bdr">
-                            <li>
-                              <DropdownItem
-                                href="#dropdownitem"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                }}
-                              >
-                                Last 30 days
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem
-                                href="#dropdownitem"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                }}
-                              >
-                                Last 6 months
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem
-                                href="#dropdownitem"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                }}
-                              >
-                                Last 3 weeks
-                              </DropdownItem>
-                            </li>
-                          </ul>
-                        </DropdownMenu>
-                      </UncontrolledDropdown>
-                    </li>
-                    <li className="nk-block-tools-opt">
-                      <Button color="primary">
-                        <Icon name="reports"></Icon>
-                        <span>Reports</span>
-                      </Button>
-                    </li>
-                  </ul>
-                </div> */}
+                <div className="toggle-expand-content" style={{ display: sm ? "block" : "none" }}>
+                <ul className="nk-block-tools g-3">
+                  {/* Set the fontSize to match DatePicker */}
+                  <Icon className="d-none d-sm-inline" name="calender-date" style={{ fontSize: "2.50em" }}></Icon>
+                  <DatePicker
+                    selected={startDate}
+                    className="form-control date-picker"
+                    onChange={(date) => setStartDate(date)} // Handle date change
+                  />
+                </ul>
+                </div>
               </div>
             </BlockHeadContent>
           </div>
@@ -113,55 +72,29 @@ const AnalyticsHomePage = () => {
           <Row className="g-gs">
             
           <Col sm="6" lg="4">
-            
               <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
-              <div style={{ height: 400 }}>
-                <SessionDevice />
+                <div style={{ height: 400 }}>
+                <SessionDevice startDate={startDate} />
                 </div>
               </PreviewAltCard>
             </Col>
             <Col sm="6" lg="4">
             <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
-                <TrafficDougnut />
+                <TrafficDougnut startDate={startDate} />
               </PreviewAltCard>
             </Col>
             <Col sm="6" lg="4">
             <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
-                <TicketsCirclePacking />
+                <TicketsCirclePacking startDate={startDate} />
               </PreviewAltCard>
             </Col>
             <Col lg="20">
             <div style={{ height: 500 }}>
             <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
-              <AudienceOverview />
+              <AudienceOverview startDate={startDate} />
             </PreviewAltCard>
             </div>
             </Col>
-            {/* <Col md="6" lg="5">
-              <PreviewAltCard className="h-100">
-                <ActiveUser />
-              </PreviewAltCard>
-            </Col> */}
-            {/* <Col md="6" lg="5">
-              <PreviewAltCard className="h-100">
-                <WebsitePerformance />
-              </PreviewAltCard>
-            </Col> */}
-            {/* <Col lg="7">
-              <Card className="card-bordered h-100">
-                <TrafficChannel />
-              </Card>
-            </Col> */}
-            {/* <Col sm="6" lg="5">
-              <Card className="card-bordered h-100">
-                <PageViewer />
-              </Card>
-            </Col> */}
-            {/* <Col lg="7">
-              <Card className="card-bordered h-100">
-                <BrowserUser />
-              </Card>
-            </Col> */}
           </Row>
         </Block>
       </Content>

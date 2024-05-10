@@ -6,13 +6,18 @@ import BASE_URL from "../../../../config";
 import axios from "axios";
 
 
-const TicketsCirclePacking = () => {
+const TicketsCirclePacking = ({ startDate }) => {
   const [traffic, setTraffic] = useState("30");
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/latest_ticket_data_numbers?date=5%2F8%2F2024`);
+        const formattedDate = startDate.toLocaleDateString("en-US", {
+            month: "numeric",
+            day: "numeric",
+            year: "numeric",
+        });
+        const response = await axios.get(`${BASE_URL}/latest_ticket_data_numbers?date=${encodeURIComponent(formattedDate)}`);
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -20,7 +25,7 @@ const TicketsCirclePacking = () => {
     };
 
     fetchData();
-  }, []);
+  }, [startDate]);
 
   return (
     <React.Fragment>
