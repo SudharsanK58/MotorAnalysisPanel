@@ -391,12 +391,12 @@ const InvestHomePage = () => {
           <Icon name="cross-sm" />
         </a>
         <div className="nk-modal-head">
-          <h4 className="nk-modal-title title">What's New <small className="text-primary">Version 2.03</small></h4>
+          <h4 className="nk-modal-title title">What's New <small className="text-primary">Version 2.04</small></h4>
         </div>
         <div style={{ marginBottom: '10px' }}></div>
         <p>
-          * Fixed the bug when selecting date when mismatch in EST and IST.<br/>
-          * Now we can search device by A beacon mac address in all search device.
+          * Now we can search app benchmark data device by username.<br/>
+          * Added app benchmark data analytics ~ Beta Version.<br/>
         </p>
       </ModalBody>
       </Modal>
