@@ -39,7 +39,7 @@ const AnalyticsHomePage = () => {
           <div className="nk-block-between">
             <BlockHeadContent>
               <BlockTitle page tag="h3">
-                Valdiation Analytics
+                Valdiation Analytics ~ (beta version)
               </BlockTitle>
               <BlockDes className="text-soft">
                 <p>Welcome to Valdiation Analytics Dashboard.</p>

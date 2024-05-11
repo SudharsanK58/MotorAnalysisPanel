@@ -37,6 +37,7 @@ const AppBenchMarkTicketSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedName, setSelectedName] = useState(null);
   const itemsPerPage = 10; // Number of items per page
+  const [inputFocused, setInputFocused] = useState(false);
   const [timeZone, setTimeZone] = useState(sessionStorage.getItem("TimeZone") || 0);
   
 // Calculate total number of pages
@@ -66,6 +67,13 @@ const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const handleSelect = (item) => {
     setSelectedName(item.name);
     console.log("Selected suggestion:", item.name);
+  };
+  const handleInputFocus = () => {
+    setInputFocused(true);
+  };
+
+  const handleInputBlur = () => {
+    setInputFocused(false);
   };
 
   
@@ -107,6 +115,7 @@ const [selectedSuggestion, setSelectedSuggestion] = useState(null);
       try {
         setLoading(true);
         setnoData(false);
+        setInputFocused(false);
         // Make an API request using axios (replace with fetch if you prefer)
         const response = await axios.get(`${BASE_URL}/app_benchmark_search_ticket/${ticketIdInput}`);
         // Handle the API response as needed
@@ -123,6 +132,7 @@ const [selectedSuggestion, setSelectedSuggestion] = useState(null);
       try {
         setLoading(true);
         setnoData(false);
+        setInputFocused(false);
         const response = await axios.get(`${BASE_URL}/latest_app_benchmark_name_search`, {
           params: {
             userName: selectedName,
@@ -144,6 +154,7 @@ const [selectedSuggestion, setSelectedSuggestion] = useState(null);
       try {
         setLoading(true);
         setnoData(false);
+        setInputFocused(false);
         const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
         let response;
         if (sessionStorage.getItem("TimeZone") === '1') {
@@ -472,8 +483,10 @@ const getLabel = watch("labelText") || "Ticket ID";
                 <ReactSearchAutocomplete
                   items={searchOptions.map((name) => ({ name }))} // Convert suggestions to required format
                   onSelect={handleSelect}
+                  onFocus={handleInputFocus}
+                  onBlur={handleInputBlur}
                   autoFocus
-              />
+            />
               ) : (
                 <input
                   type="text"
@@ -499,17 +512,21 @@ const getLabel = watch("labelText") || "Ticket ID";
           </PreviewCard>
         </Block>
       </Content>
-      {noData ? (
-        <div className="d-flex flex-column align-items-center mt-3" >
-            <Alert color="danger">
-              <strong>No ticket data</strong>! found for your search .
-            </Alert>
+      {!inputFocused && ( // Render the table only if the input field is not focused
+        <div>
+          {noData ? (
+            <div className="d-flex flex-column align-items-center mt-3">
+              <Alert color="danger">
+                <strong>No ticket data</strong>! found for your search.
+              </Alert>
+            </div>
+          ) : (
+            apiResponse && apiResponse.length > 0 ? (
+              renderTable()
+            ) : null
+          )}
         </div>
-) : (
-  apiResponse && apiResponse.length > 0 ? (
-    renderTable()
-  ) : null
-)}
+      )}
       <Modal isOpen={viewModal} toggle={() => setViewModal(false)} className="modal-dialog-centered" size="lg">
         <ModalBody>
           <a href="#cancel" onClick={(ev) => { ev.preventDefault(); setViewModal(false); }} className="close">
