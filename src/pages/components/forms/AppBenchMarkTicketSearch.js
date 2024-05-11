@@ -19,6 +19,7 @@ import {
   BlockTitle,
   BackTo,
 } from "../../../components/Component";
+import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 
 const AppBenchMarkTicketSearch = () => {
   const { register, handleSubmit, setValue, watch, setError, clearErrors, formState: { errors } } = useForm();
@@ -34,6 +35,7 @@ const AppBenchMarkTicketSearch = () => {
   const [viewModal, setViewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedName, setSelectedName] = useState(null);
   const itemsPerPage = 10; // Number of items per page
   const [timeZone, setTimeZone] = useState(sessionStorage.getItem("TimeZone") || 0);
   
@@ -44,6 +46,28 @@ const totalPages = apiResponse ? Math.ceil(apiResponse.length / itemsPerPage) : 
 const indexOfLastItem = currentPage * itemsPerPage;
 const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLastItem) : [];
+const [searchOptions, setSearchOptions] = useState([]);
+const [selectedSuggestion, setSelectedSuggestion] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8001/autocomplete_user_names?prefix=');
+        const data = await response.json();
+        setSearchOptions(data);
+      } catch (error) {
+        console.error('Error fetching autocomplete suggestions:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleSelect = (item) => {
+    setSelectedName(item.name);
+    console.log("Selected suggestion:", item.name);
+  };
+
   
   // Set the default value for the "searchByTicketID" checkbox
   useEffect(() => {
@@ -62,14 +86,8 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
       });
       return;
     } else  if (isdeviceIdSelected) {
-      if(!ticketIdInput){
+      if(!selectedName){
         setError("textInput", {
-          type: "manual",
-          message: "*Required.",
-        });
-        return;
-      }else if(!selectedDate){
-        setError("datePicker", {
           type: "manual",
           message: "*Required.",
         });
@@ -91,7 +109,6 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
         setnoData(false);
         // Make an API request using axios (replace with fetch if you prefer)
         const response = await axios.get(`${BASE_URL}/app_benchmark_search_ticket/${ticketIdInput}`);
-
         // Handle the API response as needed
         console.log("API Response:", response.data);
         setApiResponse(response.data);
@@ -106,11 +123,9 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
       try {
         setLoading(true);
         setnoData(false);
-        const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
-        const response = await axios.get(`${BASE_URL}/app_benchmark_device_date`, {
+        const response = await axios.get(`${BASE_URL}/latest_app_benchmark_name_search`, {
           params: {
-            device_id: ticketIdInput,
-            date: formattedDate,
+            userName: selectedName,
           },
         });
         // Set the API response in the state
@@ -306,7 +321,7 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
         clearErrors("textInput");
         break;
       case "searchByDeviceID":
-        setValue("labelText", "Search by Device ID");
+        setValue("labelText", "Search by User Name");
         setIsDateSelected(false);
         setTicketIdSelected(false);
         setdeviceIdSelected(true);
@@ -399,7 +414,7 @@ const getLabel = watch("labelText") || "Ticket ID";
                     </Label>
                   </div>
                 </li>
-                {/* <li>
+                <li>
                   <div className="custom-control custom-checkbox">
                     <input
                       type="checkbox"
@@ -410,10 +425,10 @@ const getLabel = watch("labelText") || "Ticket ID";
                       onChange={() => handleCheckboxChange("searchByDeviceID")}
                     />
                     <Label className="custom-control-label" htmlFor={"fv-search-device-id"}>
-                      Device ID
+                      User Name
                     </Label>
                   </div>
-                </li> */}
+                </li>
                 <li>
                   <div className="custom-control custom-checkbox">
                     <input
@@ -442,26 +457,35 @@ const getLabel = watch("labelText") || "Ticket ID";
                   selected={selectedDate}
                   className="form-control date-picker"
                   onChange={(date) => setSelectedDate(date)}
-                  disabled={isTicketIdSelected}
+                  disabled={isTicketIdSelected || isdeviceIdSelected}
                 />
               </div>
               {errors.datePicker && <span className="error-message">{errors.datePicker.message}</span>}
             </div>
           </Col>
+
           <Col sm="6">
-            <div className="form-group">
-              <Label>{getLabel}</Label>
-              <div className="form-control-wrap">
+          <div className="form-group">
+            <Label>{getLabel}</Label>
+            <div className="form-control-wrap">
+              {isdeviceIdSelected ? (
+                <ReactSearchAutocomplete
+                  items={searchOptions.map((name) => ({ name }))} // Convert suggestions to required format
+                  onSelect={handleSelect}
+                  autoFocus
+              />
+              ) : (
                 <input
                   type="text"
                   {...register("textInput")}
                   className="form-control"
                   disabled={isDateSelected}
                 />
-              </div>
-              {errors.textInput && <span className="error-message" >{errors.textInput.message}</span>}
+              )}
             </div>
-          </Col>
+            {errors.textInput && <span className="error-message">{errors.textInput.message}</span>}
+          </div>
+        </Col>
 
           <Col md="6">
             <Label className="form-label"></Label>
