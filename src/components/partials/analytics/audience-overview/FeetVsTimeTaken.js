@@ -5,20 +5,11 @@ import { Icon } from "../../../Component";
 import { ResponsiveLine } from '@nivo/line'
 import BASE_URL from "../../../../config";
 import axios from "axios";
+import { ResponsiveScatterPlot } from '@nivo/scatterplot'
 
 
-const CustomTooltip = ({ point }) => {
-  // Extracting TicketID and legend name from the point's data
-  const { data: {x} } = point;
-
-  return (
-    <div style={{ background: 'white', padding: '10px', border: '1px solid #ccc' }}>
-      <p>TicketID: {x}</p>
-    </div>
-  );
-};
-
-const AudienceOverview = ({ startDate }) => {
+const FeetVsTimeTaken = ({ startDate }) => {
+  const [auOverview, setAuOverview] = useState("month-1");
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -31,7 +22,7 @@ const AudienceOverview = ({ startDate }) => {
           day: "numeric",
           year: "numeric",
         });
-        const response = await axios.get(`${BASE_URL}/app_benchmark_api_graph?date=${encodeURIComponent(formattedDate)}`);
+        const response = await axios.get(`${BASE_URL}/latest_android_benchmark_app_data?date=${encodeURIComponent(formattedDate)}`);
         setData(response.data);
         setIsLoading(false);
         setError(null);
@@ -47,61 +38,59 @@ const AudienceOverview = ({ startDate }) => {
     };
 
     fetchData();
-  }, [startDate]);
+  }, [startDate]); // Trigger effect whenever startDate changes
+  
 
   return (
     <React.Fragment>
-      <h6 className="title">Validation api performance (By Ticket ID)</h6>
+      <h6 className="title">Distance vs Time Validation ~(Android Only)</h6>
       {isLoading ? (
+        // Render spinner when loading
         <div className="spinner-container" style={{ position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-          <Spinner color="primary" />
+        <Spinner color="primary" />
         </div>
       ) : error ? (
+        // Render error message if an error occurred
         <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>
       ) : (
-        <ResponsiveLine
-          data={data}
-          margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-          xScale={{ type: 'point' }}
-          yScale={{
-            type: 'linear',
-            min: 'auto',
-            max: 'auto',
-            stacked: false,
-            reverse: false
-          }}
-          curve="cardinal"
-          axisTop={null}
-          axisRight={null}
-          axisBottom={null}
-          axisLeft={{
-            tickSize: 0,
-            tickPadding: 6,
-            tickRotation: -1,
-            legend: 'Time in millis',
-            legendOffset: -50,
+        // Render line chart when data is loaded
+        <ResponsiveScatterPlot
+        data={data}
+        margin={{ top: 60, right: 140, bottom: 70, left: 90 }}
+        xScale={{ type: 'linear', min: 0, max: 'auto' }}
+        yScale={{ type: 'linear', min: 0, max: 'auto' }}
+        blendMode="multiply"
+        axisTop={null}
+        axisRight={null}
+        axisBottom={{
+            orient: 'bottom',
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: 'Distance in Feet',
             legendPosition: 'middle',
+            legendOffset: 46,
             truncateTickAt: 0
-          }}
-          enableGridX={false}
-          enableGridY={false}
-          enablePoints={true} // Enable points for tooltips
-          pointColor={{ from: 'color', modifiers: [] }}
-          pointBorderWidth={2}
-          pointBorderColor={{ from: 'serieColor' }}
-          pointLabel="data.xFormatted"
-          pointLabelYOffset={-15}
-          enableCrosshair={true} // Enable crosshair for better tooltip positioning
-          useMesh={true}
-          tooltip={CustomTooltip} // Custom tooltip component
-          legends={[
+        }}
+        axisLeft={{
+            orient: 'left',
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: 'Time in millis',
+            legendPosition: 'middle',
+            legendOffset: -60,
+            truncateTickAt: 0
+        }}
+        isInteractive={false}
+                  legends={[
             {
                 anchor: 'top',
                 direction: 'row',
                 justify: false,
-                translateX: 100,
+                translateX: 50,
                 translateY:  -50,
-                itemsSpacing: 10,
+                itemsSpacing: 200,
                 itemDirection: 'left-to-right',
                 itemWidth: 80,
                 itemHeight: 20,
@@ -120,10 +109,15 @@ const AudienceOverview = ({ startDate }) => {
                 ]
             }
         ]}
-        />
+        tooltip={({ node }) => (
+    <div>
+      <strong>X Value:</strong> {node.data.x} {/* Accessing the x-value of the data point */}
+    </div>
+  )}
+    />
       )}
     </React.Fragment>
   );
 };
 
-export default AudienceOverview;
+export default FeetVsTimeTaken;

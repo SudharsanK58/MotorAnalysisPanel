@@ -10,6 +10,7 @@ import UserMap from "../components/partials/analytics/user-map/UserMap";
 import BrowserUser from "../components/partials/analytics/browser-users/BrowserUser";
 import PageViewer from "../components/partials/analytics/page-view/PageView";
 import SessionDevice from "../components/partials/analytics/session-devices/SessionDevice";
+import FeetVsTimeTaken from "../components/partials/analytics/audience-overview/FeetVsTimeTaken";
 import TicketsCirclePacking from "../components/partials/analytics/traffic-dougnut/TicketsCirclePacking";
 import { DropdownToggle, DropdownMenu, Card, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import {
@@ -92,6 +93,13 @@ const AnalyticsHomePage = () => {
             <div style={{ height: 500 }}>
             <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
               <AudienceOverview startDate={startDate} />
+            </PreviewAltCard>
+            </div>
+            </Col>
+            <Col lg="20">
+            <div style={{ height: 500 }}>
+            <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
+              <FeetVsTimeTaken startDate={startDate} />
             </PreviewAltCard>
             </div>
             </Col>

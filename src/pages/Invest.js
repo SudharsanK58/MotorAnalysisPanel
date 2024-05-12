@@ -391,7 +391,7 @@ const InvestHomePage = () => {
           <Icon name="cross-sm" />
         </a>
         <div className="nk-modal-head">
-          <h4 className="nk-modal-title title">What's New <small className="text-primary">Version 2.04</small></h4>
+          <h4 className="nk-modal-title title">What's New <small className="text-primary">Version 2.05</small></h4>
         </div>
         <div style={{ marginBottom: '10px' }}></div>
         <p>
