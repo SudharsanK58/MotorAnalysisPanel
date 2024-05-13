@@ -53,7 +53,7 @@ const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/autocomplete_user_names?prefix=`);
+        const response = await fetch(`${BASE_URL}/autocomplete_user_names?prefix=`);
         const data = await response.json();
         setSearchOptions(data);
       } catch (error) {
