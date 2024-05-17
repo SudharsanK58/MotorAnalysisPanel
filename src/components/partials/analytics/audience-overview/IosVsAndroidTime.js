@@ -66,7 +66,7 @@ const IosVsAndroidTime = ({ startDate }) => {
         identity="id"
         value="price"
         valueFormat="$.2f"
-        valueScale={{ type: 'linear', min: 0, max: 3000, reverse: false }}
+        valueScale={{ type: 'linear', min: 0, max: 'auto', reverse: false }}
         size={{
             key: 'volume',
             values: [
