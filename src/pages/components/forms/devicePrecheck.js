@@ -61,7 +61,7 @@ const onButtonClick = async () => {
   };
   try {
     setLoading(true);
-    await axios.post("http://54.89.246.64:8001/publish", formData);
+    await axios.post(`${BASE_URL}/publish`, formData);
     // Additional API call after the first one succeeds
     let isDeviceActive = false;
     let isSecondApiTrue = false; // Flag for the second API call

@@ -26,6 +26,7 @@ import {
   PreviewAltCard,
 } from "../components/Component";
 import DatePicker from "react-datepicker";
+import ApiGraphIos from "../components/partials/analytics/audience-overview/ApiGraphIos";
 
 
 
@@ -89,17 +90,24 @@ const AnalyticsHomePage = () => {
                 <TicketsCirclePacking startDate={startDate} />
               </PreviewAltCard>
             </Col>
-            <Col lg="20">
+            <Col sm="6" lg="6">
             <div style={{ height: 500 }}>
             <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
               <AudienceOverview startDate={startDate} />
             </PreviewAltCard>
             </div>
             </Col>
+            <Col sm="6" lg="6">
+            <div style={{ height: 500 }}>
+            <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
+              <ApiGraphIos startDate={startDate} />
+            </PreviewAltCard>
+            </div>
+            </Col>
             <Col lg="20">
             <div style={{ height: 500 }}>
             <PreviewAltCard className="h-100" bodyClass="h-100 stretch flex-column">
-              <FeetVsTimeTaken startDate={startDate} />
+            <FeetVsTimeTaken startDate={startDate} />
             </PreviewAltCard>
             </div>
             </Col>

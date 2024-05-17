@@ -18,7 +18,7 @@ const CustomTooltip = ({ point }) => {
   );
 };
 
-const AudienceOverview = ({ startDate }) => {
+const ApiGraphIos = ({ startDate }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -31,7 +31,7 @@ const AudienceOverview = ({ startDate }) => {
           day: "numeric",
           year: "numeric",
         });
-        const response = await axios.get(`${BASE_URL}/app_benchmark_api_graph_android?date=${encodeURIComponent(formattedDate)}`);
+        const response = await axios.get(`${BASE_URL}/app_benchmark_api_graph_ios?date=${encodeURIComponent(formattedDate)}`);
         setData(response.data);
         setIsLoading(false);
         setError(null);
@@ -51,7 +51,7 @@ const AudienceOverview = ({ startDate }) => {
 
   return (
     <React.Fragment>
-      <h6 className="title">Validation api performance (ANDROID)</h6>
+      <h6 className="title">Validation api performance (IOS)</h6>
       {isLoading ? (
         <div className="spinner-container" style={{ position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%, -50%)' }}>
           <Spinner color="primary" />
@@ -85,7 +85,7 @@ const AudienceOverview = ({ startDate }) => {
           }}
           enableGridX={false}
           enableGridY={false}
-          enablePoints={false} // Enable points for tooltips
+          enablePoints={false}  // Enable points for tooltips
           pointColor={{ from: 'color', modifiers: [] }}
           pointBorderWidth={2}
           pointBorderColor={{ from: 'serieColor' }}
@@ -126,4 +126,4 @@ const AudienceOverview = ({ startDate }) => {
   );
 };
 
-export default AudienceOverview;
+export default ApiGraphIos;
