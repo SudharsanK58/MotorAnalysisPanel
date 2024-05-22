@@ -331,6 +331,10 @@ const menu = [
         text: "MODOT-SEARCH",
         link: "/client-ticket-search",
       },
+      {
+        text: "PEOPLE-COUNTOR",
+        link: "/peoplecount",
+      },
       // {
       //   text: "Sales Dashboard",
       //   link: "/sales",
@@ -345,7 +349,7 @@ const menu = [
       // },
     ],
   },
-  
+
   {
     text: "BENCHMARK",
     subMenu: [
@@ -588,6 +592,5 @@ const menu = [
   //     },
   //   ],
   // },
-
 ];
 export default menu;

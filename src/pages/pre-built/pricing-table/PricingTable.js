@@ -9,13 +9,13 @@ import {
   BlockHead,
   BlockTitle,
   Col,
-  Row,  // Make sure to import the Table component
+  Row, // Make sure to import the Table component
 } from "../../../components/Component";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
-import { Table , Spinner ,Alert} from "reactstrap";
+import { Table, Spinner, Alert } from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
-import './binktext.css';
+import "./binktext.css";
 import BASE_URL from "../../../config";
 // ... (previous imports)
 
@@ -29,7 +29,7 @@ const PricingTable = () => {
     if (apiData?.TofData?.Illgel_count > 0) {
       // Start blinking effect
       const intervalId = setInterval(() => {
-        setIsBlinking(prevState => !prevState);
+        setIsBlinking((prevState) => !prevState);
       }, 700); // Adjust the interval as needed
 
       // Cleanup the interval when the component unmounts or when Illgel_count becomes zero
@@ -43,7 +43,9 @@ const PricingTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/get_data_by_device_id/04:e9:e5:16:f6:3d`);
+        const response = await fetch(
+          `${BASE_URL}/get_data_by_device_id/04:e9:e5:16:f9:f3`
+        );
         const data = await response.json();
         const currentUserId = data?.TicketData[0]?.ticket_id;
         if (previousUserId && currentUserId !== previousUserId) {
@@ -60,13 +62,14 @@ const PricingTable = () => {
             draggable: true,
             progress: false,
           });
-          audio.play().catch(error => console.error("Error playing audio:", error));
+          audio
+            .play()
+            .catch((error) => console.error("Error playing audio:", error));
         }
         // Update the previous user ID
         setPreviousUserId(currentUserId);
         setApiData(data);
         setLoading(false);
-        
       } catch (error) {
         console.error("Error fetching data from API:", error);
         setLoading(false);
@@ -90,51 +93,55 @@ const PricingTable = () => {
   };
 
   const calculateLastSeen = (formattedTimestamp) => {
-    const givenTime = new Date(Date.UTC(
-      formattedTimestamp.substring(0, 4), // Year
-      formattedTimestamp.substring(5, 7) - 1, // Month (zero-based)
-      formattedTimestamp.substring(8, 10), // Day
-      formattedTimestamp.substring(11, 13), // Hour
-      formattedTimestamp.substring(14, 16), // Minute
-      formattedTimestamp.substring(17, 19), // Second
-      formattedTimestamp.substring(20, 23) // Millisecond
-    ));
-    const currentTime = new Date(Date.UTC(
-      new Date().getUTCFullYear(),
-      new Date().getUTCMonth(),
-      new Date().getUTCDate(),
-      new Date().getUTCHours(),
-      new Date().getUTCMinutes(),
-      new Date().getUTCSeconds()
-    ));
+    const givenTime = new Date(
+      Date.UTC(
+        formattedTimestamp.substring(0, 4), // Year
+        formattedTimestamp.substring(5, 7) - 1, // Month (zero-based)
+        formattedTimestamp.substring(8, 10), // Day
+        formattedTimestamp.substring(11, 13), // Hour
+        formattedTimestamp.substring(14, 16), // Minute
+        formattedTimestamp.substring(17, 19), // Second
+        formattedTimestamp.substring(20, 23) // Millisecond
+      )
+    );
+    const currentTime = new Date(
+      Date.UTC(
+        new Date().getUTCFullYear(),
+        new Date().getUTCMonth(),
+        new Date().getUTCDate(),
+        new Date().getUTCHours(),
+        new Date().getUTCMinutes(),
+        new Date().getUTCSeconds()
+      )
+    );
     const timeDifference = currentTime - givenTime;
     const secondsDifference = Math.floor(timeDifference / 1000);
-  
+
     if (secondsDifference < 60) {
       return (
-        <span style={{ fontWeight: 'bold', color: 'green' }}>
+        <span style={{ fontWeight: "bold", color: "green" }}>
           {`${Math.max(1, secondsDifference)} seconds ago`}
         </span>
       );
     } else if (secondsDifference < 600) {
       const minutes = Math.floor(secondsDifference / 60);
       return (
-        <span style={{ fontWeight: 'bold', color: 'green' }}>
-          {`${minutes} minute${minutes > 1 ? 's' : ''} ago`}
+        <span style={{ fontWeight: "bold", color: "green" }}>
+          {`${minutes} minute${minutes > 1 ? "s" : ""} ago`}
         </span>
       );
     } else if (secondsDifference < 3600) {
       const minutes = Math.floor(secondsDifference / 60);
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
     } else if (secondsDifference < 86400) {
       const hours = Math.floor(secondsDifference / 3600);
-      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      return `${hours} hour${hours > 1 ? "s" : ""} ago`;
     } else if (secondsDifference < 172800) {
       return "1 day ago";
     } else {
       // If more than one day, return the formatted timestamp without additional formatting
-      const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      return new Date(formattedTimestamp).toLocaleDateString('en-US', options);
+      const options = { year: "numeric", month: "short", day: "numeric" };
+      return new Date(formattedTimestamp).toLocaleDateString("en-US", options);
     }
   };
   const formatTimestamp = (timestamp) => {
@@ -143,8 +150,8 @@ const PricingTable = () => {
     const dateObj = new Date(timestamp);
 
     // Add 5 hours and 30 minutes to the timestamp
-     // Adjust the timestamp based on the time zone
-    if (sessionStorage.getItem("TimeZone") === '1') {
+    // Adjust the timestamp based on the time zone
+    if (sessionStorage.getItem("TimeZone") === "1") {
       // Eastern Standard Time (EST)
       dateObj.setHours(dateObj.getHours() - 4, dateObj.getMinutes());
     } else {
@@ -152,16 +159,24 @@ const PricingTable = () => {
       dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
     }
     // Format the adjusted timestamp
-    const options = { day: '2-digit', month: '2-digit', year: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
-    const formattedTimestamp = dateObj.toLocaleString('en-US', options);
+    const options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    };
+    const formattedTimestamp = dateObj.toLocaleString("en-US", options);
 
     return formattedTimestamp;
   };
   const textStyle = {
-    fontSize: '70px',
-    color: apiData?.TofData?.Illgel_count > 0  ? 'red' : 'inherit',
+    fontSize: "70px",
+    color: apiData?.TofData?.Illgel_count > 0 ? "red" : "inherit",
   };
-  
+
   return (
     <React.Fragment>
       <Head title="APC"></Head>
@@ -171,83 +186,113 @@ const PricingTable = () => {
             <BlockContent>
               <BlockTitle>Automatic people counter</BlockTitle>
               <BlockDes className="text-soft">
-                <p>Below data represents the number of people entered along with validated count</p>
+                <p>
+                  Below data represents the number of people entered along with
+                  validated count
+                </p>
               </BlockDes>
             </BlockContent>
           </BlockBetween>
         </BlockHead>
         <Block>
-          <Row className="g-gs"  >
-              <div className="pricing-head" style={{ borderBottom: 'none' }}>
-                <div className="pricing-title">
-                  <h4 className="card-title title">LIVE Count</h4>
-                  <p className="sub-text">DeviceId: 04:e9:e5:16:f9:f3</p>
-                </div>
-                <div className="card-text">
-                  <Row>
-                    <Col size={7}>
-                    <span className="h4 fw-500" style={{ fontSize: '70px' }}>{apiData?.TofData?.people_count || "N/A"}</span>
-                      <span className="sub-text" style={{ fontSize: '15px' }}>Total entries</span>
-                    </Col>
-                    {/* <Col size={4}>
+          <Row className="g-gs">
+            <div className="pricing-head" style={{ borderBottom: "none" }}>
+              <div className="pricing-title">
+                <h4 className="card-title title">LIVE Count</h4>
+                <p className="sub-text">DeviceId: 04:e9:e5:16:f9:f3</p>
+              </div>
+              <div className="card-text">
+                <Row>
+                  <Col size={7}>
+                    <span
+                      className="h4 fw-500"
+                      style={{ fontSize: "70px", color: "red" }}
+                    >
+                      {apiData?.TofData?.people_count || "N/A"}
+                    </span>
+                    <span className="sub-text" style={{ fontSize: "15px" }}>
+                      illegal entry
+                    </span>
+                  </Col>
+                  {/* <Col size={4}>
                       <span className={`h4 fw-500 ${isBlinking ? 'blink-text' : ''}`} style={textStyle}>
                         {apiData?.TofData?.Illgel_count || "N/A"}
                       </span>
                       <span className="sub-text" style={{ fontSize: '15px' }}>Illgel entries</span>
                     </Col> */}
-                    <Col size={3}>
-                    <span className="h4 fw-500" style={{ fontSize: '70px' }}>{apiData?.TofData?.total_tickets_count || "N/A"}</span>
-                      <span className="sub-text" style={{ fontSize: '15px' }}>Tickets</span>
-                    </Col>
-                  </Row>
-                </div>
+                  <Col size={3}>
+                    <span className="h4 fw-500" style={{ fontSize: "70px" }}>
+                      {apiData?.TofData?.total_tickets_count || "N/A"}
+                    </span>
+                    <span className="sub-text" style={{ fontSize: "15px" }}>
+                      Tickets
+                    </span>
+                  </Col>
+                </Row>
               </div>
+            </div>
           </Row>
           {loading ? (
-              <div className="text-center mt-5">
-                <Spinner color="primary" />
-              </div>
-            ) : (
-              <>
-                {apiData?.TicketData.length === 0 ? (
-                  <div className="text-center mt-5">
-                  <Alert className="alert-icon" color="light" style={{ display: 'inline-block', textAlign: 'center' }}>
+            <div className="text-center mt-5">
+              <Spinner color="primary" />
+            </div>
+          ) : (
+            <>
+              {apiData?.TicketData.length === 0 ? (
+                <div className="text-center mt-5">
+                  <Alert
+                    className="alert-icon"
+                    color="light"
+                    style={{ display: "inline-block", textAlign: "center" }}
+                  >
                     Tickets entries are not available for this device as of now.
                   </Alert>
-                  </div>
-                ) : (
-                  <Table className="text-center mx-auto" style={{ width: '80%', borderRadius: '15px', overflow: 'hidden', tableLayout: 'fixed' }}>
-                    <colgroup>
-                      <col style={{ width: '25%' }} />
-                      <col style={{ width: '25%' }} />
-                      <col style={{ width: '25%' }} />
-                      <col style={{ width: '25%' }} />
-                      <col style={{ width: '25%' }} />
-                    </colgroup>
-                    <thead>
-                      <tr>
-                        <th>User name</th>
-                        <th>Ticket ID</th>
-                        <th>Count</th>
-                        <th>Validated time</th>
-                        <th>Status</th>
+                </div>
+              ) : (
+                <Table
+                  className="text-center mx-auto"
+                  style={{
+                    width: "80%",
+                    borderRadius: "15px",
+                    overflow: "hidden",
+                    tableLayout: "fixed",
+                  }}
+                >
+                  <colgroup>
+                    <col style={{ width: "25%" }} />
+                    <col style={{ width: "25%" }} />
+                    <col style={{ width: "25%" }} />
+                    <col style={{ width: "25%" }} />
+                    <col style={{ width: "25%" }} />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>User name</th>
+                      <th>Ticket ID</th>
+                      <th>Count</th>
+                      <th>Validated time</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {apiData?.TicketData.map((ticket) => (
+                      <tr key={ticket.ticket_id}>
+                        <td>{ticket.username}</td>
+                        <td>{ticket.ticket_id}</td>
+                        <td>{ticket.ticket_count}</td>
+                        <td>{formatTimestamp(ticket.time_after_start)}</td>
+                        <td>
+                          {calculateLastSeen(
+                            formatTimestamp(ticket.time_after_start)
+                          )}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {apiData?.TicketData.map((ticket) => (
-                        <tr key={ticket.ticket_id}>
-                          <td>{ticket.username}</td>
-                          <td>{ticket.ticket_id}</td>
-                          <td>{ticket.ticket_count}</td>
-                          <td>{formatTimestamp(ticket.time_after_start)}</td>
-                          <td>{calculateLastSeen(formatTimestamp(ticket.time_after_start))}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                )}
-              </>
-            )}
+                    ))}
+                  </tbody>
+                </Table>
+              )}
+            </>
+          )}
         </Block>
       </Content>
       <audio id="audio" loop autoPlay>
@@ -257,7 +302,5 @@ const PricingTable = () => {
     </React.Fragment>
   );
 };
-
-
 
 export default PricingTable;

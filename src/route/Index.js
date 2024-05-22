@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from "react";
-import { Routes,Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { ProductContextProvider } from "../pages/pre-built/products/ProductContext";
 import { UserContextProvider } from "../pages/pre-built/user-manage/UserContext";
 
@@ -98,7 +98,6 @@ import WizardForm from "../pages/components/forms/WizardForm";
 import QuillPreview from "../pages/components/forms/rich-editor/QuillPreview";
 import TinymcePreview from "../pages/components/forms/rich-editor/TinymcePreview";
 
-
 import FileManager from "../pages/app/file-manager/FileManager";
 import FileManagerFiles from "../pages/app/file-manager/FileManagerFiles";
 import FileManagerShared from "../pages/app/file-manager/FileManagerShared";
@@ -137,27 +136,35 @@ const Pages = () => {
 
   return (
     <Routes>
-          <Route element={<PrivateRoutes />}>
-              <Route path={`${process.env.PUBLIC_URL}`} element={<Layout />}>
-                <Route element={<Invest/>} path="/" exact/>
-                <Route element={<Invest/>} path="/overview" exact/>
-                <Route element={<Analytics/>} path="/benchmark-analytics" exact/>
-                <Route element={<PricingTable />} path="/peoplecount" exact/>
-                <Route element={<TicketBenchMark />} path="/ticket-benchmark" exact/>
-                <Route element={<SpecialTablePage/>} path="/All-device-status"/>
-                <Route element={<FormValidation2 />} path="/device-pre-check"/>
-                <Route element={<AppBenchMarkTicketSearch />} path="/zig-app-benchmark"/>
-                <Route element={<FormValidation/>} path="/ticket-search"/>
-                <Route element={<SearchByClient/>} path="/client-ticket-search"/>
-                <Route element={<UserProfileActivity/>} path="/user-profile-activity"/>
-                <Route element={<UserProfileSetting/>} path="/user-profile-setting"/>
-              </Route>
-            </Route>
-            <Route path={`${process.env.PUBLIC_URL}`} element={<LayoutNoSidebar />}>
-              <Route element={<Login/>} path="/auth-login"/>
-              <Route path="*" element={<Error404Modern />}></Route>
-            </Route>
-           
+      <Route element={<PrivateRoutes />}>
+        <Route path={`${process.env.PUBLIC_URL}`} element={<Layout />}>
+          <Route element={<Invest />} path="/" exact />
+          <Route element={<Invest />} path="/overview" exact />
+          <Route element={<Analytics />} path="/benchmark-analytics" exact />
+          <Route element={<PricingTable />} path="/peoplecount" exact />
+          <Route element={<TicketBenchMark />} path="/ticket-benchmark" exact />
+          <Route element={<SpecialTablePage />} path="/All-device-status" />
+          <Route element={<FormValidation2 />} path="/device-pre-check" />
+          <Route
+            element={<AppBenchMarkTicketSearch />}
+            path="/zig-app-benchmark"
+          />
+          <Route element={<FormValidation />} path="/ticket-search" />
+          <Route element={<SearchByClient />} path="/client-ticket-search" />
+          <Route
+            element={<UserProfileActivity />}
+            path="/user-profile-activity"
+          />
+          <Route
+            element={<UserProfileSetting />}
+            path="/user-profile-setting"
+          />
+        </Route>
+      </Route>
+      <Route path={`${process.env.PUBLIC_URL}`} element={<LayoutNoSidebar />}>
+        <Route element={<Login />} path="/auth-login" />
+        <Route path="*" element={<Error404Modern />}></Route>
+      </Route>
     </Routes>
   );
 };
