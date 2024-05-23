@@ -17,6 +17,7 @@ import { Table, Spinner, Alert } from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
 import "./binktext.css";
 import BASE_URL from "../../../config";
+import { postUserData } from "../../../functionReducer";
 // ... (previous imports)
 
 const PricingTable = () => {
@@ -24,6 +25,16 @@ const PricingTable = () => {
   const [loading, setLoading] = useState(true);
   const [previousUserId, setPreviousUserId] = useState(null);
   const [isBlinking, setIsBlinking] = useState(false);
+  useEffect(() => {
+    // Call the postUserData function only once when the component mounts
+    postUserData()
+      .then(() => {
+        console.log("User data posted successfully");
+      })
+      .catch((error) => {
+        console.error("Failed to post user data:", error);
+      });
+  }, []); // Empty dependency array ensures this runs only once
   useEffect(() => {
     // Check if Illgel_count is greater than zero
     if (apiData?.TofData?.Illgel_count > 0) {

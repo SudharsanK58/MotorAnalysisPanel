@@ -9,19 +9,32 @@ import {
   BlockHead,
   BlockTitle,
   Col,
-  Row,  // Make sure to import the Table component
+  Row, // Make sure to import the Table component
 } from "../../../components/Component";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
-import { Table , Spinner ,Alert} from "reactstrap";
+import { Table, Spinner, Alert } from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
-import './binktext.css';
+import "./binktext.css";
 import BASE_URL from "../../../config";
+import { postUserData } from "../../../functionReducer";
 const TicketBenchMark = () => {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [timeZone, setTimeZone] = useState(sessionStorage.getItem("TimeZone") || 0);
+  const [timeZone, setTimeZone] = useState(
+    sessionStorage.getItem("TimeZone") || 0
+  );
   const [previousTicketID, setPreviousTicketID] = useState(null);
+  useEffect(() => {
+    // Call the postUserData function only once when the component mounts
+    postUserData()
+      .then(() => {
+        console.log("User data posted successfully");
+      })
+      .catch((error) => {
+        console.error("Failed to post user data:", error);
+      });
+  }, []); // Empty dependency array ensures this runs only once
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,16 +69,19 @@ const TicketBenchMark = () => {
 
   const playBellSound = () => {
     const audio = new Audio("/bellSound.mp3");
-    toast.success(`${apiData[0]?.userName} took ${apiData[0]?.timeTaken} to validate!`, {
-      position: "top-right",
-      autoClose: true,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: false,
-    });
-    audio.play().catch(error => console.error("Error playing audio:", error));
+    toast.success(
+      `${apiData[0]?.userName} took ${apiData[0]?.timeTaken} to validate!`,
+      {
+        position: "top-right",
+        autoClose: true,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: false,
+      }
+    );
+    audio.play().catch((error) => console.error("Error playing audio:", error));
   };
   const formatTimestamp = (timestamp) => {
     const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -74,7 +90,7 @@ const TicketBenchMark = () => {
 
     // Add 5 hours and 30 minutes to the timestamp
     // Adjust the timestamp based on the time zone
-    if (sessionStorage.getItem("TimeZone") === '1') {
+    if (sessionStorage.getItem("TimeZone") === "1") {
       // Eastern Standard Time (EST)
       dateObj.setHours(dateObj.getHours() - 4, dateObj.getMinutes());
     } else {
@@ -83,8 +99,16 @@ const TicketBenchMark = () => {
     }
 
     // Format the adjusted timestamp
-    const options = { day: '2-digit', month: '2-digit', year: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
-    const formattedTimestamp = dateObj.toLocaleString('en-US', options);
+    const options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    };
+    const formattedTimestamp = dateObj.toLocaleString("en-US", options);
 
     return formattedTimestamp;
   };
@@ -93,63 +117,93 @@ const TicketBenchMark = () => {
     <React.Fragment>
       <Head title="BENCHMARK"></Head>
       <Content>
-      <BlockHead size="sm">
-        <BlockBetween className="g-3">
-          <BlockContent>
-            <BlockTitle>Ticketing Benchmark</BlockTitle>
-            <BlockDes className="text-soft">
-              <p>
-              <ol style={{ color: 'blue', paddingLeft: '20px', margin: '0' }}>
-                  <li>Time represented in this table is in <strong style={{ color: 'blue' }}>{timeZone === '1' ? "Eastern" : "India"} Standard Time ({timeZone === '1' ? "EST" : "IST"})</strong>.</li>
-                  <li style={{ color: 'black' }}>2.The time taken is when a person enters TOF range to data received in MQTT, <strong>excluding validator beep sound</strong>.</li>
-                  <li style={{ color: 'black' }}>3.If ticket is not updated here but validated on device, it means the ticket is validated out of TOF range.</li>
-                  <li style={{ color: 'black' }}>4.Do not manually reload this page. If a ticket is validated, the data will be <strong>updated every 5 seconds</strong>.</li>
-                </ol>
-              </p>
-            </BlockDes>
-          </BlockContent>
-        </BlockBetween>
-      </BlockHead>
+        <BlockHead size="sm">
+          <BlockBetween className="g-3">
+            <BlockContent>
+              <BlockTitle>Ticketing Benchmark</BlockTitle>
+              <BlockDes className="text-soft">
+                <p>
+                  <ol
+                    style={{ color: "blue", paddingLeft: "20px", margin: "0" }}
+                  >
+                    <li>
+                      Time represented in this table is in{" "}
+                      <strong style={{ color: "blue" }}>
+                        {timeZone === "1" ? "Eastern" : "India"} Standard Time (
+                        {timeZone === "1" ? "EST" : "IST"})
+                      </strong>
+                      .
+                    </li>
+                    <li style={{ color: "black" }}>
+                      2.The time taken is when a person enters TOF range to data
+                      received in MQTT,{" "}
+                      <strong>excluding validator beep sound</strong>.
+                    </li>
+                    <li style={{ color: "black" }}>
+                      3.If ticket is not updated here but validated on device,
+                      it means the ticket is validated out of TOF range.
+                    </li>
+                    <li style={{ color: "black" }}>
+                      4.Do not manually reload this page. If a ticket is
+                      validated, the data will be{" "}
+                      <strong>updated every 5 seconds</strong>.
+                    </li>
+                  </ol>
+                </p>
+              </BlockDes>
+            </BlockContent>
+          </BlockBetween>
+        </BlockHead>
 
-      <Table className="text-center mx-auto" style={{ width: '80%', borderRadius: '15px', overflow: 'hidden', tableLayout: 'fixed' }}>
-        <colgroup>
-          <col style={{ width: '20%' }} />
-          <col style={{ width: '20%' }} />
-          <col style={{ width: '20%' }} />
-          <col style={{ width: '20%' }} />
-          <col style={{ width: '20%' }} />
-        </colgroup>
-        <thead>
-          <tr>
-            <th>Device ID</th>
-            <th>User Name</th>
-            <th>Ticket ID</th>
-            <th>Time Taken</th>
-            <th>Validation Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
+        <Table
+          className="text-center mx-auto"
+          style={{
+            width: "80%",
+            borderRadius: "15px",
+            overflow: "hidden",
+            tableLayout: "fixed",
+          }}
+        >
+          <colgroup>
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "20%" }} />
+          </colgroup>
+          <thead>
             <tr>
-              <td colSpan="5" className="text-center">
-                <Spinner color="primary" />
-              </td>
+              <th>Device ID</th>
+              <th>User Name</th>
+              <th>Ticket ID</th>
+              <th>Time Taken</th>
+              <th>Validation Time</th>
             </tr>
-          ) : (
-            apiData.map((item, index) => (
-              <tr key={index}>
-                <td>{item.deviceID}</td>
-                <td>{item.userName}</td>
-                <td>{item.ticketID}</td>
-                <td>
-                  <span style={{ fontWeight: 'bold', color: 'blue' }}>{item.timeTaken}</span>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr>
+                <td colSpan="5" className="text-center">
+                  <Spinner color="primary" />
                 </td>
-                <td>{formatTimestamp(item.validationTime)}</td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </Table>
+            ) : (
+              apiData.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.deviceID}</td>
+                  <td>{item.userName}</td>
+                  <td>{item.ticketID}</td>
+                  <td>
+                    <span style={{ fontWeight: "bold", color: "blue" }}>
+                      {item.timeTaken}
+                    </span>
+                  </td>
+                  <td>{formatTimestamp(item.validationTime)}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </Table>
       </Content>
       <ToastContainer />
     </React.Fragment>

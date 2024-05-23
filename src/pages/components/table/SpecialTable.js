@@ -7,37 +7,64 @@ import {
   BlockHeadContent,
   BlockTitle,
 } from "../../../components/Component";
-import { Card, CardBody, Button,Spinner,Input,Table, Badge,PaginationLink, PaginationItem, Pagination,UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  Button,
+  Spinner,
+  Input,
+  Table,
+  Badge,
+  PaginationLink,
+  PaginationItem,
+  Pagination,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 import axios from "axios";
 import Example from "./Example";
 import Swal from "sweetalert2";
 import BASE_URL from "../../../config";
-
+import { postUserData } from "../../../functionReducer";
 
 const SpecialTablePage = () => {
   const [tableData, setTableData] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState([]);
   const [loading, setLoading] = useState(true); // New state to track loading state
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [clients, setClients] = useState([]);
-  const [selectedClient, setSelectedClient] = useState('All Client Devices');
+  const [selectedClient, setSelectedClient] = useState("All Client Devices");
   const [startDate, setStartDate] = useState(null);
   const rowsPerPage = 20;
   const [modalData, setModalData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [timeZone, setTimeZone] = useState(sessionStorage.getItem("TimeZone") || 0);
+  const [timeZone, setTimeZone] = useState(
+    sessionStorage.getItem("TimeZone") || 0
+  );
+  useEffect(() => {
+    // Call the postUserData function only once when the component mounts
+    postUserData()
+      .then(() => {
+        console.log("User data posted successfully");
+      })
+      .catch((error) => {
+        console.error("Failed to post user data:", error);
+      });
+  }, []); // Empty dependency array ensures this runs only once
 
-  const handleAdvanced1 = async (rowData,e) => {
+  const handleAdvanced1 = async (rowData, e) => {
     try {
       // Make API call
       const response = await fetch(`${BASE_URL}/publish`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           topic: `${rowData.deviceId}/nfc`,
-          message: '301',
+          message: "301",
         }),
       });
 
@@ -45,26 +72,26 @@ const SpecialTablePage = () => {
       if (response.ok) {
         // Show success message using Swal
         Swal.fire({
-          icon: 'success',
-          title: 'The device has been pinged.',
+          icon: "success",
+          title: "The device has been pinged.",
           focusConfirm: false,
         });
       } else {
         // Handle error case, show error message
         Swal.fire({
-          icon: 'error',
-          title: 'Error pinging the device.',
-          text: 'Please try again later.',
+          icon: "error",
+          title: "Error pinging the device.",
+          text: "Please try again later.",
           focusConfirm: false,
         });
       }
     } catch (error) {
       // Handle network or other errors
-      console.error('Error:', error);
+      console.error("Error:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error pinging the device.',
-        text: 'Please try again later.',
+        icon: "error",
+        title: "Error pinging the device.",
+        text: "Please try again later.",
         focusConfirm: false,
       });
     }
@@ -76,7 +103,7 @@ const SpecialTablePage = () => {
   };
   const handleAdvanced3 = async (rowData) => {
     const deviceId = rowData.deviceId;
-  
+
     Swal.fire({
       title: "Warning",
       text: "This works only if the device is active",
@@ -88,43 +115,46 @@ const SpecialTablePage = () => {
         try {
           // Make API call
           const response = await fetch(`${BASE_URL}/publish`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               topic: `${deviceId}/react`,
-              message: 'GET',
+              message: "GET",
             }),
           });
-  
+
           // Check if the API call was successful
           if (response.ok) {
             // Show success message using Swal
-            Swal.fire("Request have sent", "Please wait for the device to respond", "success");
+            Swal.fire(
+              "Request have sent",
+              "Please wait for the device to respond",
+              "success"
+            );
           } else {
             // Handle error case, show error message
             Swal.fire({
-              icon: 'error',
-              title: 'Error refreshing GPS info.',
-              text: 'Please try again later.',
+              icon: "error",
+              title: "Error refreshing GPS info.",
+              text: "Please try again later.",
               focusConfirm: false,
             });
           }
         } catch (error) {
           // Handle network or other errors
-          console.error('Error:', error);
+          console.error("Error:", error);
           Swal.fire({
-            icon: 'error',
-            title: 'Error refreshing GPS info.',
-            text: 'Please try again later.',
+            icon: "error",
+            title: "Error refreshing GPS info.",
+            text: "Please try again later.",
             focusConfirm: false,
           });
         }
       }
     });
   };
-  
 
   const handleViewAction = (rowData) => {
     setModalData({
@@ -135,7 +165,6 @@ const SpecialTablePage = () => {
   };
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
-
 
   // Calculate total pages
   const totalPages = Math.ceil(tableData.length / rowsPerPage);
@@ -154,91 +183,96 @@ const SpecialTablePage = () => {
     const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     // Convert timestamp to Date object
     const dateObj = new Date(timestamp);
-  
 
     // Adjust the timestamp based on the time zone
-  if (sessionStorage.getItem("TimeZone") === '1') {
-    // Eastern Standard Time (EST)
-    dateObj.setHours(dateObj.getHours() - 4, dateObj.getMinutes());
-  } else {
-    // Indian Standard Time (IST)
-    dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
-  }
-  
+    if (sessionStorage.getItem("TimeZone") === "1") {
+      // Eastern Standard Time (EST)
+      dateObj.setHours(dateObj.getHours() - 4, dateObj.getMinutes());
+    } else {
+      // Indian Standard Time (IST)
+      dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
+    }
+
     // Format the adjusted timestamp
-    const options = { 
-      day: '2-digit', 
-      month: 'short', // Use 'short' for abbreviated month name
-      year: 'numeric', 
-      hour: 'numeric', 
-      minute: 'numeric', 
-      second: 'numeric', 
-      hour12: true 
+    const options = {
+      day: "2-digit",
+      month: "short", // Use 'short' for abbreviated month name
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
     };
-    const formattedTimestamp = dateObj.toLocaleString('en-US', options);
-  
+    const formattedTimestamp = dateObj.toLocaleString("en-US", options);
+
     return formattedTimestamp;
   };
-  
-  const filteredTableData = tableData.filter((rowData) =>
-  rowData.deviceId.includes(searchQuery) || String(rowData.vehicleNo).includes(searchQuery) || String(rowData.bleMacAddress).includes(searchQuery)
-);
 
-const reloadTable = () => {
-  fetchDeviceLogData();
-  setSelectedClient("All Client Devices");
-};
-const dataToMap = searchQuery ? filteredTableData : currentPageData;
+  const filteredTableData = tableData.filter(
+    (rowData) =>
+      rowData.deviceId.includes(searchQuery) ||
+      String(rowData.vehicleNo).includes(searchQuery) ||
+      String(rowData.bleMacAddress).includes(searchQuery)
+  );
 
-const calculateLastSeen = (formattedTimestamp) => {
-  const givenTime = new Date(Date.UTC(
-    formattedTimestamp.substring(0, 4), // Year
-    formattedTimestamp.substring(5, 7) - 1, // Month (zero-based)
-    formattedTimestamp.substring(8, 10), // Day
-    formattedTimestamp.substring(11, 13), // Hour
-    formattedTimestamp.substring(14, 16), // Minute
-    formattedTimestamp.substring(17, 19), // Second
-    formattedTimestamp.substring(20, 23) // Millisecond
-  ));
-  const currentTime = new Date(Date.UTC(
-    new Date().getUTCFullYear(),
-    new Date().getUTCMonth(),
-    new Date().getUTCDate(),
-    new Date().getUTCHours(),
-    new Date().getUTCMinutes(),
-    new Date().getUTCSeconds()
-  ));
-  const timeDifference = currentTime - givenTime;
-  const secondsDifference = Math.floor(timeDifference / 1000);
+  const reloadTable = () => {
+    fetchDeviceLogData();
+    setSelectedClient("All Client Devices");
+  };
+  const dataToMap = searchQuery ? filteredTableData : currentPageData;
 
-  if (secondsDifference < 60) {
-    return (
-      <span style={{ fontWeight: 'bold', color: 'green' }}>
-        {`${Math.max(1, secondsDifference)} seconds ago`}
-      </span>
+  const calculateLastSeen = (formattedTimestamp) => {
+    const givenTime = new Date(
+      Date.UTC(
+        formattedTimestamp.substring(0, 4), // Year
+        formattedTimestamp.substring(5, 7) - 1, // Month (zero-based)
+        formattedTimestamp.substring(8, 10), // Day
+        formattedTimestamp.substring(11, 13), // Hour
+        formattedTimestamp.substring(14, 16), // Minute
+        formattedTimestamp.substring(17, 19), // Second
+        formattedTimestamp.substring(20, 23) // Millisecond
+      )
     );
-  } else if (secondsDifference < 600) {
-    const minutes = Math.floor(secondsDifference / 60);
-    return (
-      <span style={{ fontWeight: 'bold', color: 'green' }}>
-        {`${minutes} minute${minutes > 1 ? 's' : ''} ago`}
-      </span>
+    const currentTime = new Date(
+      Date.UTC(
+        new Date().getUTCFullYear(),
+        new Date().getUTCMonth(),
+        new Date().getUTCDate(),
+        new Date().getUTCHours(),
+        new Date().getUTCMinutes(),
+        new Date().getUTCSeconds()
+      )
     );
-  } else if (secondsDifference < 3600) {
-    const minutes = Math.floor(secondsDifference / 60);
-    return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-  } else if (secondsDifference < 86400) {
-    const hours = Math.floor(secondsDifference / 3600);
-    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-  } else if (secondsDifference < 172800) {
-    return "1 day ago";
-  } else {
-    // If more than one day, return the formatted timestamp without additional formatting
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(formattedTimestamp).toLocaleDateString('en-US', options);
-  }
-};
+    const timeDifference = currentTime - givenTime;
+    const secondsDifference = Math.floor(timeDifference / 1000);
 
+    if (secondsDifference < 60) {
+      return (
+        <span style={{ fontWeight: "bold", color: "green" }}>
+          {`${Math.max(1, secondsDifference)} seconds ago`}
+        </span>
+      );
+    } else if (secondsDifference < 600) {
+      const minutes = Math.floor(secondsDifference / 60);
+      return (
+        <span style={{ fontWeight: "bold", color: "green" }}>
+          {`${minutes} minute${minutes > 1 ? "s" : ""} ago`}
+        </span>
+      );
+    } else if (secondsDifference < 3600) {
+      const minutes = Math.floor(secondsDifference / 60);
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+    } else if (secondsDifference < 86400) {
+      const hours = Math.floor(secondsDifference / 3600);
+      return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+    } else if (secondsDifference < 172800) {
+      return "1 day ago";
+    } else {
+      // If more than one day, return the formatted timestamp without additional formatting
+      const options = { year: "numeric", month: "short", day: "numeric" };
+      return new Date(formattedTimestamp).toLocaleDateString("en-US", options);
+    }
+  };
 
   const tableHeadings = [
     "Coach number",
@@ -272,7 +306,9 @@ const calculateLastSeen = (formattedTimestamp) => {
   const fetchClientData = async (client) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}/macaddresses?client_name=${encodeURIComponent(client)}`);
+      const response = await axios.get(
+        `${BASE_URL}/macaddresses?client_name=${encodeURIComponent(client)}`
+      );
       setTableData(response.data);
       setLoading(false);
     } catch (error) {
@@ -280,7 +316,9 @@ const calculateLastSeen = (formattedTimestamp) => {
       setLoading(false);
     }
   };
-  const attDevicesCount = tableData.filter((device) => device.networkName === 'AT&T').length;
+  const attDevicesCount = tableData.filter(
+    (device) => device.networkName === "AT&T"
+  ).length;
   useEffect(() => {
     const fetchClients = async () => {
       try {
@@ -291,7 +329,7 @@ const calculateLastSeen = (formattedTimestamp) => {
       }
     };
     fetchClients();
-    if (selectedClient === 'All Client Devices') {
+    if (selectedClient === "All Client Devices") {
       fetchDeviceLogData();
     } else {
       // Fetch data based on selected client
@@ -312,107 +350,141 @@ const calculateLastSeen = (formattedTimestamp) => {
       <Head title="All Devices" />
       <Content page="component">
         <Block size="lg">
-        <BlockHead>
-          <BlockHeadContent>
-            <BlockTitle tag="h3">Devices</BlockTitle>
-          </BlockHeadContent>
-        </BlockHead>
+          <BlockHead>
+            <BlockHeadContent>
+              <BlockTitle tag="h3">Devices</BlockTitle>
+            </BlockHeadContent>
+          </BlockHead>
           <div className="d-flex justify-content-end mb-3">
-              {/* Add space between elements */}
-              <div style={{ width: '20px' }}></div>
-              <Input
-                type="text"
-                placeholder="Search by deviceId or Vehicle Name"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="mr-2 input-sm" // Add input-sm class to reduce size
-                style={{ width: '200px' }} // Adjust width based on your preference
-              />
-              <div style={{ width: '20px' }}></div>
+            {/* Add space between elements */}
+            <div style={{ width: "20px" }}></div>
+            <Input
+              type="text"
+              placeholder="Search by deviceId or Vehicle Name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="mr-2 input-sm" // Add input-sm class to reduce size
+              style={{ width: "200px" }} // Adjust width based on your preference
+            />
+            <div style={{ width: "20px" }}></div>
 
-              {/* Reload Button */}
-              <Button color="primary" className="mr-2" onClick={reloadTable}>
-                Reload
-              </Button>
-              <div style={{ width: '20px' }}></div>
-              {/* Dropdown List */}
-              <UncontrolledDropdown>
-                <DropdownToggle className="btn btn-light">
+            {/* Reload Button */}
+            <Button color="primary" className="mr-2" onClick={reloadTable}>
+              Reload
+            </Button>
+            <div style={{ width: "20px" }}></div>
+            {/* Dropdown List */}
+            <UncontrolledDropdown>
+              <DropdownToggle className="btn btn-light">
                 {selectedClient}
-                </DropdownToggle>
-                <DropdownMenu>
-                  {clients.map((client, index) => (
-                    <DropdownItem key={index} onClick={() => handleClientSelect(client)}>
-                      {client}
-                    </DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </div>
+              </DropdownToggle>
+              <DropdownMenu>
+                {clients.map((client, index) => (
+                  <DropdownItem
+                    key={index}
+                    onClick={() => handleClientSelect(client)}
+                  >
+                    {client}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
           <Card className="card-bordered card-preview">
             <CardBody>
-            <div className="d-flex flex-column align-items-center mt-3">
-              <Table className="text-center">
-                <thead>
-                  <tr>
-                    {tableHeadings.map((heading, index) => (
-                      <th key={index}>{heading}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-          {loading ? ( // Render spinner in table body when loading is true
-            <tr>
-              <td colSpan={tableHeadings.length} className="text-center">
-                <Spinner color="primary" />
-              </td>
-            </tr>
-          ) : (
-            dataToMap.map((rowData, rowIndex) => (
-              <tr key={rowIndex}>
-                <td>{rowData.vehicleNo}</td>
-                <td>{rowData.deviceId}</td>
-                {/* Last seen - Leave empty for now */}
-                <td>{calculateLastSeen(rowData.timestamp)}</td>
-                <td>{formatTimestamp(rowData.timestamp)}</td>
-                <td>
-                  {rowData.networkConnection === 1 ? (
-                    <Badge color="primary">{rowData.networkName}</Badge>
-                  ) : rowData.networkConnection === 2 ? (
-                    <Badge color="secondary">{rowData.networkName}</Badge>
-                  ) : (
-                    rowData.networkName
-                  )}
-                </td>
-                {/* <td>{rowData.bleMinor}</td> */}
-                <td>{rowData.bleTxpower}</td>
-                <td>{rowData["current temp"]}°C</td>
-                <td>
-                  <UncontrolledDropdown isOpen={dropdownOpen[rowIndex]} toggle={() => toggleDropdown(rowIndex)} style={{ width: '10px' }}>
-                    <DropdownToggle caret className="dropdown-toggle btn btn-light">
-                      <span style={{ fontSize: "1.5rem" }}>&#8942;</span>
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem tag="a" href="#links"  onClick={() => handleViewAction(rowData)}>
-                        <span>Device info</span>
-                      </DropdownItem>
-                      <DropdownItem tag="a" href="#links" onClick={(e) => handleAdvanced1(rowData)}>
-                        <span>Ping test</span>
-                      </DropdownItem>
-                      <DropdownItem tag="a" href="#links" onClick={(ev) =>handleAdvanced3(rowData)}>
-                        <span>Get GPS info</span>
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-              </Table>
-              {/* Pagination */}
-              
-                <Pagination aria-label="Page navigation example" className="text-center mt-3">
+              <div className="d-flex flex-column align-items-center mt-3">
+                <Table className="text-center">
+                  <thead>
+                    <tr>
+                      {tableHeadings.map((heading, index) => (
+                        <th key={index}>{heading}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? ( // Render spinner in table body when loading is true
+                      <tr>
+                        <td
+                          colSpan={tableHeadings.length}
+                          className="text-center"
+                        >
+                          <Spinner color="primary" />
+                        </td>
+                      </tr>
+                    ) : (
+                      dataToMap.map((rowData, rowIndex) => (
+                        <tr key={rowIndex}>
+                          <td>{rowData.vehicleNo}</td>
+                          <td>{rowData.deviceId}</td>
+                          {/* Last seen - Leave empty for now */}
+                          <td>{calculateLastSeen(rowData.timestamp)}</td>
+                          <td>{formatTimestamp(rowData.timestamp)}</td>
+                          <td>
+                            {rowData.networkConnection === 1 ? (
+                              <Badge color="primary">
+                                {rowData.networkName}
+                              </Badge>
+                            ) : rowData.networkConnection === 2 ? (
+                              <Badge color="secondary">
+                                {rowData.networkName}
+                              </Badge>
+                            ) : (
+                              rowData.networkName
+                            )}
+                          </td>
+                          {/* <td>{rowData.bleMinor}</td> */}
+                          <td>{rowData.bleTxpower}</td>
+                          <td>{rowData["current temp"]}°C</td>
+                          <td>
+                            <UncontrolledDropdown
+                              isOpen={dropdownOpen[rowIndex]}
+                              toggle={() => toggleDropdown(rowIndex)}
+                              style={{ width: "10px" }}
+                            >
+                              <DropdownToggle
+                                caret
+                                className="dropdown-toggle btn btn-light"
+                              >
+                                <span style={{ fontSize: "1.5rem" }}>
+                                  &#8942;
+                                </span>
+                              </DropdownToggle>
+                              <DropdownMenu>
+                                <DropdownItem
+                                  tag="a"
+                                  href="#links"
+                                  onClick={() => handleViewAction(rowData)}
+                                >
+                                  <span>Device info</span>
+                                </DropdownItem>
+                                <DropdownItem
+                                  tag="a"
+                                  href="#links"
+                                  onClick={(e) => handleAdvanced1(rowData)}
+                                >
+                                  <span>Ping test</span>
+                                </DropdownItem>
+                                <DropdownItem
+                                  tag="a"
+                                  href="#links"
+                                  onClick={(ev) => handleAdvanced3(rowData)}
+                                >
+                                  <span>Get GPS info</span>
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </UncontrolledDropdown>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </Table>
+                {/* Pagination */}
+
+                <Pagination
+                  aria-label="Page navigation example"
+                  className="text-center mt-3"
+                >
                   <PaginationItem>
                     <PaginationLink
                       previous
@@ -426,7 +498,10 @@ const calculateLastSeen = (formattedTimestamp) => {
                   </PaginationItem>
 
                   {Array.from({ length: totalPages }, (_, index) => (
-                    <PaginationItem key={index} active={currentPage === index + 1}>
+                    <PaginationItem
+                      key={index}
+                      active={currentPage === index + 1}
+                    >
                       <PaginationLink
                         href={`#page${index + 1}`}
                         onClick={(ev) => {
@@ -445,7 +520,9 @@ const calculateLastSeen = (formattedTimestamp) => {
                       href="#next"
                       onClick={(ev) => {
                         ev.preventDefault();
-                        setCurrentPage((prevPage) => Math.min(totalPages, prevPage + 1));
+                        setCurrentPage((prevPage) =>
+                          Math.min(totalPages, prevPage + 1)
+                        );
                       }}
                       disabled={currentPage === totalPages}
                     />
@@ -454,22 +531,48 @@ const calculateLastSeen = (formattedTimestamp) => {
               </div>
             </CardBody>
           </Card>
-          <div style={{ width: '20px' }}></div>
-            <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>
-              <li>This table provides information about the status of all client devices.</li>
-              <li>Time represented in this table is in <strong style={{ color: 'blue' }}>{timeZone === '1' ? "Eastern" : "India"} Standard Time ({timeZone === '1' ? "EST" : "IST"})</strong>.</li>
-              <li>This table is for <strong style={{ color: 'blue' }}>hardware team</strong> reference only.</li>
-              <li>No of devices installed and GPS data received is <strong style={{ color: 'blue' }}>{attDevicesCount} devices</strong> for the selected client</li>
-            </ul>
+          <div style={{ width: "20px" }}></div>
+          <ul
+            style={{
+              listStyleType: "disc",
+              paddingLeft: "20px",
+              marginTop: "10px",
+            }}
+          >
+            <li>
+              This table provides information about the status of all client
+              devices.
+            </li>
+            <li>
+              Time represented in this table is in{" "}
+              <strong style={{ color: "blue" }}>
+                {timeZone === "1" ? "Eastern" : "India"} Standard Time (
+                {timeZone === "1" ? "EST" : "IST"})
+              </strong>
+              .
+            </li>
+            <li>
+              This table is for{" "}
+              <strong style={{ color: "blue" }}>hardware team</strong> reference
+              only.
+            </li>
+            <li>
+              No of devices installed and GPS data received is{" "}
+              <strong style={{ color: "blue" }}>
+                {attDevicesCount} devices
+              </strong>{" "}
+              for the selected client
+            </li>
+          </ul>
         </Block>
         {modalData && (
-        <Example
-        isOpen={isModalOpen}
-        toggle={toggleModal}
-        deviceId={modalData.deviceId}
-        lastSeen={modalData.lastSeen}
-      />
-      )}
+          <Example
+            isOpen={isModalOpen}
+            toggle={toggleModal}
+            deviceId={modalData.deviceId}
+            lastSeen={modalData.lastSeen}
+          />
+        )}
       </Content>
     </React.Fragment>
   );

@@ -14,22 +14,33 @@ import {
   Button,
 } from "../../../components/Component";
 import UserProfileAside from "./UserProfileAside";
-
+import { postUserData } from "../../../functionReducer";
 const UserProfileSettingPage = () => {
   const [sm, updateSm] = useState(false);
-  const [mobileView , setMobileView] = useState(false);
-  const [isChecked, setIsChecked] = useState(sessionStorage.getItem("TimeZone") === '1');
+  const [mobileView, setMobileView] = useState(false);
+  const [isChecked, setIsChecked] = useState(
+    sessionStorage.getItem("TimeZone") === "1"
+  );
+  useEffect(() => {
+    // Call the postUserData function only once when the component mounts
+    postUserData()
+      .then(() => {
+        console.log("User data posted successfully");
+      })
+      .catch((error) => {
+        console.error("Failed to post user data:", error);
+      });
+  }, []); // Empty dependency array ensures this runs only once
   // Set up a useEffect hook to update the state when component mounts or sessionStorage changes
   useEffect(() => {
-    setIsChecked(sessionStorage.getItem("TimeZone") === '1');
+    setIsChecked(sessionStorage.getItem("TimeZone") === "1");
   }, []);
-
 
   const handleSwitchChange = (event) => {
     const checked = event.target.checked;
     setIsChecked(checked);
-    sessionStorage.setItem("TimeZone", checked ? '1' : '0');
-    console.log("TimeZone set to:", checked ? '1' : '0');
+    sessionStorage.setItem("TimeZone", checked ? "1" : "0");
+    console.log("TimeZone set to:", checked ? "1" : "0");
   };
   // function to change the design view under 990 px
   const viewChange = () => {
@@ -45,15 +56,17 @@ const UserProfileSettingPage = () => {
     viewChange();
     window.addEventListener("load", viewChange);
     window.addEventListener("resize", viewChange);
-    document.getElementsByClassName("nk-header")[0].addEventListener("click", function () {
-      updateSm(false);
-    });
+    document
+      .getElementsByClassName("nk-header")[0]
+      .addEventListener("click", function () {
+        updateSm(false);
+      });
     return () => {
       window.removeEventListener("resize", viewChange);
       window.removeEventListener("load", viewChange);
     };
   }, []);
-  
+
   return (
     <React.Fragment>
       <Head title="User List - Profile"></Head>
@@ -65,21 +78,31 @@ const UserProfileSettingPage = () => {
                 sm ? "content-active" : ""
               }`}
             >
-              <UserProfileAside updateSm={updateSm}  sm={sm}/>
+              <UserProfileAside updateSm={updateSm} sm={sm} />
             </div>
             <div className="card-inner card-inner-lg">
-              {sm && mobileView && <div className="toggle-overlay" onClick={() => updateSm(!sm)}></div>}
+              {sm && mobileView && (
+                <div
+                  className="toggle-overlay"
+                  onClick={() => updateSm(!sm)}
+                ></div>
+              )}
               <BlockHead size="lg">
                 <BlockBetween>
                   <BlockHeadContent>
                     <BlockTitle tag="h4">Settings</BlockTitle>
                     <BlockDes>
-                      <p>These settings will help you to keep your account secure.</p>
+                      <p>
+                        These settings will help you to keep your account
+                        secure.
+                      </p>
                     </BlockDes>
                   </BlockHeadContent>
                   <BlockHeadContent className="align-self-start d-lg-none">
                     <Button
-                      className={`toggle btn btn-icon btn-trigger mt-n1 ${sm ? "active" : ""}`}
+                      className={`toggle btn btn-icon btn-trigger mt-n1 ${
+                        sm ? "active" : ""
+                      }`}
                       onClick={() => updateSm(!sm)}
                     >
                       <Icon name="menu-alt-r"></Icon>
@@ -95,17 +118,31 @@ const UserProfileSettingPage = () => {
                       <div className="between-center flex-wrap flex-md-nowrap g-3">
                         <div className="nk-block-text">
                           <h6>Adjust Time Zone Settings</h6>
-                          <p>Please enable the switch to change the time zone to EST. Otherwise, it will remain defaulted to IST.</p>
+                          <p>
+                            Please enable the switch to change the time zone to
+                            EST. Otherwise, it will remain defaulted to IST.
+                          </p>
                         </div>
                         <div className="nk-block-actions">
                           <ul className="align-center gx-3">
                             <li className="order-md-last">
-                            <div className="custom-control custom-switch">
-                            <input type="checkbox" className="custom-control-input" checked={isChecked} id="activity-log" onChange={handleSwitchChange} />
-                              <label className="custom-control-label" htmlFor="activity-log">
-                                {sessionStorage.getItem("TimeZone") === '1' ? "Eastern" : "Indian"}
-                              </label>
-                            </div>
+                              <div className="custom-control custom-switch">
+                                <input
+                                  type="checkbox"
+                                  className="custom-control-input"
+                                  checked={isChecked}
+                                  id="activity-log"
+                                  onChange={handleSwitchChange}
+                                />
+                                <label
+                                  className="custom-control-label"
+                                  htmlFor="activity-log"
+                                >
+                                  {sessionStorage.getItem("TimeZone") === "1"
+                                    ? "Eastern"
+                                    : "Indian"}
+                                </label>
+                              </div>
                             </li>
                           </ul>
                         </div>

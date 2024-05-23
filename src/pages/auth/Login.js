@@ -3,8 +3,9 @@ import Logo from "../../images/logo.png";
 import LogoDark from "../../images/logo-dark.png";
 import Head from "../../layout/head/Head";
 import AuthFooter from "./AuthFooter";
-import backImage from "./loginPage.jpg"
+import backImage from "./loginPage.jpg";
 import BASE_URL from "../../config";
+import { postUserData } from "../../functionReducer";
 import {
   Block,
   BlockContent,
@@ -26,7 +27,6 @@ const Login = () => {
 
   const onFormSubmit = async (formData) => {
     setLoading(true);
-  
     try {
       const response = await fetch(`${BASE_URL}/login`, {
         method: "POST",
@@ -38,7 +38,7 @@ const Login = () => {
           password: formData.passcode,
         }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         if (data.message === "Login successful") {
@@ -56,6 +56,7 @@ const Login = () => {
           }
           sessionStorage.setItem("ShowUpdate", data.showUpdatesInfo ? 1 : 0);
           localStorage.setItem("userName", formData.name); // Store the user's name
+          postUserData();
           // Redirect to the /overview page
           setTimeout(() => {
             window.history.pushState(
@@ -81,105 +82,146 @@ const Login = () => {
       setLoading(false);
     }
   };
-  
 
-  const {  register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  return <>
-  <div
-      style={{
-        backgroundImage: `url(${backImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center', // Adjust as needed
-        minHeight: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center',
-
-      }}
-    >
-     <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start',paddingTop: '5%', paddingLeft: '60%'}}>
-    <Head title="Login"/>
-      <Block className="nk-block-middle nk-auth-body  wide-xs" >
-        
-        <div className="brand-logo pb-4 text-center">
-          <span style={{ fontWeight: 'bold', color: '#2263b3' ,fontSize: '20px'}}>	</span>
-        </div>
-        {/* <PreviewCard className="card-bordered" bodyClass="card-inner-lg" > */}  
-          <BlockHead>
-            <BlockContent>
-              <BlockTitle tag="h4">WELCOME TO RHMS!</BlockTitle>
-              <BlockDes>
-                <p style={{fontWeight: 'bold' ,fontSize:'20px'}}>RHMS is designed to conveniently monitor and manage all of our ZIG networking devices</p>
-              </BlockDes>
-            </BlockContent>
-          </BlockHead>
-          {errorVal && (
-            <div className="mb-3">
-              <Alert color="danger" className="alert-icon">
-                <Icon name="alert-circle" /> Unable to login with credentials{" "}
-              </Alert>
+  return (
+    <>
+      <div
+        style={{
+          backgroundImage: `url(${backImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center", // Adjust as needed
+          minHeight: "100vh",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-start",
+            paddingTop: "5%",
+            paddingLeft: "60%",
+          }}
+        >
+          <Head title="Login" />
+          <Block className="nk-block-middle nk-auth-body  wide-xs">
+            <div className="brand-logo pb-4 text-center">
+              <span
+                style={{
+                  fontWeight: "bold",
+                  color: "#2263b3",
+                  fontSize: "20px",
+                }}
+              >
+                {" "}
+              </span>
             </div>
-          )}
-          <Form className="is-alter" onSubmit={handleSubmit(onFormSubmit)}>
-            <div className="form-group">
-              <div className="form-label-group">
-                <label className="form-label" htmlFor="default-01">
-                  Email
-                </label>
+            {/* <PreviewCard className="card-bordered" bodyClass="card-inner-lg" > */}
+            <BlockHead>
+              <BlockContent>
+                <BlockTitle tag="h4">WELCOME TO RHMS!</BlockTitle>
+                <BlockDes>
+                  <p style={{ fontWeight: "bold", fontSize: "20px" }}>
+                    RHMS is designed to conveniently monitor and manage all of
+                    our ZIG networking devices
+                  </p>
+                </BlockDes>
+              </BlockContent>
+            </BlockHead>
+            {errorVal && (
+              <div className="mb-3">
+                <Alert color="danger" className="alert-icon">
+                  <Icon name="alert-circle" /> Unable to login with credentials{" "}
+                </Alert>
               </div>
-              <div className="form-control-wrap">
-                <input
-                  type="text"
-                  id="default-01"
-                  {...register('name', { required: "This field is required" })}
-                  placeholder="Enter your email address"
-                  className="form-control-lg form-control" />
-                {errors.name && <span className="invalid">{errors.name.message}</span>}
+            )}
+            <Form className="is-alter" onSubmit={handleSubmit(onFormSubmit)}>
+              <div className="form-group">
+                <div className="form-label-group">
+                  <label className="form-label" htmlFor="default-01">
+                    Email
+                  </label>
+                </div>
+                <div className="form-control-wrap">
+                  <input
+                    type="text"
+                    id="default-01"
+                    {...register("name", {
+                      required: "This field is required",
+                    })}
+                    placeholder="Enter your email address"
+                    className="form-control-lg form-control"
+                  />
+                  {errors.name && (
+                    <span className="invalid">{errors.name.message}</span>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="form-group">
-              <div className="form-label-group">
-                <label className="form-label" htmlFor="password">
-                  Passcode
-                </label>
+              <div className="form-group">
+                <div className="form-label-group">
+                  <label className="form-label" htmlFor="password">
+                    Passcode
+                  </label>
+                </div>
+                <div className="form-control-wrap">
+                  <a
+                    href="#password"
+                    onClick={(ev) => {
+                      ev.preventDefault();
+                      setPassState(!passState);
+                    }}
+                    className={`form-icon lg form-icon-right passcode-switch ${
+                      passState ? "is-hidden" : "is-shown"
+                    }`}
+                  >
+                    <Icon name="eye" className="passcode-icon icon-show"></Icon>
+
+                    <Icon
+                      name="eye-off"
+                      className="passcode-icon icon-hide"
+                    ></Icon>
+                  </a>
+                  <input
+                    type={passState ? "text" : "password"}
+                    id="password"
+                    {...register("passcode", {
+                      required: "This field is required",
+                    })}
+                    placeholder="Enter your passcode"
+                    className={`form-control-lg form-control ${
+                      passState ? "is-hidden" : "is-shown"
+                    }`}
+                  />
+                  {errors.passcode && (
+                    <span className="invalid">{errors.passcode.message}</span>
+                  )}
+                </div>
               </div>
-              <div className="form-control-wrap">
-                <a
-                  href="#password"
-                  onClick={(ev) => {
-                    ev.preventDefault();
-                    setPassState(!passState);
-                  }}
-                  className={`form-icon lg form-icon-right passcode-switch ${passState ? "is-hidden" : "is-shown"}`}
+              <div className="form-group">
+                <Button
+                  size="lg"
+                  className="btn-block"
+                  type="submit"
+                  color="primary"
                 >
-                  <Icon name="eye" className="passcode-icon icon-show"></Icon>
-
-                  <Icon name="eye-off" className="passcode-icon icon-hide"></Icon>
-                </a>
-                <input
-                  type={passState ? "text" : "password"}
-                  id="password"
-                  {...register('passcode', { required: "This field is required" })}
-                  placeholder="Enter your passcode"
-                  className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`} />
-                {errors.passcode && <span className="invalid">{errors.passcode.message}</span>}
+                  {loading ? <Spinner size="sm" color="light" /> : "Sign in"}
+                </Button>
               </div>
-            </div>
-            <div className="form-group">
-              <Button size="lg" className="btn-block" type="submit" color="primary">
-                {loading ? <Spinner size="sm" color="light" /> : "Sign in"}
-              </Button>
-            </div>
-          </Form>
-        {/* </PreviewCard> */}
-              {/* <AuthFooter /> */}
-      </Block>
+            </Form>
+            {/* </PreviewCard> */}
             {/* <AuthFooter /> */}
+          </Block>
+          {/* <AuthFooter /> */}
+        </div>
       </div>
-      
-      </div>
-
-
-  </>;
+    </>
+  );
 };
 export default Login;

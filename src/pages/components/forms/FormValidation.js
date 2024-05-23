@@ -2,10 +2,26 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import Content from "../../../layout/content/Content";
-import { Row, Col, Label, Form,Spinner, Card, CardBody, Table } from "reactstrap";
+import {
+  Row,
+  Col,
+  Label,
+  Form,
+  Spinner,
+  Card,
+  CardBody,
+  Table,
+} from "reactstrap";
 import Head from "../../../layout/head/Head";
 import { Button } from "../../../components/Component";
-import { Alert, Badge, UncontrolledAlert,Pagination,PaginationItem,PaginationLink } from "reactstrap";
+import {
+  Alert,
+  Badge,
+  UncontrolledAlert,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+} from "reactstrap";
 import axios from "axios";
 import FormValidationComponent from "../../../components/partials/form/FormValidation";
 import BASE_URL from "../../../config";
@@ -18,10 +34,19 @@ import {
   BlockTitle,
   BackTo,
 } from "../../../components/Component";
-import { ReactSearchAutocomplete } from 'react-search-autocomplete';
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
+import { postUserData } from "../../../functionReducer";
 
 const FormValidation = () => {
-  const { register, handleSubmit, setValue, watch, setError, clearErrors, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useForm();
   const [selectedDate, setSelectedDate] = useState(null);
   const [isDateSelected, setIsDateSelected] = useState(false);
   const [isTicketIdSelected, setTicketIdSelected] = useState(false);
@@ -29,89 +54,114 @@ const FormValidation = () => {
   const [apiResponse, setApiResponse] = useState(null);
   const [noData, setnoData] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [timeZone, setTimeZone] = useState(sessionStorage.getItem("TimeZone") || 0);
+  const [timeZone, setTimeZone] = useState(
+    sessionStorage.getItem("TimeZone") || 0
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
   const [searchOptions, setSearchOptions] = useState([]);
   const [selectedName, setSelectedName] = useState(null);
   const [inputFocused, setInputFocused] = useState(false);
-  
+
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
+  useEffect(() => {
+    // Call the postUserData function only once when the component mounts
+    postUserData()
+      .then(() => {
+        console.log("User data posted successfully");
+      })
+      .catch((error) => {
+        console.error("Failed to post user data:", error);
+      });
+  }, []); // Empty dependency array ensures this runs only once
   const renderTable = () => {
     if (apiResponse && apiResponse.length > 0) {
       return (
-<Card className="card-bordered card-preview mx-auto border-0" style={{ width: '80%', borderRadius: '10px' }}>
-      <CardBody>
-        <div className="d-flex flex-column align-items-center mt-3" >
-          <Table className="text-center" >
-            <thead>
-              <tr>
-                {Object.keys(apiResponse[0]).map((key) => (
-                  <th key={key}>{key}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-            {currentItems.map((item, index) => (
-              <tr key={index}>
-                {Object.entries(item).map(([key, value], index) => (
-                  <td key={index}>
-                    {/* Check if the key is "Ticket type" and the value is 301 */}
-                    {key === "Ticket type" && value === 301 ? (
-                      <Badge color="danger">illegal</Badge>
-                    ) : (
-                      // If not, render the value normally
-                      key.endsWith('date') ? formatTimestamp(value) : value
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
-            </tbody>
-          </Table>
-
-        {apiResponse && apiResponse.length > 0 && (
-        <Pagination aria-label="Page navigation example" className="text-center mt-3">
-        <PaginationItem>
-          <PaginationLink
-            previous
-            href="#previous"
-            onClick={(ev) => {
-              ev.preventDefault();
-              setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
-            }}
-            disabled={currentPage === 1}
-          />
-        </PaginationItem>
-        {/* Render page numbers */}
-        {[...Array(totalPages)].map((_, index) => (
-          <PaginationItem key={index} active={index + 1 === currentPage}>
-            <PaginationLink
-              href={`#page-${index + 1}`}
-              onClick={(ev) => {
-                ev.preventDefault();
-                setCurrentPage(index + 1);
-              }}
-            >
-              {index + 1}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
-        <PaginationItem>
-          <PaginationLink
-            next
-            href="#next"
-            onClick={(ev) => {
-              ev.preventDefault();
-              setCurrentPage((prevPage) => Math.min(totalPages, prevPage + 1));
-            }}
-            disabled={currentPage === totalPages}
-          />
-        </PaginationItem>
-      </Pagination>
-        )} </div>
-      </CardBody>
-    </Card>
+        <Card
+          className="card-bordered card-preview mx-auto border-0"
+          style={{ width: "80%", borderRadius: "10px" }}
+        >
+          <CardBody>
+            <div className="d-flex flex-column align-items-center mt-3">
+              <Table className="text-center">
+                <thead>
+                  <tr>
+                    {Object.keys(apiResponse[0]).map((key) => (
+                      <th key={key}>{key}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentItems.map((item, index) => (
+                    <tr key={index}>
+                      {Object.entries(item).map(([key, value], index) => (
+                        <td key={index}>
+                          {/* Check if the key is "Ticket type" and the value is 301 */}
+                          {key === "Ticket type" && value === 301 ? (
+                            <Badge color="danger">illegal</Badge>
+                          ) : // If not, render the value normally
+                          key.endsWith("date") ? (
+                            formatTimestamp(value)
+                          ) : (
+                            value
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              {apiResponse && apiResponse.length > 0 && (
+                <Pagination
+                  aria-label="Page navigation example"
+                  className="text-center mt-3"
+                >
+                  <PaginationItem>
+                    <PaginationLink
+                      previous
+                      href="#previous"
+                      onClick={(ev) => {
+                        ev.preventDefault();
+                        setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
+                      }}
+                      disabled={currentPage === 1}
+                    />
+                  </PaginationItem>
+                  {/* Render page numbers */}
+                  {[...Array(totalPages)].map((_, index) => (
+                    <PaginationItem
+                      key={index}
+                      active={index + 1 === currentPage}
+                    >
+                      <PaginationLink
+                        href={`#page-${index + 1}`}
+                        onClick={(ev) => {
+                          ev.preventDefault();
+                          setCurrentPage(index + 1);
+                        }}
+                      >
+                        {index + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  <PaginationItem>
+                    <PaginationLink
+                      next
+                      href="#next"
+                      onClick={(ev) => {
+                        ev.preventDefault();
+                        setCurrentPage((prevPage) =>
+                          Math.min(totalPages, prevPage + 1)
+                        );
+                      }}
+                      disabled={currentPage === totalPages}
+                    />
+                  </PaginationItem>
+                </Pagination>
+              )}{" "}
+            </div>
+          </CardBody>
+        </Card>
       );
     } else {
       return null;
@@ -120,11 +170,13 @@ const FormValidation = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/autocomplete_user_names_all_hardware_ticket?prefix=`);
+        const response = await fetch(
+          `${BASE_URL}/autocomplete_user_names_all_hardware_ticket?prefix=`
+        );
         const data = await response.json();
         setSearchOptions(data);
       } catch (error) {
-        console.error('Error fetching autocomplete suggestions:', error);
+        console.error("Error fetching autocomplete suggestions:", error);
       }
     };
 
@@ -141,14 +193,18 @@ const FormValidation = () => {
   const handleInputBlur = () => {
     setInputFocused(false);
   };
-  
-// Calculate total number of pages
-const totalPages = apiResponse ? Math.ceil(apiResponse.length / itemsPerPage) : 0;
 
-// Get current page of data
-const indexOfLastItem = currentPage * itemsPerPage;
-const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLastItem) : [];
+  // Calculate total number of pages
+  const totalPages = apiResponse
+    ? Math.ceil(apiResponse.length / itemsPerPage)
+    : 0;
+
+  // Get current page of data
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = apiResponse
+    ? apiResponse.slice(indexOfFirstItem, indexOfLastItem)
+    : [];
 
   // Set the default value for the "searchByTicketID" checkbox
   useEffect(() => {
@@ -157,39 +213,40 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
     setValue("labelText", "Search by Ticket ID");
   }, [setValue]);
   const onButtonClick = async () => {
-    setApiResponse(null)
+    setApiResponse(null);
     const ticketIdInput = watch("textInput"); // Get the Ticket ID from the input field
     const datePickerDate = watch("datePicker");
-    if(isTicketIdSelected && !ticketIdInput){
+    if (isTicketIdSelected && !ticketIdInput) {
       setError("textInput", {
         type: "manual",
         message: "*Required.",
       });
       return;
-    } else  if (isdeviceIdSelected) {
-      if(!selectedName){
+    } else if (isdeviceIdSelected) {
+      if (!selectedName) {
         setError("textInput", {
           type: "manual",
           message: "*Required.",
         });
         return;
       }
-    }else if(isDateSelected && !selectedDate){
+    } else if (isDateSelected && !selectedDate) {
       setError("datePicker", {
         type: "manual",
         message: "*Required.",
       });
       return;
-    }
-    else{
+    } else {
       clearErrors("textInput");
     }
-    if(isTicketIdSelected){
+    if (isTicketIdSelected) {
       try {
         setLoading(true);
         setnoData(false);
         // Make an API request using axios (replace with fetch if you prefer)
-        const response = await axios.get(`${BASE_URL}/search_ticket/${ticketIdInput}`);
+        const response = await axios.get(
+          `${BASE_URL}/search_ticket/${ticketIdInput}`
+        );
 
         // Handle the API response as needed
         console.log("API Response:", response.data);
@@ -201,14 +258,18 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
         // Handle errors
         console.error("API Error:", error);
       }
-    }else if(isdeviceIdSelected){
+    } else if (isdeviceIdSelected) {
       try {
         setLoading(true);
         setnoData(false);
         setInputFocused(false);
-        const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
+        const formattedDate = selectedDate
+          ? new Date(selectedDate).toLocaleDateString("en-US")
+          : "";
 
-        const response = await axios.get(`${BASE_URL}/user_names_all_hardware_ticket/${selectedName}`);
+        const response = await axios.get(
+          `${BASE_URL}/user_names_all_hardware_ticket/${selectedName}`
+        );
         // Set the API response in the state
         setApiResponse(response.data);
         console.log("API Response:", response.data);
@@ -220,19 +281,20 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
         setLoading(false);
         setnoData(true);
       }
-    }
-    else if(isDateSelected){
+    } else if (isDateSelected) {
       try {
         setLoading(true);
         setnoData(false);
-        const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('en-US') : '';
+        const formattedDate = selectedDate
+          ? new Date(selectedDate).toLocaleDateString("en-US")
+          : "";
         let response;
-        if (sessionStorage.getItem("TimeZone") === '1') {
+        if (sessionStorage.getItem("TimeZone") === "1") {
           // Eastern Standard Time (EST)
           response = await axios.get(`${BASE_URL}/latest_tickets`, {
             params: {
               date: formattedDate,
-              timeselect : 2
+              timeselect: 2,
             },
           });
         } else {
@@ -240,7 +302,7 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
           response = await axios.get(`${BASE_URL}/latest_tickets`, {
             params: {
               date: formattedDate,
-              timeselect : 1
+              timeselect: 1,
             },
           });
         }
@@ -261,29 +323,29 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
     const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     // Convert timestamp to Date object
     const dateObj = new Date(timestamp);
-  
+
     // Add 5 hours and 30 minutes to the timestamp
     // Adjust the timestamp based on the time zone
-    if (sessionStorage.getItem("TimeZone") === '1') {
+    if (sessionStorage.getItem("TimeZone") === "1") {
       // Eastern Standard Time (EST)
       dateObj.setHours(dateObj.getHours() - 4, dateObj.getMinutes());
     } else {
       // Indian Standard Time (IST)
       dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
     }
-  
+
     // Format the adjusted timestamp
-    const options = { 
-      day: '2-digit', 
-      month: 'short', // Use 'short' for abbreviated month name
-      year: 'numeric', 
-      hour: 'numeric', 
-      minute: 'numeric', 
-      second: 'numeric', 
-      hour12: true 
+    const options = {
+      day: "2-digit",
+      month: "short", // Use 'short' for abbreviated month name
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
     };
-    const formattedTimestamp = dateObj.toLocaleString('en-US', options);
-  
+    const formattedTimestamp = dateObj.toLocaleString("en-US", options);
+
     return formattedTimestamp;
   };
 
@@ -294,8 +356,6 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
         setValue(name, false);
       }
     });
-
-   
 
     // Update the label text and date selection based on the selected checkbox
     switch (checkboxName) {
@@ -329,10 +389,9 @@ const currentItems = apiResponse ? apiResponse.slice(indexOfFirstItem, indexOfLa
     }
   };
 
+  const getLabel = watch("labelText") || "Ticket ID";
 
-const getLabel = watch("labelText") || "Ticket ID";
-
-// ... rest of your component remains unchanged
+  // ... rest of your component remains unchanged
   return (
     <React.Fragment>
       <Head title="Search-Ticket"></Head>
@@ -346,11 +405,28 @@ const getLabel = watch("labelText") || "Ticket ID";
               Search-Ticket
             </BlockTitle>
             <BlockDes>
-            <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginTop: '10px' }}>
-              <li>Time represented in this table is in <strong style={{ color: 'blue' }}>{timeZone === '1' ? "Eastern" : "India"} Standard Time ({timeZone === '1' ? "EST" : "IST"})</strong>.</li>
-              <li>This table shows only <strong style={{ color: 'blue' }}>hardware validated tickets</strong></li>
-            </ul>
-            
+              <ul
+                style={{
+                  listStyleType: "disc",
+                  paddingLeft: "20px",
+                  marginTop: "10px",
+                }}
+              >
+                <li>
+                  Time represented in this table is in{" "}
+                  <strong style={{ color: "blue" }}>
+                    {timeZone === "1" ? "Eastern" : "India"} Standard Time (
+                    {timeZone === "1" ? "EST" : "IST"})
+                  </strong>
+                  .
+                </li>
+                <li>
+                  This table shows only{" "}
+                  <strong style={{ color: "blue" }}>
+                    hardware validated tickets
+                  </strong>
+                </li>
+              </ul>
             </BlockDes>
           </BlockHeadContent>
         </BlockHead>
@@ -365,110 +441,137 @@ const getLabel = watch("labelText") || "Ticket ID";
             </BlockHeadContent>
           </BlockHead> */}
           <PreviewCard>
-            
-          <Row className="g-gs">
-          <Col md="6">
-            <div className="form-group">
-              <Label className="form-label"></Label>
-              <ul className="custom-control-group g-3 align-center">
-                <li>
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="form-control custom-control-input"
-                      id={"fv-search-ticket-id"}
-                      {...register("searchByTicketID")}
-                      value="ticketId"
-                      onChange={() => handleCheckboxChange("searchByTicketID")}
-                    />
-                    <Label className="custom-control-label" htmlFor={"fv-search-ticket-id"}>
-                      Ticket ID
-                    </Label>
-                  </div>
-                </li>
-                <li>
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="form-control custom-control-input"
-                      id={"fv-search-device-id"}
-                      {...register("searchByDeviceID")}
-                      value="deviceId"
-                      onChange={() => handleCheckboxChange("searchByDeviceID")}
-                    />
-                    <Label className="custom-control-label" htmlFor={"fv-search-device-id"}>
-                      User Name 
-                    </Label>
-                  </div>
-                </li>
-                <li>
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="form-control custom-control-input"
-                      id={"fv-search-date"}
-                      {...register("searchBydate")}
-                      value="date"
-                      onChange={() => handleCheckboxChange("searchBydate")}
-                    />
-                    <Label className="custom-control-label" htmlFor={"fv-search-date"}>
-                      Date
-                    </Label>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </Col>
+            <Row className="g-gs">
+              <Col md="6">
+                <div className="form-group">
+                  <Label className="form-label"></Label>
+                  <ul className="custom-control-group g-3 align-center">
+                    <li>
+                      <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          className="form-control custom-control-input"
+                          id={"fv-search-ticket-id"}
+                          {...register("searchByTicketID")}
+                          value="ticketId"
+                          onChange={() =>
+                            handleCheckboxChange("searchByTicketID")
+                          }
+                        />
+                        <Label
+                          className="custom-control-label"
+                          htmlFor={"fv-search-ticket-id"}
+                        >
+                          Ticket ID
+                        </Label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          className="form-control custom-control-input"
+                          id={"fv-search-device-id"}
+                          {...register("searchByDeviceID")}
+                          value="deviceId"
+                          onChange={() =>
+                            handleCheckboxChange("searchByDeviceID")
+                          }
+                        />
+                        <Label
+                          className="custom-control-label"
+                          htmlFor={"fv-search-device-id"}
+                        >
+                          User Name
+                        </Label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          className="form-control custom-control-input"
+                          id={"fv-search-date"}
+                          {...register("searchBydate")}
+                          value="date"
+                          onChange={() => handleCheckboxChange("searchBydate")}
+                        />
+                        <Label
+                          className="custom-control-label"
+                          htmlFor={"fv-search-date"}
+                        >
+                          Date
+                        </Label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </Col>
 
-          {/* Datepicker */}
-          <Col sm="6">
-            <div className="form-group">
-              <Label>Select validated date</Label>
-              <div className="form-control-wrap">
-                <DatePicker
-                  selected={selectedDate}
-                  className="form-control date-picker"
-                  onChange={(date) => setSelectedDate(date)}
-                  disabled={isTicketIdSelected || isdeviceIdSelected}
-                />
-              </div>
-              {errors.datePicker && <span className="error-message">{errors.datePicker.message}</span>}
-            </div>
-          </Col>
-          <Col sm="6">
-            <div className="form-group">
-              <Label>{getLabel}</Label>
-              <div className="form-control-wrap">
-              {isdeviceIdSelected ? (
-                  <ReactSearchAutocomplete
-                    items={searchOptions.map((name) => ({ name }))} // Convert suggestions to required format
-                    onSelect={handleSelect}
-                    onFocus={handleInputFocus}
-                    onBlur={handleInputBlur}
-                    autoFocus
-              />
-                ) : (
-                  <input
-                    type="text"
-                    {...register("textInput")}
-                    className="form-control"
-                    disabled={isDateSelected}
-                  />
-                )}
-              </div>
-              {errors.textInput && <span className="error-message" >{errors.textInput.message}</span>}
-            </div>
-          </Col>
+              {/* Datepicker */}
+              <Col sm="6">
+                <div className="form-group">
+                  <Label>Select validated date</Label>
+                  <div className="form-control-wrap">
+                    <DatePicker
+                      selected={selectedDate}
+                      className="form-control date-picker"
+                      onChange={(date) => setSelectedDate(date)}
+                      disabled={isTicketIdSelected || isdeviceIdSelected}
+                    />
+                  </div>
+                  {errors.datePicker && (
+                    <span className="error-message">
+                      {errors.datePicker.message}
+                    </span>
+                  )}
+                </div>
+              </Col>
+              <Col sm="6">
+                <div className="form-group">
+                  <Label>{getLabel}</Label>
+                  <div className="form-control-wrap">
+                    {isdeviceIdSelected ? (
+                      <ReactSearchAutocomplete
+                        items={searchOptions.map((name) => ({ name }))} // Convert suggestions to required format
+                        onSelect={handleSelect}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
+                        autoFocus
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        {...register("textInput")}
+                        className="form-control"
+                        disabled={isDateSelected}
+                      />
+                    )}
+                  </div>
+                  {errors.textInput && (
+                    <span className="error-message">
+                      {errors.textInput.message}
+                    </span>
+                  )}
+                </div>
+              </Col>
 
-          <Col md="6">
-            <Label className="form-label"></Label>
-            <div className="form-group">
-            <Button color="primary" size="lg" onClick={onButtonClick}>
-            {loading ? <>&nbsp; Loading...<Spinner size="sm" color="light" /> </> : "Search Ticket"}
-              </Button>
-            </div>
-          </Col>
-        </Row>
+              <Col md="6">
+                <Label className="form-label"></Label>
+                <div className="form-group">
+                  <Button color="primary" size="lg" onClick={onButtonClick}>
+                    {loading ? (
+                      <>
+                        &nbsp; Loading...
+                        <Spinner size="sm" color="light" />{" "}
+                      </>
+                    ) : (
+                      "Search Ticket"
+                    )}
+                  </Button>
+                </div>
+              </Col>
+            </Row>
           </PreviewCard>
         </Block>
       </Content>
@@ -480,11 +583,9 @@ const getLabel = watch("labelText") || "Ticket ID";
                 <strong>No ticket data</strong>! found for your search.
               </Alert>
             </div>
-          ) : (
-            apiResponse && apiResponse.length > 0 ? (
-              renderTable()
-            ) : null
-          )}
+          ) : apiResponse && apiResponse.length > 0 ? (
+            renderTable()
+          ) : null}
         </div>
       )}
     </React.Fragment>
