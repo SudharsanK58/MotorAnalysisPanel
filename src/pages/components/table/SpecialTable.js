@@ -28,11 +28,12 @@ import Example from "./Example";
 import Swal from "sweetalert2";
 import BASE_URL from "../../../config";
 import { postUserData } from "../../../functionReducer";
+import io from "socket.io-client";
 
 const SpecialTablePage = () => {
   const [tableData, setTableData] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState([]);
-  const [loading, setLoading] = useState(true); // New state to track loading state
+  const [loading, setLoading] = useState(false); // New state to track loading state
   const [searchQuery, setSearchQuery] = useState("");
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState("All Client Devices");
@@ -43,6 +44,23 @@ const SpecialTablePage = () => {
   const [timeZone, setTimeZone] = useState(
     sessionStorage.getItem("TimeZone") || 0
   );
+  useEffect(() => {
+    // Create a socket connection
+    const socket = io("http://localhost:3001");
+
+    // Add event listener for "initialData" event
+    socket.on("initialData", (change) => {
+      console.log("WebSocket Data Change:", change);
+
+      // Update the state with the latest data
+      setTableData(change);
+    });
+
+    // Clean up function to close the socket connection when the component unmounts
+    return () => {
+      socket.disconnect();
+    };
+  }, []); // Empty dependency array ensures the effect runs only once when the component mounts
   useEffect(() => {
     // Call the postUserData function only once when the component mounts
     postUserData()
@@ -330,7 +348,7 @@ const SpecialTablePage = () => {
     };
     fetchClients();
     if (selectedClient === "All Client Devices") {
-      fetchDeviceLogData();
+      // fetchDeviceLogData();
     } else {
       // Fetch data based on selected client
       fetchClientData(selectedClient);
@@ -433,8 +451,8 @@ const SpecialTablePage = () => {
                             )}
                           </td>
                           {/* <td>{rowData.bleMinor}</td> */}
-                          <td>{rowData.bleTxpower}</td>
-                          <td>{rowData["current temp"]}°C</td>
+                          <td>{rowData["bleTxpower"]}</td>
+                          <td>{rowData["current_temp"]}°C</td>
                           <td>
                             <UncontrolledDropdown
                               isOpen={dropdownOpen[rowIndex]}

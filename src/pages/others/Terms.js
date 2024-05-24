@@ -6,7 +6,7 @@ const MyComponent = () => {
 
   useEffect(() => {
     // Create a socket connection
-    const socket = io("http://54.221.158.223:3000");
+    const socket = io("http://localhost:3001");
 
     // Add event listener for "initialData" event
     socket.on("initialData", (change) => {
