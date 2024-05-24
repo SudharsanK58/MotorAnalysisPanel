@@ -149,6 +149,7 @@ const Pages = () => {
             element={<AppBenchMarkTicketSearch />}
             path="/zig-app-benchmark"
           />
+          <Route element={<Terms />} path="/terms-policy" />
           <Route element={<FormValidation />} path="/ticket-search" />
           <Route element={<SearchByClient />} path="/client-ticket-search" />
           <Route
