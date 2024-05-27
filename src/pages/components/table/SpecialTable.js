@@ -24,6 +24,7 @@ import {
   DropdownItem,
 } from "reactstrap";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
 import Example from "./Example";
 import Swal from "sweetalert2";
 import BASE_URL from "../../../config";
@@ -50,8 +51,11 @@ const SpecialTablePage = () => {
 
     // Add event listener for "initialData" event
     socket.on("initialData", (change) => {
-      console.log("WebSocket Data Change:", change);
-
+      console.log("WebSocket Data Changed:");
+      const audio = new Audio("/bellSound.mp3");
+      audio
+        .play()
+        .catch((error) => console.error("Error playing audio:", error));
       // Update the state with the latest data
       setTableData(change);
     });
