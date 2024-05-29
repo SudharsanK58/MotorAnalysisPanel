@@ -46,8 +46,9 @@ const SpecialTablePage = () => {
     sessionStorage.getItem("TimeZone") || 0
   );
   useEffect(() => {
+    // setLoading(true);
     // Create a socket connection
-    const socket = io("http://localhost:3002");
+    const socket = io("https://websocketmongodb.onrender.com/");
 
     // Add event listener for "initialData" event
     socket.on("initialData", (change) => {
@@ -58,8 +59,9 @@ const SpecialTablePage = () => {
         .catch((error) => console.error("Error playing audio:", error));
       // Update the state with the latest data
       setTableData(change);
+      setLoading(false);
     });
-    setLoading(false);
+    // setLoading(false);
 
     // Clean up function to close the socket connection when the component unmounts
     return () => {
