@@ -6,10 +6,10 @@ const MyComponent = () => {
 
   useEffect(() => {
     // Create a socket connection
-    const socket = io("http://localhost:3001");
+    const socket = io("http://localhost:3002");
 
     // Add event listener for "initialData" event
-    socket.on("initialData", (change) => {
+    socket.on("deviceNotification2", (change) => {
       console.log("WebSocket Data Change:", change);
 
       // Update the state with the latest data
@@ -28,7 +28,7 @@ const MyComponent = () => {
       {latestData && (
         <div>
           <h2>Latest Change</h2>
-          <p>{JSON.stringify(latestData)}</p>
+          <p>{latestData}</p>
         </div>
       )}
     </div>

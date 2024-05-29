@@ -547,14 +547,15 @@ const InvestHomePage = () => {
           </a>
           <div className="nk-modal-head">
             <h4 className="nk-modal-title title">
-              What's New <small className="text-primary">Version 2.05</small>
+              What's New (WebSocket + MongoDB ... !){" "}
+              <small className="text-primary">Version 3.00</small>
             </h4>
           </div>
           <div style={{ marginBottom: "10px" }}></div>
           <p>
-            * Now we can search app benchmark data device by username.
+            * Notification when ticket is validated or Vehicle is on the move.
             <br />
-            * Added app benchmark data analytics ~ Beta Version.
+            * All device page will be updated according Vehicle movement.
             <br />
           </p>
         </ModalBody>

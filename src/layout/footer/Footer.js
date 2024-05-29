@@ -1,107 +1,80 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import io from "socket.io-client";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import EnglishFlag from "../../images/flags/english.png";
 import SpanishFlag from "../../images/flags/spanish.png";
 import FrenchFlag from "../../images/flags/french.png";
 import TurkeyFlag from "../../images/flags/turkey.png";
 import { Link } from "react-router-dom";
-import { DropdownItem, DropdownMenu, UncontrolledDropdown, DropdownToggle } from "reactstrap";
+import {
+  DropdownItem,
+  DropdownMenu,
+  UncontrolledDropdown,
+  DropdownToggle,
+} from "reactstrap";
 
 const Footer = () => {
+  useEffect(() => {
+    // Create a socket connection
+    const socket = io("https://websocketmongodb.onrender.com/");
+
+    // Add event listener for "initialData" event
+    socket.on("deviceNotification", (change) => {
+      console.log("WebSocket Data Change:", change);
+
+      // Update the state with the latest data
+      const audio = new Audio("/ticketNotification.mp3");
+      toast.success(`${change}`, {
+        position: "top-right",
+        autoClose: true,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: false,
+      });
+      audio
+        .play()
+        .catch((error) => console.error("Error playing audio:", error));
+    });
+    // Add event listener for "initialData" event
+    socket.on("deviceNotification2", (change) => {
+      console.log("WebSocket Data Change:", change);
+
+      // Update the state with the latest data
+      const audio = new Audio("/deviceNotification.mp3");
+      toast.info(`${change}`, {
+        position: "top-right",
+        autoClose: true,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: false,
+      });
+      audio
+        .play()
+        .catch((error) => console.error("Error playing audio:", error));
+    });
+
+    // Clean up function to close the socket connection when the component unmounts
+    return () => {
+      socket.disconnect();
+    };
+  }, []); // Empty dependency array ensures the effect runs only once when the component mounts
   return (
     <div className="nk-footer bg-white">
       <div className="container-fluid">
         <div className="nk-footer-wrap">
           <div className="nk-footer-copyright">
             {" "}
-            &copy; 2024 ZIG Remote hardware monitoring system by sudharsan@zed.digtal
+            &copy; 2024 ZIG Remote hardware monitoring system by
+            sudharsan@zed.digtal
           </div>
-          {/* <div className="nk-footer-links">
-            <ul className="nav nav-sm">
-              <li className="nav-item">
-                <UncontrolledDropdown direction="up">
-                  <DropdownToggle
-                    color="transparent"
-                    className="dropdown-toggle dropdown-indicator has-indicator nav-link"
-                  >
-                    <span>English</span>
-                  </DropdownToggle>
-                  <DropdownMenu end className="dropdown-menu-sm">
-                    <ul className="language-list">
-                      <li>
-                        <DropdownItem
-                          tag="a"
-                          href="#dropdownitem"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                          className="language-item"
-                        >
-                          <img src={EnglishFlag} alt="" className="language-flag" />
-                          <span className="language-name">English</span>
-                        </DropdownItem>
-                      </li>
-                      <li>
-                        <DropdownItem
-                          tag="a"
-                          href="#dropdownitem"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                          className="language-item"
-                        >
-                          <img src={SpanishFlag} alt="" className="language-flag" />
-                          <span className="language-name">Español</span>
-                        </DropdownItem>
-                      </li>
-                      <li>
-                        <DropdownItem
-                          tag="a"
-                          href="#dropdownitem"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                          className="language-item"
-                        >
-                          <img src={FrenchFlag} alt="" className="language-flag" />
-                          <span className="language-name">Français</span>
-                        </DropdownItem>
-                      </li>
-                      <li>
-                        <DropdownItem
-                          tag="a"
-                          href="#dropdownitem"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                          }}
-                          className="language-item"
-                        >
-                          <img src={TurkeyFlag} alt="" className="language-flag" />
-                          <span className="language-name">Türkçe</span>
-                        </DropdownItem>
-                      </li>
-                    </ul>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </li>
-              <li className="nav-item">
-                <Link to={`${process.env.PUBLIC_URL}/pages/terms-policy`} className="nav-link">
-                  Terms
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to={`${process.env.PUBLIC_URL}/pages/faq`} className="nav-link">
-                  Privacy
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to={`${process.env.PUBLIC_URL}/pages/terms-policy`} className="nav-link">
-                  Help
-                </Link>
-              </li>
-            </ul>
-          </div> */}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

@@ -34,7 +34,7 @@ import io from "socket.io-client";
 const SpecialTablePage = () => {
   const [tableData, setTableData] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState([]);
-  const [loading, setLoading] = useState(false); // New state to track loading state
+  const [loading, setLoading] = useState(true); // New state to track loading state
   const [searchQuery, setSearchQuery] = useState("");
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState("All Client Devices");
@@ -47,7 +47,7 @@ const SpecialTablePage = () => {
   );
   useEffect(() => {
     // Create a socket connection
-    const socket = io("http://localhost:3001");
+    const socket = io("http://localhost:3002");
 
     // Add event listener for "initialData" event
     socket.on("initialData", (change) => {
@@ -59,6 +59,7 @@ const SpecialTablePage = () => {
       // Update the state with the latest data
       setTableData(change);
     });
+    setLoading(false);
 
     // Clean up function to close the socket connection when the component unmounts
     return () => {
@@ -456,7 +457,7 @@ const SpecialTablePage = () => {
                           </td>
                           {/* <td>{rowData.bleMinor}</td> */}
                           <td>{rowData["bleTxpower"]}</td>
-                          <td>{rowData["current_temp"]}°C</td>
+                          <td>{rowData["currentTemp"]}°C</td>
                           <td>
                             <UncontrolledDropdown
                               isOpen={dropdownOpen[rowIndex]}
