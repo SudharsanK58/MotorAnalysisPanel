@@ -335,10 +335,10 @@ const menu = [
         text: "PEOPLE-COUNTOR",
         link: "/peoplecount",
       },
-      {
-        text: "POLICY",
-        link: "/terms-policy",
-      },
+      // {
+      //   text: "POLICY",
+      //   link: "/terms-policy",
+      // },
       // {
       //   text: "Sales Dashboard",
       //   link: "/sales",
