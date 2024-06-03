@@ -16,13 +16,15 @@ const User = () => {
     sessionStorage.clear();
   };
   // Retrieve userName from localStorage
-const storedUserName = localStorage.getItem("userName");
+  const storedUserName = localStorage.getItem("userName");
 
-// Get the first two letters in uppercase
-const initials = storedUserName ? storedUserName.slice(0, 2).toUpperCase() : "";
+  // Get the first two letters in uppercase
+  const initials = storedUserName
+    ? storedUserName.slice(0, 2).toUpperCase()
+    : "";
 
-// Use the full userName for the lead text
-const leadText = storedUserName || "";
+  // Use the full userName for the lead text
+  const leadText = storedUserName || "";
 
   return (
     <Dropdown isOpen={open} className="user-dropdown" toggle={toggle}>
@@ -41,12 +43,12 @@ const leadText = storedUserName || "";
       <DropdownMenu end className="dropdown-menu-md dropdown-menu-s1">
         <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
           <div className="user-card sm">
-          <div className="user-avatar">
-            <span>{initials}</span>
-          </div>
-          <div className="user-info">
-            <span className="lead-text">{leadText}</span>
-          </div>
+            <div className="user-avatar">
+              <span>{initials}</span>
+            </div>
+            <div className="user-info">
+              <span className="lead-text">{leadText}</span>
+            </div>
             {/* <div className="user-action" onClick={() => setOpen(false)}>
               <Link to={`${process.env.PUBLIC_URL}/user-profile-setting`} className="btn btn-icon me-n2">
                 <Icon name="setting"></Icon>
@@ -74,24 +76,35 @@ const leadText = storedUserName || "";
             {/* <LinkItem link={"/user-profile-regular"} icon="user-alt" onClick={toggle}>
               View Profile
             </LinkItem> */}
-            <LinkItem link={"/user-profile-setting"} icon="setting-alt" onClick={toggle}>
+            {/* <LinkItem link={"/user-profile-setting"} icon="setting-alt" onClick={toggle}>
               Account Setting
-            </LinkItem>
+            </LinkItem> */}
             {/* <LinkItem link={"/user-profile-activity"} icon="activity-alt" onClick={toggle}>
               Login Activity
             </LinkItem> */}
             <li>
-              <a className={`dark-switch ${theme.skin === 'dark' ? 'active' : ''}`} href="#" 
-              onClick={(ev) => {
-                ev.preventDefault();
-                themeUpdate.skin(theme.skin === 'dark' ? 'light' : 'dark');
-              }}>
-                {theme.skin === 'dark' ? 
-                  <><em className="icon ni ni-sun"></em><span>Light Mode</span></> 
-                  : 
-                  <><em className="icon ni ni-moon"></em><span>Dark Mode</span></>
-                }
-              </a>  
+              <a
+                className={`dark-switch ${
+                  theme.skin === "dark" ? "active" : ""
+                }`}
+                href="#"
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  themeUpdate.skin(theme.skin === "dark" ? "light" : "dark");
+                }}
+              >
+                {theme.skin === "dark" ? (
+                  <>
+                    <em className="icon ni ni-sun"></em>
+                    <span>Light Mode</span>
+                  </>
+                ) : (
+                  <>
+                    <em className="icon ni ni-moon"></em>
+                    <span>Dark Mode</span>
+                  </>
+                )}
+              </a>
             </li>
           </LinkList>
         </div>
