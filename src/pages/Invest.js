@@ -42,15 +42,13 @@ import {
 const InvestHomePage = () => {
   const [sm, updateSm] = useState(false);
   const [deviceCounts, setDeviceCounts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [ticketsloading, seticketsloading] = useState(true);
   const [ticketCounts, setTicketCounts] = useState({});
   const [temperatureStats, setTemperatureStats] = useState({});
   const [temperatureLoading, setTemperatureLoading] = useState(true);
   const [viewModal, setViewModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
   const [temperatureData, setTemperatureData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,8 +69,16 @@ const InvestHomePage = () => {
     fetchData();
   }, []);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   // Print API response
   console.log("API response:", temperatureData);
+
+  if (!temperatureData) {
+    return <div>Error: Failed to fetch data</div>;
+  }
 
   // Extracting ambient_C values only when temperatureData is not null
   const latestAmbientC = temperatureData.latest
@@ -217,8 +223,194 @@ const InvestHomePage = () => {
                     lowest_temp: lowestAmbientC, // Using lowest ambient_C as lowest_temp
                     highest_temp: highestAmbientC, // Using highest ambient_C as highest_temp
                   }}
-                  title="Temperature Stats"
+                  title="Ambient Temperature Stats (°C)"
                   temperatureSymbol="°C"
+                  averageTempKey="average_temp"
+                  lowestTempKey="lowest_temp"
+                  highestTempKey="highest_temp"
+                />
+              </PreviewAltCard>
+            </Col>
+            <Col md="4">
+              <PreviewAltCard
+                className="card-full"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TemperatureCard
+                  temperatureLoading={false} // Assuming temperature data is loaded
+                  temperatureStats={{
+                    average_temp: temperatureData.latest
+                      ? temperatureData.latest.ambient_F
+                      : null, // Using latest ambient_F as average_temp
+                    lowest_temp: temperatureData.lowest
+                      ? temperatureData.lowest.ambient_F
+                      : null, // Using lowest ambient_F as lowest_temp
+                    highest_temp: temperatureData.highest
+                      ? temperatureData.highest.ambient_F
+                      : null, // Using highest ambient_F as highest_temp
+                  }}
+                  title="Ambient Temperature Stats (°F)"
+                  temperatureSymbol="°F"
+                  averageTempKey="average_temp"
+                  lowestTempKey="lowest_temp"
+                  highestTempKey="highest_temp"
+                />
+              </PreviewAltCard>
+            </Col>
+            <Col md="4">
+              <PreviewAltCard
+                className="card-full"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TemperatureCard
+                  temperatureLoading={false} // Assuming temperature data is loaded
+                  temperatureStats={{
+                    average_temp: temperatureData.latest
+                      ? temperatureData.latest.object_F
+                      : null, // Using latest object_F as average_temp
+                    lowest_temp: temperatureData.lowest
+                      ? temperatureData.lowest.object_F
+                      : null, // Using lowest object_F as lowest_temp
+                    highest_temp: temperatureData.highest
+                      ? temperatureData.highest.object_F
+                      : null, // Using highest object_F as highest_temp
+                  }}
+                  title="Object Temperature Stats (°F)"
+                  temperatureSymbol="°F"
+                  averageTempKey="average_temp"
+                  lowestTempKey="lowest_temp"
+                  highestTempKey="highest_temp"
+                />
+              </PreviewAltCard>
+            </Col>
+            <Col md="4">
+              <PreviewAltCard
+                className="card-full"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TemperatureCard
+                  temperatureLoading={false} // Assuming temperature data is loaded
+                  temperatureStats={{
+                    average_temp: temperatureData.latest
+                      ? temperatureData.latest.object_C
+                      : null, // Using latest object_F as average_temp
+                    lowest_temp: temperatureData.lowest
+                      ? temperatureData.lowest.object_C
+                      : null, // Using lowest object_F as lowest_temp
+                    highest_temp: temperatureData.highest
+                      ? temperatureData.highest.object_C
+                      : null, // Using highest object_F as highest_temp
+                  }}
+                  title="Object Temperature Stats (°C)"
+                  temperatureSymbol="°C"
+                  averageTempKey="average_temp"
+                  lowestTempKey="lowest_temp"
+                  highestTempKey="highest_temp"
+                />
+              </PreviewAltCard>
+            </Col>
+            <Col md="4">
+              <PreviewAltCard
+                className="card-full"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TemperatureCard
+                  temperatureLoading={false} // Assuming temperature data is loaded
+                  temperatureStats={{
+                    average_temp: temperatureData.latest
+                      ? temperatureData.latest.busvoltage
+                      : null, // Using latest busvoltage as average_temp
+                    lowest_temp: temperatureData.lowest
+                      ? temperatureData.lowest.busvoltage
+                      : null, // Using lowest busvoltage as lowest_temp
+                    highest_temp: temperatureData.highest
+                      ? temperatureData.highest.busvoltage
+                      : null, // Using highest busvoltage as highest_temp
+                  }}
+                  title="Bus Voltage Stats"
+                  temperatureSymbol="V"
+                  averageTempKey="average_temp"
+                  lowestTempKey="lowest_temp"
+                  highestTempKey="highest_temp"
+                />
+              </PreviewAltCard>
+            </Col>
+            <Col md="4">
+              <PreviewAltCard
+                className="card-full"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TemperatureCard
+                  temperatureLoading={false} // Assuming temperature data is loaded
+                  temperatureStats={{
+                    average_temp: temperatureData.latest
+                      ? temperatureData.latest.shuntvoltage
+                      : null, // Using latest shuntvoltage as average_temp
+                    lowest_temp: temperatureData.lowest
+                      ? temperatureData.lowest.shuntvoltage
+                      : null, // Using lowest shuntvoltage as lowest_temp
+                    highest_temp: temperatureData.highest
+                      ? temperatureData.highest.shuntvoltage
+                      : null, // Using highest shuntvoltage as highest_temp
+                  }}
+                  title="Shunt Voltage Stats"
+                  temperatureSymbol="V"
+                  averageTempKey="average_temp"
+                  lowestTempKey="lowest_temp"
+                  highestTempKey="highest_temp"
+                />
+              </PreviewAltCard>
+            </Col>
+            <Col md="4">
+              <PreviewAltCard
+                className="card-full"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TemperatureCard
+                  temperatureLoading={false} // Assuming temperature data is loaded
+                  temperatureStats={{
+                    average_temp: temperatureData.latest
+                      ? temperatureData.latest.current_mA
+                      : null, // Using latest current_mA as average_temp
+                    lowest_temp: temperatureData.lowest
+                      ? temperatureData.lowest.current_mA
+                      : null, // Using lowest current_mA as lowest_temp
+                    highest_temp: temperatureData.highest
+                      ? temperatureData.highest.current_mA
+                      : null, // Using highest current_mA as highest_temp
+                  }}
+                  title="Current Stats"
+                  temperatureSymbol="mA"
                   averageTempKey="average_temp"
                   lowestTempKey="lowest_temp"
                   highestTempKey="highest_temp"
