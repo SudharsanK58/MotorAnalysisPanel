@@ -49,24 +49,31 @@ const InvestHomePage = () => {
   const [viewModal, setViewModal] = useState(false);
   const [temperatureData, setTemperatureData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8001/get_motor_data");
+        const response = await fetch(`${BASE_URL}/get_motor_data`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
         setTemperatureData(data);
+        setHasAnimated(true);
         setLoading(false); // Set loading to false once data is fetched
+        set;
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false); // Set loading to false in case of error
       }
     };
 
-    fetchData();
+    fetchData(); // Call once initially
+
+    const intervalId = setInterval(fetchData, 4000); // Set interval to call fetchData every 4 seconds
+
+    return () => clearInterval(intervalId); // Clear interval on component unmount
   }, []);
 
   if (loading) {
@@ -128,13 +135,17 @@ const InvestHomePage = () => {
           ) : (
             <span className="amount">
               Live:{" "}
-              <CountUp
-                start={0}
-                end={temperatureStats[averageTempKey].toFixed(2)}
-                decimals={2}
-                duration={7}
-                delay={0}
-              />{" "}
+              {hasAnimated ? (
+                <span>{temperatureStats[averageTempKey].toFixed(2)}</span>
+              ) : (
+                <CountUp
+                  start={0}
+                  end={temperatureStats[averageTempKey].toFixed(2)}
+                  decimals={2}
+                  duration={7}
+                  delay={0}
+                />
+              )}{" "}
               {temperatureSymbol}
               <Icon
                 style={{
@@ -154,6 +165,8 @@ const InvestHomePage = () => {
               <span className="amount">
                 {temperatureLoading ? (
                   "0 °C"
+                ) : hasAnimated ? (
+                  <span>{temperatureStats[lowestTempKey].toFixed(2)}</span>
                 ) : (
                   <CountUp
                     start={0}
@@ -161,6 +174,7 @@ const InvestHomePage = () => {
                     decimals={2}
                     duration={3}
                     delay={0}
+                    onComplete={() => setHasAnimated(true)}
                   />
                 )}{" "}
                 {temperatureSymbol}
@@ -171,6 +185,8 @@ const InvestHomePage = () => {
               <span className="amount">
                 {temperatureLoading ? (
                   "0 °C"
+                ) : hasAnimated ? (
+                  <span>end={temperatureStats[highestTempKey].toFixed(2)}</span>
                 ) : (
                   <CountUp
                     start={0}
@@ -178,6 +194,7 @@ const InvestHomePage = () => {
                     decimals={2}
                     duration={3}
                     delay={0}
+                    onComplete={() => setHasAnimated(true)}
                   />
                 )}{" "}
                 {temperatureSymbol}
