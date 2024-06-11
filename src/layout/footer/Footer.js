@@ -4,7 +4,12 @@ import SpanishFlag from "../../images/flags/spanish.png";
 import FrenchFlag from "../../images/flags/french.png";
 import TurkeyFlag from "../../images/flags/turkey.png";
 import { Link } from "react-router-dom";
-import { DropdownItem, DropdownMenu, UncontrolledDropdown, DropdownToggle } from "reactstrap";
+import {
+  DropdownItem,
+  DropdownMenu,
+  UncontrolledDropdown,
+  DropdownToggle,
+} from "reactstrap";
 
 const Footer = () => {
   return (
@@ -13,7 +18,7 @@ const Footer = () => {
         <div className="nk-footer-wrap">
           <div className="nk-footer-copyright">
             {" "}
-            &copy; 2024 ZIG Remote hardware monitoring system by sudharsan@zed.digtal
+            &copy; 2024 DroneThrust Analyzer by sudharsan@zed.digtal
           </div>
           {/* <div className="nk-footer-links">
             <ul className="nav nav-sm">

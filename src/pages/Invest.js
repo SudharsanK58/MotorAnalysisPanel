@@ -198,7 +198,7 @@ const InvestHomePage = () => {
             <BlockHeadContent>
               <BlockTitle page>Dashboard</BlockTitle>
               <BlockDes className="text-soft">
-                <p>Welcome to ZIG Remote hardware monitoring system.</p>
+                <p>Welcome to DroneThrust Analyzer .</p>
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent></BlockHeadContent>

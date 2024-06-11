@@ -1,6 +1,6 @@
 {
-  "short_name": "RHMS",
-  "name": "ZIG Remote hardware monitoring system",
+  "short_name": "DroneThrust Analyzer",
+  "name": "DroneThrust Analyzer ",
   "icons": [
     {
       "src": "favicon.ico",

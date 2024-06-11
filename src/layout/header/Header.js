@@ -9,10 +9,9 @@ import MobileMenu from "../menu/MobileMenu";
 import menu from "../menu/MenuData";
 import LanguageHead from "./dropdown/language/Language";
 
-import { useTheme, useThemeUpdate } from '../provider/Theme';
+import { useTheme, useThemeUpdate } from "../provider/Theme";
 
 const Header = ({ fixed, className, ...props }) => {
-
   const theme = useTheme();
   const themeUpdate = useThemeUpdate();
 
@@ -20,7 +19,8 @@ const Header = ({ fixed, className, ...props }) => {
     "nk-header is-regular": true,
     "nk-header-fixed": fixed,
     [`is-light`]: theme.header === "white",
-    [`is-${theme.header}`]: theme.header !== "white" && theme.header !== "light",
+    [`is-${theme.header}`]:
+      theme.header !== "white" && theme.header !== "light",
     [`${className}`]: className,
   });
 
@@ -29,33 +29,48 @@ const Header = ({ fixed, className, ...props }) => {
       <div className="container-fluid">
         <div className="nk-header-wrap">
           <div className="nk-menu-trigger me-sm-2 d-lg-none">
-            <Toggle className="nk-nav-toggle nk-quick-nav-icon" icon="menu" click={themeUpdate.sidebarVisibility} />
+            <Toggle
+              className="nk-nav-toggle nk-quick-nav-icon"
+              icon="menu"
+              click={themeUpdate.sidebarVisibility}
+            />
           </div>
           <div className="nk-header-brand">
             {/* <Logo /> */}
-            <span style={{ fontWeight: 'bold', color: '#2263b3' ,fontSize: '18px'}}>ZIG Remote hardware monitoring system	</span>
+            <span
+              style={{ fontWeight: "bold", color: "#2263b3", fontSize: "18px" }}
+            >
+              DroneThrust Analyzer{" "}
+            </span>
           </div>
           <div
-            className={`nk-header-menu ms-auto ${theme.sidebarMobile ? "mobile-menu" : ""}  ${
-              theme.sidebarVisibility ? "nk-header-active" : ""
-            }`}
+            className={`nk-header-menu ms-auto ${
+              theme.sidebarMobile ? "mobile-menu" : ""
+            }  ${theme.sidebarVisibility ? "nk-header-active" : ""}`}
           >
             <div className="nk-header-mobile">
               <div className="nk-header-brand">
                 <Logo />
               </div>
               <div className="nk-menu-trigger me-n2">
-                <Toggle className="nk-nav-toggle nk-quick-nav-icon" icon="arrow-left" click={themeUpdate.sidebarVisibility} />
+                <Toggle
+                  className="nk-nav-toggle nk-quick-nav-icon"
+                  icon="arrow-left"
+                  click={themeUpdate.sidebarVisibility}
+                />
               </div>
             </div>
             {theme.sidebarMobile ? <MobileMenu data={menu} /> : <Menu />}
           </div>
-          {theme.sidebarVisibility && <div className="nk-header-overlay" onClick={themeUpdate.sidebarVisibility}></div>}
+          {theme.sidebarVisibility && (
+            <div
+              className="nk-header-overlay"
+              onClick={themeUpdate.sidebarVisibility}
+            ></div>
+          )}
           <div className="nk-header-tools">
             <ul className="nk-quick-nav">
-              <li className="chats-dropdown">
-                {/* <ChatDropdown /> */}
-              </li>
+              <li className="chats-dropdown">{/* <ChatDropdown /> */}</li>
               <li className="language-dropdown d-none d-sm-block me-n1">
                 {/* <LanguageHead /> */}
               </li>

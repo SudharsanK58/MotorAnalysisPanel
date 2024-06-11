@@ -34,7 +34,7 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: formData.name,
+          email: formData.name,
           password: formData.passcode,
         }),
       });
@@ -126,11 +126,13 @@ const Login = () => {
             {/* <PreviewCard className="card-bordered" bodyClass="card-inner-lg" > */}
             <BlockHead>
               <BlockContent>
-                <BlockTitle tag="h4">WELCOME TO RHMS!</BlockTitle>
+                <BlockTitle tag="h4">
+                  WELCOME TO DroneThrust Analyzer!
+                </BlockTitle>
                 <BlockDes>
                   <p style={{ fontWeight: "bold", fontSize: "20px" }}>
-                    RHMS is designed to conveniently monitor and manage all of
-                    our ZIG networking devices
+                    DroneThrust Analyzer is designed to conveniently monitor and
+                    analysis drone.
                   </p>
                 </BlockDes>
               </BlockContent>
