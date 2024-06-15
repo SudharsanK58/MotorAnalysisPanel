@@ -186,7 +186,7 @@ const InvestHomePage = () => {
                 {temperatureLoading ? (
                   "0 °C"
                 ) : hasAnimated ? (
-                  <span>end={temperatureStats[highestTempKey].toFixed(2)}</span>
+                  <span>{temperatureStats[highestTempKey].toFixed(2)}</span>
                 ) : (
                   <CountUp
                     start={0}
