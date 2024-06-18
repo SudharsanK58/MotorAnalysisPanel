@@ -140,7 +140,7 @@ const Pages = () => {
         <Route path={`${process.env.PUBLIC_URL}`} element={<Layout />}>
           <Route element={<Invest />} path="/" exact />
           <Route element={<Invest />} path="/overview" exact />
-          {/* <Route element={<Analytics />} path="/benchmark-analytics" exact />
+          <Route element={<Analytics />} path="/benchmark-analytics" exact />
           <Route element={<PricingTable />} path="/peoplecount" exact />
           <Route element={<TicketBenchMark />} path="/ticket-benchmark" exact />
           <Route element={<SpecialTablePage />} path="/All-device-status" />
@@ -150,7 +150,7 @@ const Pages = () => {
             path="/zig-app-benchmark"
           />
           <Route element={<FormValidation />} path="/ticket-search" />
-          <Route element={<SearchByClient />} path="/client-ticket-search" /> */}
+          <Route element={<SearchByClient />} path="/client-ticket-search" />
           <Route
             element={<UserProfileActivity />}
             path="/user-profile-activity"
