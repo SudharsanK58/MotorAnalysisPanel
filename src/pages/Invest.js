@@ -266,7 +266,7 @@ const InvestHomePage = () => {
         <div className="card-amount">
           {temperatureLoading ? (
             <span className="amount">
-              Live: 0 {temperatureSymbol}
+              0 {temperatureSymbol}
               <div
                 className="spinner-container"
                 style={{
@@ -281,7 +281,7 @@ const InvestHomePage = () => {
             </span>
           ) : (
             <span className="amount">
-              Live:{" "}
+              {" "}
               {hasAnimated ? (
                 <span>{temperatureStats[averageTempKey].toFixed(2)}</span>
               ) : (
