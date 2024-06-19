@@ -57,79 +57,24 @@ const AnalyticsHomePage = () => {
           <div className="nk-block-between">
             <BlockHeadContent>
               <BlockTitle page tag="h3">
-                Valdiation Analytics ~ (beta version)
+                Drone Analytics
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>Welcome to Valdiation Analytics Dashboard.</p>
+                <p>Welcome to Analytics Dashboard.</p>
               </BlockDes>
             </BlockHeadContent>
-            <BlockHeadContent>
-              <div className="toggle-wrap nk-block-tools-toggle">
-                <Button
-                  className={`btn-icon btn-trigger toggle-expand me-n1 ${
-                    sm ? "active" : ""
-                  }`}
-                  onClick={() => updateSm(!sm)}
-                >
-                  <Icon name="more-v"></Icon>
-                </Button>
-                <div
-                  className="toggle-expand-content"
-                  style={{ display: sm ? "block" : "none" }}
-                >
-                  <ul className="nk-block-tools g-3">
-                    {/* Set the fontSize to match DatePicker */}
-                    <Icon
-                      className="d-none d-sm-inline"
-                      name="calender-date"
-                      style={{ fontSize: "2.50em" }}
-                    ></Icon>
-                    <DatePicker
-                      selected={startDate}
-                      className="form-control date-picker"
-                      onChange={(date) => setStartDate(date)} // Handle date change
-                    />
-                  </ul>
-                </div>
-              </div>
-            </BlockHeadContent>
+            <BlockHeadContent></BlockHeadContent>
           </div>
         </BlockHead>
         <Block>
           <Row className="g-gs">
-            <Col sm="6" lg="4">
-              <PreviewAltCard
-                className="h-100"
-                bodyClass="h-100 stretch flex-column"
-              >
-                <div style={{ height: 400 }}>
-                  <SessionDevice startDate={startDate} />
-                </div>
-              </PreviewAltCard>
-            </Col>
-            <Col sm="6" lg="4">
-              <PreviewAltCard
-                className="h-100"
-                bodyClass="h-100 stretch flex-column"
-              >
-                <TrafficDougnut startDate={startDate} />
-              </PreviewAltCard>
-            </Col>
-            <Col sm="6" lg="4">
-              <PreviewAltCard
-                className="h-100"
-                bodyClass="h-100 stretch flex-column"
-              >
-                <TicketsCirclePacking startDate={startDate} />
-              </PreviewAltCard>
-            </Col>
             <Col sm="6" lg="6">
               <div style={{ height: 500 }}>
                 <PreviewAltCard
                   className="h-100"
                   bodyClass="h-100 stretch flex-column"
                 >
-                  <AudienceOverview startDate={startDate} />
+                  <AudienceOverview />
                 </PreviewAltCard>
               </div>
             </Col>
@@ -139,21 +84,11 @@ const AnalyticsHomePage = () => {
                   className="h-100"
                   bodyClass="h-100 stretch flex-column"
                 >
-                  <ApiGraphIos startDate={startDate} />
+                  <ApiGraphIos />
                 </PreviewAltCard>
               </div>
             </Col>
-            <Col lg="20">
-              <div style={{ height: 500 }}>
-                <PreviewAltCard
-                  className="h-100"
-                  bodyClass="h-100 stretch flex-column"
-                >
-                  <FeetVsTimeTaken startDate={startDate} />
-                </PreviewAltCard>
-              </div>
-            </Col>
-            <Col lg="20">
+            {/* <Col lg="20">
               <div style={{ height: 500 }}>
                 <PreviewAltCard
                   className="h-100"
@@ -162,7 +97,7 @@ const AnalyticsHomePage = () => {
                   <IosVsAndroidTime startDate={startDate} />
                 </PreviewAltCard>
               </div>
-            </Col>
+            </Col> */}
           </Row>
         </Block>
       </Content>

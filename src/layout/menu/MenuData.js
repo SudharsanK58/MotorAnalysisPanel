@@ -1,6 +1,7 @@
 const menu = [
   {
     text: "DASHBOARD",
+
     subMenu: [
       {
         text: "OVERVIEW",
@@ -526,71 +527,23 @@ const menu = [
   //     },
   //   ],
   // },
-  // {
-  //   text: "Misc",
-  //   subMenu: [
-  //     {
-  //       text: "Auth Pages",
-  //       active: false,
-  //       subMenu: [
-  //         {
-  //           text: "Login / Signin",
-  //           link: "/auth-login",
-  //           newTab: true,
-  //         },
-  //         {
-  //           text: "Register / Signup",
-  //           link: "/auth-register",
-  //           newTab: true,
-  //         },
-  //         {
-  //           text: "Forgot Password",
-  //           link: "/auth-reset",
-  //           newTab: true,
-  //         },
-  //         {
-  //           text: "Success / Confirm",
-  //           link: "/auth-success",
-  //           newTab: true,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       text: "Error Pages",
-  //       active: false,
-  //       subMenu: [
-  //         {
-  //           text: "404 Classic",
-  //           link: "/errors/404-classic",
-  //           newTab: true,
-  //         },
-  //         {
-  //           text: "504 Classic",
-  //           link: "/errors/504-classic",
-  //           newTab: true,
-  //         },
-  //         {
-  //           text: "404 Modern",
-  //           link: "/errors/404-modern",
-  //           newTab: true,
-  //         },
-  //         {
-  //           text: "504 Modern",
-  //           link: "/errors/504-modern",
-  //           newTab: true,
-  //         },
-  //       ],
-  //     },
-
-  //     {
-  //       text: "Blank / Startup",
-  //       link: "/_blank",
-  //     },
-  //     {
-  //       text: "Terms / Policy",
-  //       link: "/pages/terms-policy",
-  //     },
-  //   ],
-  // },
+  {
+    text: "CHARTS",
+    subMenu: [
+      {
+        text: "CHARTS",
+        link: "/charts",
+      },
+    ],
+  },
+  {
+    text: "CALIBRATION",
+    subMenu: [
+      {
+        text: "CALIBRATION",
+        link: "/calibration",
+      },
+    ],
+  },
 ];
 export default menu;

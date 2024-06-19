@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import Content from "../../../layout/content/Content";
+import Swal from "sweetalert2";
 import {
   Row,
   Col,
@@ -34,18 +35,43 @@ const FormValidation2 = () => {
   const [startingRPM, setStartingRPM] = useState("1000");
   const [maxRPM, setMaxRPM] = useState("9000");
 
-  const handleCalibrateClick = () => {
+  const handleCalibrateClick = async () => {
     if (
       !isNumeric(startingPWM) ||
       !isNumeric(startingRPM) ||
       !isNumeric(maxRPM)
     ) {
       alert("Please enter numeric values for all fields.");
-    } else {
-      console.log("Starting PWM:", startingPWM);
-      console.log("Starting RPM:", startingRPM);
-      console.log("Maximum RPM:", maxRPM);
-      // Perform further logic for calibration
+      return;
+    }
+
+    const topic = "device/cab";
+    const message = `cab#${startingPWM}#${startingRPM}#${maxRPM}`;
+
+    try {
+      const response = await fetch(`${BASE_URL}/publish`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ topic, message }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+
+      console.log("API Call successful");
+      Swal.fire({
+        icon: "success",
+        title: "Calibration data sent",
+        text: "",
+        focusConfirm: false,
+      });
+      // Optionally, handle response data or further logic here
+    } catch (error) {
+      console.error("Error making API call:", error.message);
+      // Handle error state or display an error message to the user
     }
   };
 
@@ -76,12 +102,12 @@ const FormValidation2 = () => {
 
   return (
     <React.Fragment>
-      <Head title="PRE_CHECK" />
+      <Head title="Calibration" />
       <Content page="component">
         <BlockHead size="lg" wide="sm">
           <BlockHeadContent>
             <BlockTitle tag="h2" className="fw-normal">
-              Troubleshoot
+              Calibration
             </BlockTitle>
             <BlockDes>
               <ul
@@ -92,15 +118,16 @@ const FormValidation2 = () => {
                 }}
               >
                 <li>
-                  Please make sure the device is{" "}
-                  <strong style={{ color: "blue" }}>turned on</strong>.
+                  <strong style={{ color: "blue" }}>Starting PWM :</strong>{" "}
+                  Starting value of PWM where the Starting RPM begins
                 </li>
                 <li>
-                  Make sure to use the{" "}
-                  <strong style={{ color: "blue" }}>
-                    latest version of the app
-                  </strong>
-                  .
+                  <strong style={{ color: "blue" }}>Starting RPM :</strong>{" "}
+                  Starting RPM from tachometer.
+                </li>
+                <li>
+                  <strong style={{ color: "blue" }}>Maximum RPM :</strong>{" "}
+                  Maximum RPM from tachometer.
                 </li>
               </ul>
             </BlockDes>
