@@ -18,7 +18,7 @@ const Footer = () => {
         <div className="nk-footer-wrap">
           <div className="nk-footer-copyright">
             {" "}
-            &copy; 2024 DroneThrust Analyzer by sudharsan@zed.digtal
+            &copy; 2024 DroneThrust Analyzer by sudharsan@zusan.in
           </div>
           {/* <div className="nk-footer-links">
             <ul className="nav nav-sm">

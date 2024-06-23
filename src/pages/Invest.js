@@ -355,7 +355,7 @@ const InvestHomePage = () => {
 
   return (
     <React.Fragment>
-      <Head title="ZIG Dashboard" />
+      <Head title="Drone Dashboard" />
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
