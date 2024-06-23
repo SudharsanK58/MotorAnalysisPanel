@@ -88,16 +88,16 @@ const AnalyticsHomePage = () => {
                 </PreviewAltCard>
               </div>
             </Col>
-            {/* <Col lg="20">
+            <Col lg="20">
               <div style={{ height: 500 }}>
                 <PreviewAltCard
                   className="h-100"
                   bodyClass="h-100 stretch flex-column"
                 >
-                  <IosVsAndroidTime startDate={startDate} />
+                  <IosVsAndroidTime />
                 </PreviewAltCard>
               </div>
-            </Col> */}
+            </Col>
           </Row>
         </Block>
       </Content>

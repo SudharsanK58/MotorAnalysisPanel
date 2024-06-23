@@ -8,116 +8,136 @@ import axios from "axios";
 import { ResponsiveSwarmPlot } from '@nivo/swarmplot'
 
 
-const CustomTooltip = ({ point }) => {
-  // Extracting TicketID and legend name from the point's data
-  const { data: {x} } = point;
+const CustomTooltip = ({ point }) => (
+  <div
+    style={{
+      background: "white",
+      padding: "9px 12px",
+      border: "1px solid #ccc",
+    }}
+  >
+    RPM: {point.data.yFormatted} 
+  </div>
+);
 
-  return (
-    <div style={{ background: 'white', padding: '10px', border: '1px solid #ccc' }}>
-      <p>TicketID: {x}</p>
-    </div>
-  );
-};
-
-const IosVsAndroidTime = ({ startDate }) => {
-  const [data, setData] = useState([]);
+const IosVsAndroidTime = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const formattedDate = startDate.toLocaleDateString("en-US", {
-          month: "numeric",
-          day: "numeric",
-          year: "numeric",
-        });
-        const response = await axios.get(`${BASE_URL}/phone_system_true_tickets?date=${encodeURIComponent(formattedDate)}`);
-        setData(response.data);
-        setIsLoading(false);
-        setError(null);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        if (error.response && error.response.status === 404) {
-          setError('No data found on selected date');
-        } else {
-          setError('An error occurred while fetching data');
+        const response = await fetch(`${BASE_URL}/get_rpm`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
         }
+        const jsonData = await response.json();
+        setData(jsonData);
+        setIsLoading(false);
+      } catch (error) {
+        setError('Error fetching data');
         setIsLoading(false);
       }
     };
 
+    // Fetch data initially when component mounts
     fetchData();
-  }, [startDate]);
 
+    // Fetch data every 5 seconds
+    const interval = setInterval(() => {
+      fetchData();
+    }, 5000);
+
+    // Clean up interval on component unmount or re-render
+    return () => clearInterval(interval);
+  }, []);
   return (
     <React.Fragment>
-      <h6 className="title">Time taken in ms (IOS vs ANDROID)</h6>
+      <h6 className="title">RPM</h6>
       {isLoading ? (
-        <div className="spinner-container" style={{ position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+        <div
+          className="spinner-container"
+          style={{
+            position: "absolute",
+            top: "30%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
           <Spinner color="primary" />
         </div>
       ) : error ? (
-        <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>
+        <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>
       ) : (
-        <ResponsiveSwarmPlot
-        data={data}
-        groups={[ '', '']}
-        identity="id"
-        value="price"
-        valueFormat="$.2f"
-        valueScale={{ type: 'linear', min: 0, max: 'auto', reverse: false }}
-        size={{
-            key: 'volume',
-            values: [
-                4,
-                20
-            ],
-            sizes: [
-                6,
-                20
-            ]
-        }}
-        layout="horizontal"
-        forceStrength={4}
-        simulationIterations={100}
-        borderColor={{
-            from: 'color',
-            modifiers: [
-                [
-                    'darker',
-                    0.6
-                ],
-                [
-                    'opacity',
-                    0.5
-                ]
-            ]
-        }}
-        margin={{ top: 80, right: 100, bottom: 80, left: 100 }}
-        axisTop={{
-            orient: 'top',
-            tickSize: 10,
+        <ResponsiveLine
+          data={data}
+          margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+          xScale={{ type: "linear" }}
+          yScale={{
+            type: "linear",
+            min: "auto",
+            max: "auto",
+            stacked: false,
+            reverse: false,
+          }}
+          curve="cardinal"
+          axisTop={null}
+          axisRight={null}
+          axisBottom={{
+            tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'Time Taken in milli second',
-            legendPosition: 'middle',
-            legendOffset: -46,
-            truncateTickAt: 0
-        }}
-        axisRight={null}
-        axisBottom={null}
-        axisLeft={{
-          orient: 'left',
-          tickSize: 10,
-          tickPadding: 5,
-          tickRotation: 0,
-          legendPosition: 'middle',
-          legendOffset: -76,
-          truncateTickAt: 0
-      }}
-      isInteractive={false}
-    />
+            legend: "",
+            legendOffset: 36,
+            legendPosition: "middle",
+          }}
+          axisLeft={{
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: "RPM",
+            legendOffset: -50,
+            legendPosition: "middle",
+          }}
+          enableGridX={false}
+          enableGridY={false}
+          enablePoints={true}
+          pointColor={{ from: "color", modifiers: [] }}
+          pointBorderWidth={2}
+          pointBorderColor={{ from: "serieColor" }}
+          pointLabel="y"
+          pointLabelYOffset={-12}
+          enableCrosshair={true}
+          useMesh={true}
+          tooltip={CustomTooltip}
+          legends={[
+            {
+              anchor: "top",
+              direction: "row",
+              justify: false,
+              translateX: 100,
+              translateY: -50,
+              itemsSpacing: 10,
+              itemDirection: "left-to-right",
+              itemWidth: 80,
+              itemHeight: 20,
+              itemOpacity: 0.75,
+              symbolSize: 12,
+              symbolShape: "circle",
+              symbolBorderColor: "rgba(0, 0, 0, .5)",
+              effects: [
+                {
+                  on: "hover",
+                  style: {
+                    itemBackground: "rgba(0, 0, 0, .03)",
+                    itemOpacity: 1,
+                  },
+                },
+              ],
+            },
+          ]}
+        />
       )}
     </React.Fragment>
   );
