@@ -209,7 +209,7 @@ const InvestHomePage = () => {
         setLatestTimestamp(data.latest.timestamp);
         setHasAnimated(true);
         setLoading(false); // Set loading to false once data is fetched
-        set;
+
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false); // Set loading to false in case of error
@@ -534,37 +534,7 @@ const InvestHomePage = () => {
                 />
               </PreviewAltCard>
             </Col>
-            <Col md="4">
-              <PreviewAltCard
-                className="card-full"
-                style={{
-                  position: "relative",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <TemperatureCard
-                  temperatureLoading={false} // Assuming temperature data is loaded
-                  temperatureStats={{
-                    average_temp: temperatureData.latest
-                      ? temperatureData.latest.shuntvoltage
-                      : null, // Using latest shuntvoltage as average_temp
-                    lowest_temp: temperatureData.lowest
-                      ? temperatureData.lowest.shuntvoltage
-                      : null, // Using lowest shuntvoltage as lowest_temp
-                    highest_temp: temperatureData.highest
-                      ? temperatureData.highest.shuntvoltage
-                      : null, // Using highest shuntvoltage as highest_temp
-                  }}
-                  title="Shunt Voltage Stats"
-                  temperatureSymbol="V"
-                  averageTempKey="average_temp"
-                  lowestTempKey="lowest_temp"
-                  highestTempKey="highest_temp"
-                />
-              </PreviewAltCard>
-            </Col>
+            
             <Col md="4">
               <PreviewAltCard
                 className="card-full"
@@ -641,16 +611,47 @@ const InvestHomePage = () => {
                   temperatureLoading={false} // Assuming temperature data is loaded
                   temperatureStats={{
                     average_temp: temperatureData.latest
-                      ? temperatureData.latest.motor_rpm
+                      ? temperatureData.latest.power
                       : null, // Using latest current_mA as average_temp
                     lowest_temp: temperatureData.lowest
-                      ? temperatureData.lowest.motor_rpm
+                      ? temperatureData.lowest.power
                       : null, // Using lowest current_mA as lowest_temp
                     highest_temp: temperatureData.highest
-                      ? temperatureData.highest.motor_rpm
+                      ? temperatureData.highest.power
                       : null, // Using highest current_mA as highest_temp
                   }}
-                  title="Motor RPM (rpm)"
+                  title="Power"
+                  temperatureSymbol="watt"
+                  averageTempKey="average_temp"
+                  lowestTempKey="lowest_temp"
+                  highestTempKey="highest_temp"
+                />
+              </PreviewAltCard>
+            </Col>
+            <Col md="4">
+              <PreviewAltCard
+                className="card-full"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TemperatureCard
+                  temperatureLoading={false} // Assuming temperature data is loaded
+                  temperatureStats={{
+                    average_temp: temperatureData.latest
+                      ? temperatureData.latest.real_rpm
+                      : null, // Using latest current_mA as average_temp
+                    lowest_temp: temperatureData.lowest
+                      ? temperatureData.lowest.real_rpm
+                      : null, // Using lowest current_mA as lowest_temp
+                    highest_temp: temperatureData.highest
+                      ? temperatureData.highest.real_rpm
+                      : null, // Using highest current_mA as highest_temp
+                  }}
+                  title="Drone (RPM)"
                   temperatureSymbol="rpm"
                   averageTempKey="average_temp"
                   lowestTempKey="lowest_temp"

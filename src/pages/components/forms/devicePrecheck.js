@@ -45,16 +45,20 @@ const FormValidation2 = () => {
       return;
     }
 
-    const topic = "device/cab";
-    const message = `cab#${startingPWM}#${startingRPM}#${maxRPM}`;
+    const message = {
+      starting_pwm: startingPWM,
+      starting_rpm: startingRPM,
+      maximum_rpm: maxRPM
+    };
+    
 
     try {
-      const response = await fetch(`${BASE_URL}/publish`, {
+      const response = await fetch(`${BASE_URL}/update_motor_rpm`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ topic, message }),
+        body: JSON.stringify(message),
       });
 
       if (!response.ok) {

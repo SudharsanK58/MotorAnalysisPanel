@@ -22,80 +22,42 @@ const CustomTooltip = ({ point }) => (
   >
     <strong>{point.serieId}</strong>
     <br />
-    RPM: {point.data.xFormatted}
-    <br />
-    Power/Torque: {point.data.yFormatted}
+    Power/rpm: {point.data.yFormatted}
   </div>
 );
 
 const AudienceOverview = ({}) => {
-  const data = [
-    {
-      id: "Power",
-      color: "hsl(0, 70%, 50%)",
-      data: [
-        { x: 1000, y: 50 },
-        { x: 2000, y: 80 },
-        { x: 3000, y: 70 },
-        { x: 4000, y: 90 },
-        { x: 5000, y: 85 },
-        { x: 6000, y: 95 },
-        { x: 7000, y: 90 },
-        { x: 8000, y: 100 },
-        { x: 9000, y: 95 },
-        { x: 10000, y: 110 },
-      ],
-    },
-    {
-      id: "Torque",
-      color: "hsl(120, 70%, 50%)",
-      data: [
-        { x: 1000, y: 40 },
-        { x: 2000, y: 60 },
-        { x: 3000, y: 55 },
-        { x: 4000, y: 75 },
-        { x: 5000, y: 70 },
-        { x: 6000, y: 80 },
-        { x: 7000, y: 75 },
-        { x: 8000, y: 85 },
-        { x: 9000, y: 80 },
-        { x: 10000, y: 90 },
-      ],
-    },
-  ];
-
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const formattedDate = startDate.toLocaleDateString("en-US", {
-  //         month: "numeric",
-  //         day: "numeric",
-  //         year: "numeric",
-  //       });
-  //       const response = await axios.get(
-  //         `${BASE_URL}/app_benchmark_api_graph_android?date=${encodeURIComponent(
-  //           formattedDate
-  //         )}`
-  //       );
-  //       setData(response.data);
-  //       setIsLoading(false);
-  //       setError(null);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       if (error.response && error.response.status === 404) {
-  //         setError("No data found on selected date");
-  //       } else {
-  //         setError("An error occurred while fetching data");
-  //       }
-  //       setIsLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/get_motor_data_latest_10`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+        setIsLoading(false);
+      } catch (error) {
+        setError('Error fetching data');
+        setIsLoading(false);
+      }
+    };
 
-  //   fetchData();
-  // }, [startDate]);
+    // Fetch data initially when component mounts
+    fetchData();
+
+    // Fetch data every 5 seconds
+    const interval = setInterval(() => {
+      fetchData();
+    }, 5000);
+
+    // Clean up interval on component unmount or re-render
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <React.Fragment>
@@ -110,7 +72,10 @@ const AudienceOverview = ({}) => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <Spinner color="primary" />
+          {/* Replace with your spinner component */}
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
         </div>
       ) : error ? (
         <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>
