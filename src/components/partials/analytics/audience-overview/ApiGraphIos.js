@@ -20,82 +20,45 @@ const CustomTooltip = ({ point }) => (
       border: "1px solid #ccc",
     }}
   >
-    <strong>{point.serieId}</strong>
-    <br />
-    RPM: {point.data.xFormatted}
-    <br />
-    Thrust: {point.data.yFormatted}
+    Thrust: {point.data.yFormatted} N
   </div>
 );
 
 const ApiGraphIos = ({}) => {
-  const data = [
-    {
-      id: "Thrust",
-      color: "hsl(240, 70%, 50%)",
-      data: [
-        { x: 1000, y: 10 },
-        { x: 2000, y: 25 },
-        { x: 3000, y: 20 },
-        { x: 4000, y: 35 },
-        { x: 5000, y: 30 },
-        { x: 6000, y: 40 },
-        { x: 7000, y: 37 },
-        { x: 8000, y: 45 },
-        { x: 9000, y: 42 },
-        { x: 10000, y: 50 },
-      ],
-    },
-    {
-      id: "RPM",
-      color: "hsl(120, 70%, 50%)",
-      data: [
-        { x: 1000, y: 1000 },
-        { x: 2000, y: 2000 },
-        { x: 3000, y: 3000 },
-        { x: 4000, y: 4000 },
-        { x: 5000, y: 5000 },
-        { x: 6000, y: 6000 },
-        { x: 7000, y: 7000 },
-        { x: 8000, y: 8000 },
-        { x: 9000, y: 9000 },
-        { x: 10000, y: 10000 },
-      ],
-    },
-  ];
-
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const formattedDate = startDate.toLocaleDateString("en-US", {
-  //         month: "numeric",
-  //         day: "numeric",
-  //         year: "numeric",
-  //       });
-  //       const response = await axios.get(`${BASE_URL}/app_benchmark_api_graph_ios?date=${encodeURIComponent(formattedDate)}`);
-  //       setData(response.data);
-  //       setIsLoading(false);
-  //       setError(null);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       if (error.response && error.response.status === 404) {
-  //         setError('No data found on selected date');
-  //       } else {
-  //         setError('An error occurred while fetching data');
-  //       }
-  //       setIsLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/get_thrust`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+        setIsLoading(false);
+      } catch (error) {
+        setError('Error fetching data');
+        setIsLoading(false);
+      }
+    };
 
-  //   fetchData();
-  // }, [startDate]);
+    // Fetch data initially when component mounts
+    fetchData();
 
+    // Fetch data every 5 seconds
+    const interval = setInterval(() => {
+      fetchData();
+    }, 5000);
+
+    // Clean up interval on component unmount or re-render
+    return () => clearInterval(interval);
+  }, []);
   return (
     <React.Fragment>
-      <h6 className="title">THRUST VS RPM</h6>
+      <h6 className="title">THRUST</h6>
       {isLoading ? (
         <div
           className="spinner-container"
@@ -129,7 +92,7 @@ const ApiGraphIos = ({}) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "RPM",
+            legend: "",
             legendOffset: 36,
             legendPosition: "middle",
           }}
@@ -137,7 +100,7 @@ const ApiGraphIos = ({}) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "Thrust",
+            legend: "THRUST",
             legendOffset: -50,
             legendPosition: "middle",
           }}

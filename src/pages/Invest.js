@@ -238,12 +238,6 @@ const InvestHomePage = () => {
   const latestAmbientC = temperatureData.latest
     ? temperatureData.latest.ambient_C
     : null;
-  const lowestAmbientC = temperatureData.lowest
-    ? temperatureData.lowest.ambient_C
-    : null;
-  const highestAmbientC = temperatureData.highest
-    ? temperatureData.highest.ambient_C
-    : null;
   const TemperatureCard = ({
     temperatureLoading,
     temperatureStats,
@@ -305,57 +299,13 @@ const InvestHomePage = () => {
             </span>
           )}
         </div>
-        <div className="invest-data">
-          <div className="invest-data-amount g-2">
-            <div className="invest-data-history">
-              <div className="title">Lowest</div>
-              <span className="amount">
-                {temperatureLoading ? (
-                  "0 °C"
-                ) : hasAnimated ? (
-                  <span>{temperatureStats[lowestTempKey].toFixed(2)}</span>
-                ) : (
-                  <CountUp
-                    start={0}
-                    end={temperatureStats[lowestTempKey].toFixed(2)}
-                    decimals={2}
-                    duration={3}
-                    delay={0}
-                    onComplete={() => setHasAnimated(true)}
-                  />
-                )}{" "}
-                {temperatureSymbol}
-              </span>
-            </div>
-            <div className="invest-data-history">
-              <div className="title">Highest</div>
-              <span className="amount">
-                {temperatureLoading ? (
-                  "0 °C"
-                ) : hasAnimated ? (
-                  <span>{temperatureStats[highestTempKey].toFixed(2)}</span>
-                ) : (
-                  <CountUp
-                    start={0}
-                    end={temperatureStats[highestTempKey].toFixed(2)}
-                    decimals={2}
-                    duration={3}
-                    delay={0}
-                    onComplete={() => setHasAnimated(true)}
-                  />
-                )}{" "}
-                {temperatureSymbol}
-              </span>
-            </div>
-          </div>
-        </div>
       </>
     );
   };
 
   return (
     <React.Fragment>
-      <Head title="Drone Dashboard" />
+      <Head title="Dashboard" />
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
@@ -399,8 +349,6 @@ const InvestHomePage = () => {
                   temperatureLoading={false} // Assuming temperature data is loaded
                   temperatureStats={{
                     average_temp: latestAmbientC, // Using latest ambient_C as average_temp
-                    lowest_temp: lowestAmbientC, // Using lowest ambient_C as lowest_temp
-                    highest_temp: highestAmbientC, // Using highest ambient_C as highest_temp
                   }}
                   title="Ambient Temperature Stats (°C)"
                   temperatureSymbol="°C"
@@ -410,7 +358,7 @@ const InvestHomePage = () => {
                 />
               </PreviewAltCard>
             </Col>
-            <Col md="4">
+            {/* <Col md="4">
               <PreviewAltCard
                 className="card-full"
                 style={{
@@ -426,12 +374,6 @@ const InvestHomePage = () => {
                     average_temp: temperatureData.latest
                       ? temperatureData.latest.ambient_F
                       : null, // Using latest ambient_F as average_temp
-                    lowest_temp: temperatureData.lowest
-                      ? temperatureData.lowest.ambient_F
-                      : null, // Using lowest ambient_F as lowest_temp
-                    highest_temp: temperatureData.highest
-                      ? temperatureData.highest.ambient_F
-                      : null, // Using highest ambient_F as highest_temp
                   }}
                   title="Ambient Temperature Stats (°F)"
                   temperatureSymbol="°F"
@@ -440,8 +382,8 @@ const InvestHomePage = () => {
                   highestTempKey="highest_temp"
                 />
               </PreviewAltCard>
-            </Col>
-            <Col md="4">
+            </Col> */}
+            {/* <Col md="4">
               <PreviewAltCard
                 className="card-full"
                 style={{
@@ -457,12 +399,6 @@ const InvestHomePage = () => {
                     average_temp: temperatureData.latest
                       ? temperatureData.latest.object_F
                       : null, // Using latest object_F as average_temp
-                    lowest_temp: temperatureData.lowest
-                      ? temperatureData.lowest.object_F
-                      : null, // Using lowest object_F as lowest_temp
-                    highest_temp: temperatureData.highest
-                      ? temperatureData.highest.object_F
-                      : null, // Using highest object_F as highest_temp
                   }}
                   title="Object Temperature Stats (°F)"
                   temperatureSymbol="°F"
@@ -471,7 +407,7 @@ const InvestHomePage = () => {
                   highestTempKey="highest_temp"
                 />
               </PreviewAltCard>
-            </Col>
+            </Col> */}
             <Col md="4">
               <PreviewAltCard
                 className="card-full"
@@ -488,12 +424,6 @@ const InvestHomePage = () => {
                     average_temp: temperatureData.latest
                       ? temperatureData.latest.object_C
                       : null, // Using latest object_F as average_temp
-                    lowest_temp: temperatureData.lowest
-                      ? temperatureData.lowest.object_C
-                      : null, // Using lowest object_F as lowest_temp
-                    highest_temp: temperatureData.highest
-                      ? temperatureData.highest.object_C
-                      : null, // Using highest object_F as highest_temp
                   }}
                   title="Object Temperature Stats (°C)"
                   temperatureSymbol="°C"
@@ -519,12 +449,6 @@ const InvestHomePage = () => {
                     average_temp: temperatureData.latest
                       ? temperatureData.latest.busvoltage
                       : null, // Using latest busvoltage as average_temp
-                    lowest_temp: temperatureData.lowest
-                      ? temperatureData.lowest.busvoltage
-                      : null, // Using lowest busvoltage as lowest_temp
-                    highest_temp: temperatureData.highest
-                      ? temperatureData.highest.busvoltage
-                      : null, // Using highest busvoltage as highest_temp
                   }}
                   title="Bus Voltage Stats"
                   temperatureSymbol="V"
@@ -551,15 +475,9 @@ const InvestHomePage = () => {
                     average_temp: temperatureData.latest
                       ? temperatureData.latest.current_mA
                       : null, // Using latest current_mA as average_temp
-                    lowest_temp: temperatureData.lowest
-                      ? temperatureData.lowest.current_mA
-                      : null, // Using lowest current_mA as lowest_temp
-                    highest_temp: temperatureData.highest
-                      ? temperatureData.highest.current_mA
-                      : null, // Using highest current_mA as highest_temp
                   }}
                   title="Current Stats"
-                  temperatureSymbol="mA"
+                  temperatureSymbol="A"
                   averageTempKey="average_temp"
                   lowestTempKey="lowest_temp"
                   highestTempKey="highest_temp"
@@ -582,12 +500,6 @@ const InvestHomePage = () => {
                     average_temp: temperatureData.latest
                       ? temperatureData.latest.weight_in_grams
                       : null, // Using latest current_mA as average_temp
-                    lowest_temp: temperatureData.lowest
-                      ? temperatureData.lowest.weight_in_grams
-                      : null, // Using lowest current_mA as lowest_temp
-                    highest_temp: temperatureData.highest
-                      ? temperatureData.highest.weight_in_grams
-                      : null, // Using highest current_mA as highest_temp
                   }}
                   title="Drone weight(g)"
                   temperatureSymbol="g"
@@ -613,12 +525,6 @@ const InvestHomePage = () => {
                     average_temp: temperatureData.latest
                       ? temperatureData.latest.power
                       : null, // Using latest current_mA as average_temp
-                    lowest_temp: temperatureData.lowest
-                      ? temperatureData.lowest.power
-                      : null, // Using lowest current_mA as lowest_temp
-                    highest_temp: temperatureData.highest
-                      ? temperatureData.highest.power
-                      : null, // Using highest current_mA as highest_temp
                   }}
                   title="Power"
                   temperatureSymbol="watt"
@@ -644,15 +550,34 @@ const InvestHomePage = () => {
                     average_temp: temperatureData.latest
                       ? temperatureData.latest.real_rpm
                       : null, // Using latest current_mA as average_temp
-                    lowest_temp: temperatureData.lowest
-                      ? temperatureData.lowest.real_rpm
-                      : null, // Using lowest current_mA as lowest_temp
-                    highest_temp: temperatureData.highest
-                      ? temperatureData.highest.real_rpm
-                      : null, // Using highest current_mA as highest_temp
                   }}
                   title="Drone (RPM)"
                   temperatureSymbol="rpm"
+                  averageTempKey="average_temp"
+                  lowestTempKey="lowest_temp"
+                  highestTempKey="highest_temp"
+                />
+              </PreviewAltCard>
+            </Col>
+            <Col md="4">
+              <PreviewAltCard
+                className="card-full"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TemperatureCard
+                  temperatureLoading={false} // Assuming temperature data is loaded
+                  temperatureStats={{
+                    average_temp: temperatureData.latest
+                      ? temperatureData.latest.thrust
+                      : null, // Using latest current_mA as average_temp
+                  }}
+                  title="Thrust (Newton)"
+                  temperatureSymbol="N"
                   averageTempKey="average_temp"
                   lowestTempKey="lowest_temp"
                   highestTempKey="highest_temp"

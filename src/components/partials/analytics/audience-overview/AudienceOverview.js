@@ -19,10 +19,8 @@ const CustomTooltip = ({ point }) => (
       padding: "9px 12px",
       border: "1px solid #ccc",
     }}
-  >
-    <strong>{point.serieId}</strong>
-    <br />
-    Power/rpm: {point.data.yFormatted}
+  >   
+    Power: {point.data.yFormatted} watt
   </div>
 );
 
@@ -34,7 +32,7 @@ const AudienceOverview = ({}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/get_motor_data_latest_10`);
+        const response = await fetch(`${BASE_URL}/get_power`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -58,10 +56,9 @@ const AudienceOverview = ({}) => {
     // Clean up interval on component unmount or re-render
     return () => clearInterval(interval);
   }, []);
-
   return (
     <React.Fragment>
-      <h6 className="title">POWER VS RPM</h6>
+      <h6 className="title">POWER</h6>
       {isLoading ? (
         <div
           className="spinner-container"
@@ -72,10 +69,7 @@ const AudienceOverview = ({}) => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          {/* Replace with your spinner component */}
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
+          <Spinner color="primary" />
         </div>
       ) : error ? (
         <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>
@@ -98,7 +92,7 @@ const AudienceOverview = ({}) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "RPM",
+            legend: "",
             legendOffset: 36,
             legendPosition: "middle",
           }}
