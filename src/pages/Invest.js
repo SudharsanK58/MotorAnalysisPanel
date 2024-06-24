@@ -584,6 +584,81 @@ const InvestHomePage = () => {
                 />
               </PreviewAltCard>
             </Col>
+            <Col md="4">
+              <PreviewAltCard
+                className="card-full"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TemperatureCard
+                  temperatureLoading={false} // Assuming temperature data is loaded
+                  temperatureStats={{
+                    average_temp: temperatureData.latest
+                      ? temperatureData.latest.vibration_x
+                      : null, // Using latest current_mA as average_temp
+                  }}
+                  title="Vibration X"
+                  temperatureSymbol=""
+                  averageTempKey="average_temp"
+                  lowestTempKey="lowest_temp"
+                  highestTempKey="highest_temp"
+                />
+              </PreviewAltCard>
+            </Col>
+            <Col md="4">
+              <PreviewAltCard
+                className="card-full"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TemperatureCard
+                  temperatureLoading={false} // Assuming temperature data is loaded
+                  temperatureStats={{
+                    average_temp: temperatureData.latest
+                      ? temperatureData.latest.vibration_y
+                      : null, // Using latest current_mA as average_temp
+                  }}
+                  title="Vibration Y"
+                  temperatureSymbol=""
+                  averageTempKey="average_temp"
+                  lowestTempKey="lowest_temp"
+                  highestTempKey="highest_temp"
+                />
+              </PreviewAltCard>
+            </Col>
+            <Col md="4">
+              <PreviewAltCard
+                className="card-full"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TemperatureCard
+                  temperatureLoading={false} // Assuming temperature data is loaded
+                  temperatureStats={{
+                    average_temp: temperatureData.latest
+                      ? temperatureData.latest.vibration_z
+                      : null, // Using latest current_mA as average_temp
+                  }}
+                  title="Vibration Z"
+                  temperatureSymbol=""
+                  averageTempKey="average_temp"
+                  lowestTempKey="lowest_temp"
+                  highestTempKey="highest_temp"
+                />
+              </PreviewAltCard>
+            </Col>
           </Row>
         </Block>
       </Content>
