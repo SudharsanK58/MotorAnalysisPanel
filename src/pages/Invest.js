@@ -58,41 +58,51 @@ const InvestHomePage = () => {
   const [latestTimestamp, setLatestTimestamp] = useState("");
   const handlePdfDownload = async () => {
     setpdfLoading(true);
-
+  
     try {
       const response = await fetch(`${BASE_URL}/list_motor_data`);
       const { data } = await response.json();
-
+  
       // Generate PDF with custom page size and fit table
       const doc = new jsPDF({
         orientation: "landscape",
         unit: "pt", // Use points as the unit of measurement
         format: "a4", // Use A4 format for the page
       });
-
-      const tableColumnWidths = [120, 60, 60, 60, 60, 70, 60, 70, 80, 70, 60]; // Adjust column widths as needed
-      const headers = Object.keys(data[0]);
+  
+      const headers = [
+        "timestamp",
+        "ambient_C",
+        "object_C",
+        "busvoltage",
+        "current_mA",
+        "weight_in_grams",
+        "motor_rpm",
+        "power",
+        "thrust",
+        "real_rpm",
+      ];
+  
+      const tableColumnWidths = [120, 60, 60, 60, 60, 70, 60, 70, 80, 70]; // Adjust column widths as needed
+  
       const tableRows = data.map((obj) => {
-        const formattedRow = [
+        return [
           formatTimestamp(obj.timestamp),
-          obj.ambient_C,
-          obj.object_C,
-          obj.ambient_F,
-          obj.object_F,
-          obj.shuntvoltage,
-          obj.busvoltage,
-          obj.current_mA,
-          obj.weight_in_kilograms,
-          obj.weight_in_grams,
-          obj.motor_rpm,
+          obj.ambient_C != null ? obj.ambient_C : '',
+          obj.object_C != null ? obj.object_C : '',
+          obj.busvoltage != null ? obj.busvoltage : '',
+          obj.current_mA != null ? obj.current_mA : '',
+          obj.weight_in_grams != null ? obj.weight_in_grams : '',
+          obj.motor_rpm != null ? obj.motor_rpm : '',
+          obj.power != null ? obj.power : '',
+          obj.thrust != null ? obj.thrust : '',
+          obj.real_rpm != null ? obj.real_rpm : '',
         ];
-        return formattedRow;
       });
+  
       // AutoTable configuration
       doc.autoTable({
-        head: [
-          ["Timestamp", ...headers.filter((header) => header !== "timestamp")],
-        ], // Include 'Timestamp' as the first column header
+        head: [headers],
         body: tableRows,
         startY: 20,
         styles: {
@@ -101,28 +111,21 @@ const InvestHomePage = () => {
           lineColor: [0, 0, 0],
           lineWidth: 0.2,
         },
-        columnStyles: {
-          0: { cellWidth: tableColumnWidths[0] },
-          1: { cellWidth: tableColumnWidths[1] },
-          2: { cellWidth: tableColumnWidths[2] },
-          3: { cellWidth: tableColumnWidths[3] },
-          4: { cellWidth: tableColumnWidths[4] },
-          5: { cellWidth: tableColumnWidths[5] },
-          6: { cellWidth: tableColumnWidths[6] },
-          7: { cellWidth: tableColumnWidths[7] },
-          8: { cellWidth: tableColumnWidths[8] },
-          9: { cellWidth: tableColumnWidths[9] },
-          10: { cellWidth: tableColumnWidths[10] },
-        },
+        columnStyles: headers.reduce((acc, header, index) => {
+          acc[index] = { cellWidth: tableColumnWidths[index] };
+          return acc;
+        }, {}),
       });
-
+  
       doc.save("downloadpdf.pdf"); // Save PDF with a specific name
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-
+  
     setpdfLoading(false);
   };
+  
+  
   const formatTimestamp = (timestamp) => {
     const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     // Convert timestamp to Date object
