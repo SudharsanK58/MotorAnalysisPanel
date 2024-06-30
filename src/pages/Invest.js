@@ -17,6 +17,7 @@ import {
   DropdownItem,
   Modal,
   ModalBody,
+  
 } from "reactstrap";
 import SessionDevice from "../components/partials/analytics/session-devices/SessionDevice";
 import CountUp from "react-countup";
@@ -71,16 +72,16 @@ const InvestHomePage = () => {
       });
   
       const headers = [
-        "timestamp",
-        "ambient_C",
-        "object_C",
-        "busvoltage",
-        "current_mA",
-        "weight_in_grams",
-        "motor_rpm",
-        "power",
-        "thrust",
-        "real_rpm",
+        "Time",
+        "Ambient(C)",
+        "object(C)",
+        "Busvoltage",
+        "Current(ma)",
+        "Weight(Grams)",
+        "Drone PWM",
+        "Power",
+        "Thrust",
+        "RPM",
       ];
   
       const tableColumnWidths = [120, 60, 60, 60, 60, 70, 60, 70, 80, 70]; // Adjust column widths as needed
@@ -124,7 +125,59 @@ const InvestHomePage = () => {
   
     setpdfLoading(false);
   };
-  
+  const handleCsvDownload = async () => {
+    try {
+      setpdfLoading(true);
+      const response = await fetch(`${BASE_URL}/list_motor_data`);
+      const { data } = await response.json();
+
+      const headers = [
+        'Time',
+        'Ambient(C)',
+        'Object(C)',
+        'Bus Voltage',
+        'Current(mA)',
+        'Weight(Grams)',
+        'Drone PWM',
+        'Power',
+        'Thrust',
+        'RPM',
+      ];
+
+      const rows = data.map((obj) => [
+        formatTimestamp(obj.timestamp),
+        obj.ambient_C != null ? obj.ambient_C : '',
+        obj.object_C != null ? obj.object_C : '',
+        obj.busvoltage != null ? obj.busvoltage : '',
+        obj.current_mA != null ? obj.current_mA : '',
+        obj.weight_in_grams != null ? obj.weight_in_grams : '',
+        obj.motor_rpm != null ? obj.motor_rpm : '',
+        obj.power != null ? obj.power : '',
+        obj.thrust != null ? obj.thrust : '',
+        obj.real_rpm != null ? obj.real_rpm : '',
+      ]);
+
+      let csvContent = 'data:text/csv;charset=utf-8,';
+      csvContent += headers.join(',') + '\n';
+      rows.forEach((rowArray) => {
+        const row = rowArray.join(',');
+        csvContent += row + '\n';
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'download.csv');
+      document.body.appendChild(link); // Required for FF
+      setpdfLoading(false);
+
+      link.click();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setpdfLoading(false);
+    }
+  };
+
   
   const formatTimestamp = (timestamp) => {
     const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -322,18 +375,48 @@ const InvestHomePage = () => {
               </BlockDes>
             </BlockHeadContent>
             <BlockHeadContent>
-              {" "}
-              <Button color="primary" size="l" onClick={handlePdfDownload}>
-                {pdfloading ? (
-                  <div className="loader">Downloading.....</div> // Replace with your loader component or spinner
-                ) : (
-                  <>
-                    <Icon name="download" className="icon-large" />
-                    Download as PDF
-                  </>
-                )}
-              </Button>
-            </BlockHeadContent>
+  <UncontrolledDropdown>
+    <div className="btn-group">
+      <Button color="secondary">{pdfloading ? (
+              <div className="loader">Downloading.....</div> // Replace with your loader component or spinner
+            ) : (
+              <span>Download</span>
+            )}</Button>
+      <DropdownToggle className="dropdown-toggle-split" color="secondary">
+        <Icon name="chevron-down"></Icon>
+      </DropdownToggle>
+    </div>
+    <DropdownMenu>
+      <ul className="link-list-opt">
+        <li>
+          <DropdownItem
+            tag="a"
+            href="#pdf"
+            onClick={(ev) => {
+              ev.preventDefault();
+              handlePdfDownload();
+            }}
+          >
+
+              <span>Download as PDF</span>
+          </DropdownItem>
+        </li>
+        <li>
+          <DropdownItem
+            tag="a"
+            href="#csv"
+            onClick={(ev) => {
+              ev.preventDefault();
+              handleCsvDownload();
+            }}
+          >
+            <span>Download as CSV</span>
+          </DropdownItem>
+        </li>
+      </ul>
+    </DropdownMenu>
+  </UncontrolledDropdown>
+</BlockHeadContent>
           </BlockBetween>
         </BlockHead>
         <Block>

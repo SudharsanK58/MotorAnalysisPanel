@@ -149,7 +149,7 @@ const Pages = () => {
             element={<AppBenchMarkTicketSearch />}
             path="/zig-app-benchmark"
           />
-          <Route element={<FormValidation />} path="/ticket-search" />
+          <Route element={<Dropdowns  />} path="/ticket-search" />
           <Route element={<SearchByClient />} path="/client-ticket-search" />
           <Route
             element={<UserProfileActivity />}
