@@ -59,35 +59,27 @@ const InvestHomePage = () => {
   const [latestTimestamp, setLatestTimestamp] = useState("");
   const handlePdfDownload = async () => {
     setpdfLoading(true);
-  
+
     try {
-      const response = await fetch(`${BASE_URL}/list_motor_data`);
-      const { data } = await response.json();
-  
-      // Generate PDF with custom page size and fit table
-      const doc = new jsPDF({
-        orientation: "landscape",
-        unit: "pt", // Use points as the unit of measurement
-        format: "a4", // Use A4 format for the page
-      });
-  
-      const headers = [
-        "Time",
-        "Ambient(C)",
-        "object(C)",
-        "Busvoltage",
-        "Current(ma)",
-        "Weight(Grams)",
-        "Drone PWM",
-        "Power",
-        "Thrust",
-        "RPM",
-      ];
-  
-      const tableColumnWidths = [120, 60, 60, 60, 60, 70, 60, 70, 80, 70]; // Adjust column widths as needed
-  
-      const tableRows = data.map((obj) => {
-        return [
+        const response = await fetch(`${BASE_URL}/list_motor_data`);
+        const { data } = await response.json();
+
+        // Define headers for both PDF and CSV
+        const headers = [
+            "Time",
+            "Ambient(C)",
+            "Object(C)",      // Ensure consistent capitalization
+            "Bus Voltage",    // Match spacing and capitalization
+            "Current(mA)",
+            "Weight(Grams)",
+            "Drone PWM",
+            "Power",
+            "Thrust",
+            "RPM",
+        ];
+
+        // Map data to rows
+        const mapDataToRow = (obj) => [
           formatTimestamp(obj.timestamp),
           obj.ambient_C != null ? obj.ambient_C : '',
           obj.object_C != null ? obj.object_C : '',
@@ -95,111 +87,133 @@ const InvestHomePage = () => {
           obj.current_mA != null ? obj.current_mA : '',
           obj.weight_in_grams != null ? obj.weight_in_grams : '',
           obj.motor_rpm != null ? obj.motor_rpm : '',
-          obj.power != null ? obj.power : '',
-          obj.thrust != null ? obj.thrust : '',
+          obj.power != null ? obj.power.toFixed(4) : '', // Format power to 4 decimal points
+          obj.thrust != null ? obj.thrust.toFixed(2) : '', // Format thrust to 2 decimal points
           obj.real_rpm != null ? obj.real_rpm : '',
-        ];
-      });
-  
-      // AutoTable configuration
-      doc.autoTable({
-        head: [headers],
-        body: tableRows,
-        startY: 20,
-        styles: {
-          fontSize: 10,
-          cellPadding: 4,
-          lineColor: [0, 0, 0],
-          lineWidth: 0.2,
-        },
-        columnStyles: headers.reduce((acc, header, index) => {
-          acc[index] = { cellWidth: tableColumnWidths[index] };
-          return acc;
-        }, {}),
-      });
-  
-      doc.save("downloadpdf.pdf"); // Save PDF with a specific name
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  
-    setpdfLoading(false);
-  };
-  const handleCsvDownload = async () => {
-    try {
-      setpdfLoading(true);
-      const response = await fetch(`${BASE_URL}/list_motor_data`);
-      const { data } = await response.json();
-
-      const headers = [
-        'Time',
-        'Ambient(C)',
-        'Object(C)',
-        'Bus Voltage',
-        'Current(mA)',
-        'Weight(Grams)',
-        'Drone PWM',
-        'Power',
-        'Thrust',
-        'RPM',
       ];
+      
 
-      const rows = data.map((obj) => [
-        formatTimestamp(obj.timestamp),
-        obj.ambient_C != null ? obj.ambient_C : '',
-        obj.object_C != null ? obj.object_C : '',
-        obj.busvoltage != null ? obj.busvoltage : '',
-        obj.current_mA != null ? obj.current_mA : '',
-        obj.weight_in_grams != null ? obj.weight_in_grams : '',
-        obj.motor_rpm != null ? obj.motor_rpm : '',
-        obj.power != null ? obj.power : '',
-        obj.thrust != null ? obj.thrust : '',
-        obj.real_rpm != null ? obj.real_rpm : '',
-      ]);
+        // For PDF
+        const tableRows = data.map(mapDataToRow);
 
-      let csvContent = 'data:text/csv;charset=utf-8,';
-      csvContent += headers.join(',') + '\n';
-      rows.forEach((rowArray) => {
-        const row = rowArray.join(',');
-        csvContent += row + '\n';
-      });
+        // Generate PDF with custom page size and fit table
+        const doc = new jsPDF({
+            orientation: "landscape",
+            unit: "pt", // Use points as the unit of measurement
+            format: "a4", // Use A4 format for the page
+        });
 
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'download.csv');
-      document.body.appendChild(link); // Required for FF
-      setpdfLoading(false);
+        // AutoTable configuration
+        doc.autoTable({
+            head: [headers],
+            body: tableRows,
+            startY: 20,
+            styles: {
+                fontSize: 10,
+                cellPadding: 4,
+                lineColor: [0, 0, 0],
+                lineWidth: 0.2,
+            },
+            columnStyles: {
+                0: { cellWidth: 120 },
+                1: { cellWidth: 80 },
+                2: { cellWidth: 60 },
+                3: { cellWidth: 60 },
+                4: { cellWidth: 80 },
+                5: { cellWidth: 80 },
+                6: { cellWidth: 60 },
+                7: { cellWidth: 70 },
+                8: { cellWidth: 80 },
+                9: { cellWidth: 70 },
+            },
+        });
 
-      link.click();
+        doc.save("downloadpdf.pdf"); // Save PDF with a specific name
     } catch (error) {
-      console.error('Error fetching data:', error);
-      setpdfLoading(false);
+        console.error("Error fetching data:", error);
     }
-  };
+
+    setpdfLoading(false);
+};
+
+const handleCsvDownload = async () => {
+    try {
+        setpdfLoading(true);
+        const response = await fetch(`${BASE_URL}/list_motor_data`);
+        const { data } = await response.json();
+
+        // Define headers for both PDF and CSV (reuse from above)
+        const headers = [
+            "Time",
+            "Ambient(C)",
+            "Object(C)",      // Ensure consistent capitalization
+            "Bus Voltage",    // Match spacing and capitalization
+            "Current(mA)",
+            "Weight(Grams)",
+            "Drone PWM",
+            "Power",
+            "Thrust",
+            "RPM",
+        ];
+
+        // Map data to rows (reuse from above)
+        const mapDataToRow = (obj) => [
+            formatTimestamp(obj.timestamp, true),
+            obj.ambient_C != null ? obj.ambient_C : '',
+            obj.object_C != null ? obj.object_C : '',
+            obj.busvoltage != null ? obj.busvoltage : '',
+            obj.current_mA != null ? obj.current_mA : '',
+            obj.weight_in_grams != null ? obj.weight_in_grams : '',
+            obj.motor_rpm != null ? obj.motor_rpm : '',
+            obj.power != null ? obj.power : '',
+            obj.thrust != null ? obj.thrust : '',
+            obj.real_rpm != null ? obj.real_rpm : '',
+        ];
+
+        // For CSV
+        const rows = data.map(mapDataToRow);
+
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += headers.join(",") + "\n";
+        rows.forEach((rowArray) => {
+            const row = rowArray.join(",");
+            csvContent += row + "\n";
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "download.csv");
+        document.body.appendChild(link); // Required for FF
+        setpdfLoading(false);
+
+        link.click();
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        setpdfLoading(false);
+    }
+};
+
 
   
-  const formatTimestamp = (timestamp) => {
-    const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    // Convert timestamp to Date object
-    const dateObj = new Date(timestamp);
-
-    dateObj.setHours(dateObj.getHours() + 5, dateObj.getMinutes() + 30);
-
-    // Format the adjusted timestamp
-    const options = {
-      day: "2-digit",
-      month: "short", // Use 'short' for abbreviated month name
-      year: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
+const formatTimestamp = (timestamp, forCsv = false) => {
+  const date = new Date(timestamp);
+  const formattedDate = date.toLocaleDateString("en-US", {
+      month: "short", // "Aug"
+      day: "2-digit", // "22"
+      year: "numeric", // "2024"
+  });
+  const formattedTime = date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
       hour12: true,
-    };
-    const formattedTimestamp = dateObj.toLocaleString("en-US", options);
+  });
 
-    return formattedTimestamp;
-  };
+  const formattedTimestamp = `${formattedDate} ${formattedTime}`;
+  return forCsv ? `"${formattedTimestamp}"` : formattedTimestamp;
+};
+
   const calculateLastSeen = (formattedTimestamp) => {
     const givenTime = new Date(
       Date.UTC(
